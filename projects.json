@@ -43,6 +43,7 @@
     "NREL PVDAQ",
     "Kelmarsh wind farm SCADA (Cubico, CC BY 4.0)",
     "PVGIS",
+    "Open-Meteo / ERA5",
     "Met Office sunshine records",
     "Zenodo LFP cell ageing data"
   ],
@@ -86,6 +87,20 @@
         "MILP",
         "HiGHS",
         "PSE API"
+      ]
+    },
+    {
+      "repo": "cable-pooling-sizer",
+      "title": "Cable pooling: PV, wind and storage behind one connection",
+      "group": "storage",
+      "summary": "How much PV, wind and battery storage to build behind a shared grid connection in Poland: ERA5 profiles, RCE prices and an hourly LP dispatch for 856 size combinations per site, with NPV, LCOE and curtailment.",
+      "highlight": "Best oversizing is 1.75-2.25x the connection without a battery and 2.75-3x with one, curtailing 9-20 % of the energy.",
+      "image": "docs/img/frontier.png",
+      "demo": "https://kwwaleszczynski-del.github.io/cable-pooling-sizer/",
+      "tags": [
+        "linear programming",
+        "pvlib",
+        "ERA5"
       ]
     },
     {
