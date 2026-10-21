@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Konrad Waleszczyński | Renewable energy data analytics</title>
+<meta name="description" content="Analytics for solar, wind and battery assets: performance verification, fault detection, power market analysis and dashboards. Every project below is written from scratch on open data and can be rerun from its repository, with tests and CI.">
+<meta property="og:title" content="Konrad Waleszczyński | Renewable energy data analytics">
+<meta property="og:description" content="Analytics for solar, wind and battery assets: performance verification, fault detection, power market analysis and dashboards. Every project below is written from scratch on open data and can be rerun from its repository, with tests and CI.">
+<meta property="og:image" content="https://kwwaleszczynski-del.github.io/img/pl-power-market-live.webp">
+<meta name="color-scheme" content="light dark">
+<style>
+:root {
+  --bg: #f6f7f9; --card: #ffffff; --text: #151a22; --muted: #5a6474; --line: #e2e6ec; --chip: #edf0f4;
+  --hl-bg: #fff8eb; --hl-line: #e8a33a; --pv: #c97a06; --wind: #0e7490; --storage: #6d43c9; --ops: #475569;
+  --accent: #0e7490; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 4px 16px rgba(16,24,40,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117; --card: #151b24; --text: #e6eaf0; --muted: #98a2b3; --line: #252e3a; --chip: #1d2530;
+    --hl-bg: #231d12; --hl-line: #d4912c; --pv: #f0a83a; --wind: #38bdd8; --storage: #a78bfa; --ops: #94a3b8;
+    --accent: #38bdd8; --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+a { color: inherit; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+header.hero { padding: 64px 0 32px; }
+.hero .name { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.hero h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.1; margin: 0 0 16px; letter-spacing: -.02em; }
+.hero h1 span { background: linear-gradient(90deg, var(--pv), var(--wind)); -webkit-background-clip: text;
+  background-clip: text; color: transparent; }
+.hero p.intro { max-width: 720px; font-size: 18px; color: var(--muted); margin: 0 0 24px; }
+.stats { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 0 0 28px; padding: 0; list-style: none; }
+.stats b { display: block; font-size: 28px; line-height: 1.1; }
+.stats span { font-size: 14px; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-block; padding: 7px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--card);
+  text-decoration: none; font-size: 14px; font-weight: 600; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+@media (prefers-color-scheme: dark) { .btn.primary { color: #06141a; } }
+h2 { font-size: 22px; margin: 40px 0 16px; letter-spacing: -.01em; }
+.lives { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.live { display: flex; gap: 12px; align-items: center; padding: 10px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: var(--shadow); }
+.live:hover { border-color: var(--accent); }
+.live img { width: 96px; aspect-ratio: 16/10; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.chip { font: inherit; font-size: 14px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--chip); color: var(--text); cursor: pointer; }
+.chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; }
+.card { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  overflow: hidden; box-shadow: var(--shadow); }
+.card[hidden] { display: none; }
+.thumb { display: block; border-bottom: 1px solid var(--line); background: #fff; }
+.thumb img { display: block; width: 100%; height: auto; aspect-ratio: 16/10; object-fit: cover; }
+.body { display: flex; flex-direction: column; flex: 1; padding: 16px 18px 18px; }
+.meta { display: flex; gap: 8px; align-items: center; font-size: 13px; margin-bottom: 6px; }
+.group { font-weight: 600; }
+.group::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;
+  background: currentColor; vertical-align: 1px; }
+.g-pv { color: var(--pv); } .g-wind { color: var(--wind); } .g-storage { color: var(--storage); } .g-ops { color: var(--ops); }
+.badge { font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--hl-line);
+  color: var(--hl-line); }
+.card h3 { font-size: 19px; line-height: 1.3; margin: 0 0 8px; }
+.card h3 a { text-decoration: none; }
+.card h3 a:hover { text-decoration: underline; }
+.summary { margin: 0 0 12px; color: var(--muted); font-size: 15px; }
+.highlight { margin: 0 0 14px; padding: 10px 12px; background: var(--hl-bg); border-left: 3px solid var(--hl-line);
+  border-radius: 0 8px 8px 0; font-size: 15px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0 0 16px; }
+.tags li { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--chip); color: var(--muted); }
+.links { display: flex; gap: 8px; margin-top: auto; }
+footer { margin: 56px 0 0; padding: 28px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0 0 16px; }
+footer dt { font-weight: 600; color: var(--text); }
+footer dd { margin: 0; }
+@media (max-width: 560px) {
+  .wrap { padding: 0 16px; }
+  header.hero { padding-top: 40px; }
+  .grid { grid-template-columns: 1fr; }
+  footer dl { grid-template-columns: 1fr; }
+  footer dd { margin-bottom: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <p class="name">Konrad Waleszczyński</p>
+    <h1><span>Renewable energy data analytics</span></h1>
+    <p class="intro">Analytics for solar, wind and battery assets: performance verification, fault detection, power market analysis and dashboards. Every project below is written from scratch on open data and can be rerun from its repository, with tests and CI.</p>
+    <ul class="stats">
+      <li><b>11</b><span>projects on open data</span></li>
+      <li><b>3</b><span>own verification methods</span></li>
+      <li><b>3</b><span>live interactive pages</span></li>
+    </ul>
+    <div class="actions">
+      <a class="btn primary" href="https://github.com/kwwaleszczynski-del">GitHub profile</a>
+    </div>
+  </header>
+
+  <section aria-labelledby="live-h">
+    <h2 id="live-h">Live pages</h2>
+    <div class="lives"><a class="live" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/"><img src="img/pl-power-market-live.webp" alt="" loading="lazy"><span>Polish power market, live</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-tracker-shading-3d/"><img src="img/pv-tracker-shading-3d.webp" alt="" loading="lazy"><span>Single-axis trackers in 3D</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-wake-shadow/"><img src="img/wind-wake-shadow.webp" alt="" loading="lazy"><span>Wakes and shadow flicker</span></a></div>
+  </section>
+
+  <section aria-labelledby="proj-h">
+    <h2 id="proj-h">Projects</h2>
+    <div class="filters" role="toolbar" aria-label="Filter projects"><button class="chip active" data-filter="all">All</button><button class="chip" data-filter="pv">Solar PV</button><button class="chip" data-filter="wind">Wind</button><button class="chip" data-filter="storage">Storage &amp; markets</button><button class="chip" data-filter="ops">Monitoring</button><button class="chip" data-filter="method">Own methods</button></div>
+    <div class="grid">
+    <article class="card" data-group="storage" data-method="0">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/" tabindex="-1" aria-hidden="true">
+        <img src="img/pl-power-market-live.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-storage">Storage &amp; markets</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/pl-power-market-live">Polish power market, live</a></h3>
+        <p class="summary">Self-updating dashboard of the Polish electricity market built from PSE open data every afternoon: prices, spreads, negative prices, generation mix and battery potential.</p>
+        <p class="highlight">No server and no database: GitHub Actions rebuilds a static page from cached monthly Parquet files.</p>
+        <ul class="tags"><li>PSE API</li><li>GitHub Actions</li><li>Plotly</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pl-power-market-live">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/">Live page &#8599;</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="storage" data-method="0">
+      <a class="thumb" href="https://github.com/kwwaleszczynski-del/bess-arbitrage-pl" tabindex="-1" aria-hidden="true">
+        <img src="img/bess-arbitrage-pl.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-storage">Storage &amp; markets</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/bess-arbitrage-pl">Battery arbitrage on Polish prices</a></h3>
+        <p class="summary">Mixed-integer dispatch of a battery on 15-minute RCE prices, solved for every delivery day, with sensitivity to duration, efficiency and cycle limits.</p>
+        <p class="highlight">859-day backtest: a 2-hour battery earned 308 k PLN per MW in 2025, and negative prices reached 354 hours that year.</p>
+        <ul class="tags"><li>MILP</li><li>HiGHS</li><li>PSE API</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-arbitrage-pl">Code</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="storage" data-method="0">
+      <a class="thumb" href="https://github.com/kwwaleszczynski-del/nem-battery-behaviour" tabindex="-1" aria-hidden="true">
+        <img src="img/nem-battery-behaviour.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-storage">Storage &amp; markets</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/nem-battery-behaviour">How real batteries trade</a></h3>
+        <p class="summary">One year of 5-minute AEMO data for the 40 batteries of 20 MW or more in Australia&#x27;s NEM, compared day by day with perfect-foresight arbitrage.</p>
+        <p class="highlight">The six largest batteries earn 11-51 % of their perfect-foresight optimum; the gap is split into capacity offered, volume and timing.</p>
+        <ul class="tags"><li>AEMO</li><li>MILP</li><li>market data</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/nem-battery-behaviour">Code</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="storage" data-method="1">
+      <a class="thumb" href="https://github.com/kwwaleszczynski-del/bess-soc-soh-degradation" tabindex="-1" aria-hidden="true">
+        <img src="img/bess-soc-soh-degradation.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-storage">Storage &amp; markets</span><span class="badge">Own method</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/bess-soc-soh-degradation">Battery state of charge and ageing</a></h3>
+        <p class="summary">State of charge rebuilt from market data and checked against the operator&#x27;s own SoC, an LFP ageing model fitted to lab cell data, and degradation-aware arbitrage.</p>
+        <p class="highlight">SoC from 5-minute market data tracks the operator&#x27;s SoC within 2.7-3.8 percentage points (RMSE).</p>
+        <ul class="tags"><li>SoC / SoH</li><li>rainflow</li><li>LFP</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-soc-soh-degradation">Code</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="pv" data-method="1">
+      <a class="thumb" href="https://github.com/kwwaleszczynski-del/pv-shade-fingerprint" tabindex="-1" aria-hidden="true">
+        <img src="img/pv-shade-fingerprint.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-pv">Solar PV</span><span class="badge">Own method</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/pv-shade-fingerprint">PV shading from AC power alone</a></h3>
+        <p class="summary">Sun-path residual fingerprinting finds, draws and costs obstructions from 15-minute AC power, without an irradiance sensor, a site visit or a drone.</p>
+        <p class="highlight">A building&#x27;s silhouette recovered with mask IoU 0.93 and 0.8 deg RMSE on simulated systems, then run on two years of a real PVDAQ roof.</p>
+        <ul class="tags"><li>pvlib</li><li>explainable</li><li>NREL PVDAQ</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-shade-fingerprint">Code</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="pv" data-method="0">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/pv-tracker-shading-3d/" tabindex="-1" aria-hidden="true">
+        <img src="img/pv-tracker-shading-3d.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-pv">Solar PV</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/pv-tracker-shading-3d">Single-axis trackers in 3D</a></h3>
+        <p class="summary">Row-to-row shading projected onto module cells with a bypass-diode string model: true tracking vs backtracking vs slope-aware backtracking near Poznań.</p>
+        <p class="highlight">Backtracking gives +4.3 % DC yield over true tracking on flat ground (1255 vs 1204 kWh/kWp).</p>
+        <ul class="tags"><li>3D geometry</li><li>pvlib</li><li>PVGIS</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-tracker-shading-3d">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-tracker-shading-3d/">Live page &#8599;</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="pv" data-method="0">
+      <a class="thumb" href="https://github.com/kwwaleszczynski-del/pv-anomaly-autoencoder" tabindex="-1" aria-hidden="true">
+        <img src="img/pv-anomaly-autoencoder.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-pv">Solar PV</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/pv-anomaly-autoencoder">PV fault detection: autoencoder vs baselines</a></h3>
+        <p class="summary">A PyTorch autoencoder against a PR threshold, an ASTM E2848 regression and a pvlib model, scored per fault type on 20 injected faults and on real PVDAQ data.</p>
+        <p class="highlight">F1 0.77 against 0.37-0.48 for the baselines; on real data it caught an inverter outage reported 10 days late by the inverter itself.</p>
+        <ul class="tags"><li>PyTorch</li><li>anomaly detection</li><li>NREL PVDAQ</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-anomaly-autoencoder">Code</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="wind" data-method="1">
+      <a class="thumb" href="https://github.com/kwwaleszczynski-del/wind-wake-aware-verification" tabindex="-1" aria-hidden="true">
+        <img src="img/wind-wake-aware-verification.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-wind">Wind</span><span class="badge">Own method</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/wind-wake-aware-verification">WARP: wake-aware turbine verification</a></h3>
+        <p class="summary">Expected power from the unwaked neighbours carried through a calibrated wake model, with CUSUM charts for power loss, derating, anemometer bias and yaw misalignment.</p>
+        <p class="highlight">Validated on 288 injected faults: a 4 deg yaw misalignment is found in 100 % of cases (median 6 days), standard references find 6-10 %.</p>
+        <ul class="tags"><li>PyWake</li><li>CUSUM</li><li>SCADA</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-wake-aware-verification">Code</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="wind" data-method="0">
+      <a class="thumb" href="https://github.com/kwwaleszczynski-del/wind-power-curve-kelmarsh" tabindex="-1" aria-hidden="true">
+        <img src="img/wind-power-curve-kelmarsh.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-wind">Wind</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/wind-power-curve-kelmarsh">Wind power curves (IEC 61400-12-1)</a></h3>
+        <p class="summary">Six years of open Kelmarsh SCADA: cleaning with event logs, IEC power curves, underperformance tracking, static yaw misalignment and lost energy.</p>
+        <p class="highlight">Caught a silent change of the SCADA wind speed definition that made the turbines look up to 14 % better than they were.</p>
+        <ul class="tags"><li>IEC 61400-12-1</li><li>SCADA</li><li>AEP</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-power-curve-kelmarsh">Code</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="wind" data-method="0">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/wind-wake-shadow/" tabindex="-1" aria-hidden="true">
+        <img src="img/wind-wake-shadow.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-wind">Wind</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/wind-wake-shadow">Wakes and shadow flicker</a></h3>
+        <p class="summary">Three PyWake wake models on the real Kelmarsh layout checked against SCADA, plus worst-case and expected shadow flicker maps.</p>
+        <p class="highlight">Measured wake loss 9.2 %: Gaussian model 9.7 %, Jensen 11.4 %, TurbOPark 12.1 %.</p>
+        <ul class="tags"><li>PyWake</li><li>shadow flicker</li><li>Plotly</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-wake-shadow">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/wind-wake-shadow/">Live page &#8599;</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="ops" data-method="0">
+      <a class="thumb" href="https://github.com/kwwaleszczynski-del/grafana-fleet-as-code" tabindex="-1" aria-hidden="true">
+        <img src="img/grafana-fleet-as-code.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-ops">Monitoring</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/grafana-fleet-as-code">Fleet monitoring as code</a></h3>
+        <p class="summary">Grafana dashboards, alert rules and datasource generated from Python, fed by a live replay of public wind and PV SCADA into InfluxDB 2.</p>
+        <p class="highlight">Alerts fire on real faults, including a PV inverter that stopped producing ten days before it reported an error code.</p>
+        <ul class="tags"><li>Grafana</li><li>InfluxDB / Flux</li><li>alerting</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/grafana-fleet-as-code">Code</a></div>
+      </div>
+    </article>
+    </div>
+  </section>
+
+  <footer>
+    <dl>
+      <dt>Stack</dt><dd>Python · pandas · SciPy / HiGHS MILP · pvlib · PyWake · PyTorch · Plotly · Grafana · InfluxDB 2 / Flux · GitHub Actions · pytest</dd>
+      <dt>Open data</dt><dd>PSE (Polish TSO) open API · AEMO NEM · NREL PVDAQ · Kelmarsh wind farm SCADA (Cubico, CC BY 4.0) · PVGIS · Met Office sunshine records · Zenodo LFP cell ageing data</dd>
+    </dl>
+    <p>All projects are personal work on public datasets, credited in each repository. Updated 21 Oct 2026.</p>
+  </footer>
+</div>
+<script>
+document.querySelectorAll(".chip").forEach(function (chip) {
+  chip.addEventListener("click", function () {
+    var f = chip.dataset.filter;
+    document.querySelectorAll(".chip").forEach(function (c) { c.classList.toggle("active", c === chip); });
+    document.querySelectorAll(".card").forEach(function (card) {
+      card.hidden = !(f === "all" || card.dataset.group === f || (f === "method" && card.dataset.method === "1"));
+    });
+  });
+});
+</script>
+</body>
+</html>
