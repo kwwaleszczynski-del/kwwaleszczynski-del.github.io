@@ -7,13 +7,45 @@
     "links": []
   },
   "groups": [
-    {"id": "pv", "label": "Solar PV"},
-    {"id": "wind", "label": "Wind"},
-    {"id": "storage", "label": "Storage & markets"},
-    {"id": "ops", "label": "Monitoring"}
+    {
+      "id": "pv",
+      "label": "Solar PV"
+    },
+    {
+      "id": "wind",
+      "label": "Wind"
+    },
+    {
+      "id": "storage",
+      "label": "Storage & markets"
+    },
+    {
+      "id": "ops",
+      "label": "Monitoring"
+    }
   ],
-  "stack": ["Python", "pandas", "SciPy / HiGHS MILP", "pvlib", "PyWake", "PyTorch", "Plotly", "Grafana", "InfluxDB 2 / Flux", "GitHub Actions", "pytest"],
-  "data_sources": ["PSE (Polish TSO) open API", "AEMO NEM", "NREL PVDAQ", "Kelmarsh wind farm SCADA (Cubico, CC BY 4.0)", "PVGIS", "Met Office sunshine records", "Zenodo LFP cell ageing data"],
+  "stack": [
+    "Python",
+    "pandas",
+    "SciPy / HiGHS MILP",
+    "pvlib",
+    "PyWake",
+    "PyTorch",
+    "Plotly",
+    "Grafana",
+    "InfluxDB 2 / Flux",
+    "GitHub Actions",
+    "pytest"
+  ],
+  "data_sources": [
+    "PSE (Polish TSO) open API",
+    "AEMO NEM",
+    "NREL PVDAQ",
+    "Kelmarsh wind farm SCADA (Cubico, CC BY 4.0)",
+    "PVGIS",
+    "Met Office sunshine records",
+    "Zenodo LFP cell ageing data"
+  ],
   "projects": [
     {
       "repo": "pl-power-market-live",
@@ -23,7 +55,25 @@
       "highlight": "No server and no database: GitHub Actions rebuilds a static page from cached monthly Parquet files.",
       "image": "docs/img/overview.png",
       "demo": "https://kwwaleszczynski-del.github.io/pl-power-market-live/",
-      "tags": ["PSE API", "GitHub Actions", "Plotly"]
+      "tags": [
+        "PSE API",
+        "GitHub Actions",
+        "Plotly"
+      ]
+    },
+    {
+      "repo": "pl-capture-price",
+      "title": "How solar eats its own price in Poland",
+      "group": "storage",
+      "summary": "Capture prices and value factors of PV and wind from 15-minute PSE data since June 2024, negative prices, the Polish duck curve and a PV build-out scenario with a hindcast.",
+      "highlight": "In 2025 PV captured 64 % of the average price and wind 94 %; every 10 pp of PV share costs PV about 0.20 of value factor.",
+      "image": "docs/img/monthly_capture.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-capture-price/",
+      "tags": [
+        "PSE API",
+        "capture rate",
+        "GitHub Actions"
+      ]
     },
     {
       "repo": "bess-arbitrage-pl",
@@ -32,7 +82,11 @@
       "summary": "Mixed-integer dispatch of a battery on 15-minute RCE prices, solved for every delivery day, with sensitivity to duration, efficiency and cycle limits.",
       "highlight": "859-day backtest: a 2-hour battery earned 308 k PLN per MW in 2025, and negative prices reached 354 hours that year.",
       "image": "docs/img/monthly_revenue.png",
-      "tags": ["MILP", "HiGHS", "PSE API"]
+      "tags": [
+        "MILP",
+        "HiGHS",
+        "PSE API"
+      ]
     },
     {
       "repo": "nem-battery-behaviour",
@@ -41,7 +95,11 @@
       "summary": "One year of 5-minute AEMO data for the 40 batteries of 20 MW or more in Australia's NEM, compared day by day with perfect-foresight arbitrage.",
       "highlight": "The six largest batteries earn 11-51 % of their perfect-foresight optimum; the gap is split into capacity offered, volume and timing.",
       "image": "docs/img/capture.png",
-      "tags": ["AEMO", "MILP", "market data"]
+      "tags": [
+        "AEMO",
+        "MILP",
+        "market data"
+      ]
     },
     {
       "repo": "bess-soc-soh-degradation",
@@ -51,7 +109,11 @@
       "summary": "State of charge rebuilt from market data and checked against the operator's own SoC, an LFP ageing model fitted to lab cell data, and degradation-aware arbitrage.",
       "highlight": "SoC from 5-minute market data tracks the operator's SoC within 2.7-3.8 percentage points (RMSE).",
       "image": "docs/img/soc_week.png",
-      "tags": ["SoC / SoH", "rainflow", "LFP"]
+      "tags": [
+        "SoC / SoH",
+        "rainflow",
+        "LFP"
+      ]
     },
     {
       "repo": "pv-shade-fingerprint",
@@ -61,7 +123,11 @@
       "summary": "Sun-path residual fingerprinting finds, draws and costs obstructions from 15-minute AC power, without an irradiance sensor, a site visit or a drone.",
       "highlight": "A building's silhouette recovered with mask IoU 0.93 and 0.8 deg RMSE on simulated systems, then run on two years of a real PVDAQ roof.",
       "image": "docs/img/sunpath_synthetic.png",
-      "tags": ["pvlib", "explainable", "NREL PVDAQ"]
+      "tags": [
+        "pvlib",
+        "explainable",
+        "NREL PVDAQ"
+      ]
     },
     {
       "repo": "pv-tracker-shading-3d",
@@ -72,7 +138,11 @@
       "image": "docs/img/tracker_day.gif",
       "frame": 0.12,
       "demo": "https://kwwaleszczynski-del.github.io/pv-tracker-shading-3d/",
-      "tags": ["3D geometry", "pvlib", "PVGIS"]
+      "tags": [
+        "3D geometry",
+        "pvlib",
+        "PVGIS"
+      ]
     },
     {
       "repo": "pv-anomaly-autoencoder",
@@ -81,7 +151,11 @@
       "summary": "A PyTorch autoencoder against a PR threshold, an ASTM E2848 regression and a pvlib model, scored per fault type on 20 injected faults and on real PVDAQ data.",
       "highlight": "F1 0.77 against 0.37-0.48 for the baselines; on real data it caught an inverter outage reported 10 days late by the inverter itself.",
       "image": "docs/img/f1_by_fault.png",
-      "tags": ["PyTorch", "anomaly detection", "NREL PVDAQ"]
+      "tags": [
+        "PyTorch",
+        "anomaly detection",
+        "NREL PVDAQ"
+      ]
     },
     {
       "repo": "wind-wake-aware-verification",
@@ -91,7 +165,11 @@
       "summary": "Expected power from the unwaked neighbours carried through a calibrated wake model, with CUSUM charts for power loss, derating, anemometer bias and yaw misalignment.",
       "highlight": "Validated on 288 injected faults: a 4 deg yaw misalignment is found in 100 % of cases (median 6 days), standard references find 6-10 %.",
       "image": "docs/img/wake_validation.png",
-      "tags": ["PyWake", "CUSUM", "SCADA"]
+      "tags": [
+        "PyWake",
+        "CUSUM",
+        "SCADA"
+      ]
     },
     {
       "repo": "wind-power-curve-kelmarsh",
@@ -100,7 +178,11 @@
       "summary": "Six years of open Kelmarsh SCADA: cleaning with event logs, IEC power curves, underperformance tracking, static yaw misalignment and lost energy.",
       "highlight": "Caught a silent change of the SCADA wind speed definition that made the turbines look up to 14 % better than they were.",
       "image": "docs/img/power_curves.png",
-      "tags": ["IEC 61400-12-1", "SCADA", "AEP"]
+      "tags": [
+        "IEC 61400-12-1",
+        "SCADA",
+        "AEP"
+      ]
     },
     {
       "repo": "wind-wake-shadow",
@@ -110,7 +192,11 @@
       "highlight": "Measured wake loss 9.2 %: Gaussian model 9.7 %, Jensen 11.4 %, TurbOPark 12.1 %.",
       "image": "docs/img/flow_animation.gif",
       "demo": "https://kwwaleszczynski-del.github.io/wind-wake-shadow/",
-      "tags": ["PyWake", "shadow flicker", "Plotly"]
+      "tags": [
+        "PyWake",
+        "shadow flicker",
+        "Plotly"
+      ]
     },
     {
       "repo": "grafana-fleet-as-code",
@@ -119,7 +205,11 @@
       "summary": "Grafana dashboards, alert rules and datasource generated from Python, fed by a live replay of public wind and PV SCADA into InfluxDB 2.",
       "highlight": "Alerts fire on real faults, including a PV inverter that stopped producing ten days before it reported an error code.",
       "image": "docs/img/fleet-overview.png",
-      "tags": ["Grafana", "InfluxDB / Flux", "alerting"]
+      "tags": [
+        "Grafana",
+        "InfluxDB / Flux",
+        "alerting"
+      ]
     }
   ]
 }
