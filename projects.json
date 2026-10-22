@@ -4,7 +4,16 @@
     "github": "kwwaleszczynski-del",
     "headline": "Renewable energy data analytics",
     "intro": "Analytics for solar, wind and battery assets: performance verification, fault detection, power market analysis and dashboards. Every project below is written from scratch on open data and can be rerun from its repository, with tests and CI.",
-    "links": []
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/in/kw00"
+      },
+      {
+        "label": "energoanaliza@gmail.com",
+        "url": "mailto:energoanaliza@gmail.com"
+      }
+    ]
   },
   "groups": [
     {
