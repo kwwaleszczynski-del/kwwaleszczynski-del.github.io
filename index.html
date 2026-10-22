@@ -96,9 +96,9 @@ footer dd { margin: 0; }
     <h1><span>Renewable energy data analytics</span></h1>
     <p class="intro">Analytics for solar, wind and battery assets: performance verification, fault detection, power market analysis and dashboards. Every project below is written from scratch on open data and can be rerun from its repository, with tests and CI.</p>
     <ul class="stats">
-      <li><b>13</b><span>projects on open data</span></li>
+      <li><b>16</b><span>projects on open data</span></li>
       <li><b>3</b><span>own verification methods</span></li>
-      <li><b>5</b><span>live interactive pages</span></li>
+      <li><b>8</b><span>live interactive pages</span></li>
     </ul>
     <div class="actions">
       <a class="btn primary" href="https://github.com/kwwaleszczynski-del">GitHub profile</a>
@@ -107,12 +107,12 @@ footer dd { margin: 0; }
 
   <section aria-labelledby="live-h">
     <h2 id="live-h">Live pages</h2>
-    <div class="lives"><a class="live" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/"><img src="img/pl-power-market-live.webp" alt="" loading="lazy"><span>Polish power market, live</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-capture-price/"><img src="img/pl-capture-price.webp" alt="" loading="lazy"><span>How solar eats its own price in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/cable-pooling-sizer/"><img src="img/cable-pooling-sizer.webp" alt="" loading="lazy"><span>Cable pooling: PV, wind and storage behind one connection</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-tracker-shading-3d/"><img src="img/pv-tracker-shading-3d.webp" alt="" loading="lazy"><span>Single-axis trackers in 3D</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-wake-shadow/"><img src="img/wind-wake-shadow.webp" alt="" loading="lazy"><span>Wakes and shadow flicker</span></a></div>
+    <div class="lives"><a class="live" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/"><img src="img/pl-power-market-live.webp" alt="" loading="lazy"><span>Polish power market, live</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-capture-price/"><img src="img/pl-capture-price.webp" alt="" loading="lazy"><span>How solar eats its own price in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/cable-pooling-sizer/"><img src="img/cable-pooling-sizer.webp" alt="" loading="lazy"><span>Cable pooling: PV, wind and storage behind one connection</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-tracker-shading-3d/"><img src="img/pv-tracker-shading-3d.webp" alt="" loading="lazy"><span>Single-axis trackers in 3D</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-wake-shadow/"><img src="img/wind-wake-shadow.webp" alt="" loading="lazy"><span>Wakes and shadow flicker</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-res-reliability-markov/"><img src="img/pl-res-reliability-markov.webp" alt="" loading="lazy"><span>Capacity credit of wind and PV in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-flexibility-ramps/"><img src="img/pl-flexibility-ramps.webp" alt="" loading="lazy"><span>Ramps and flexibility needs of the Polish grid</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/era5-check-pl/"><img src="img/era5-check-pl.webp" alt="" loading="lazy"><span>How good is ERA5 in Poland?</span></a></div>
   </section>
 
   <section aria-labelledby="proj-h">
     <h2 id="proj-h">Projects</h2>
-    <div class="filters" role="toolbar" aria-label="Filter projects"><button class="chip active" data-filter="all">All</button><button class="chip" data-filter="pv">Solar PV</button><button class="chip" data-filter="wind">Wind</button><button class="chip" data-filter="storage">Storage &amp; markets</button><button class="chip" data-filter="ops">Monitoring</button><button class="chip" data-filter="method">Own methods</button></div>
+    <div class="filters" role="toolbar" aria-label="Filter projects"><button class="chip active" data-filter="all">All</button><button class="chip" data-filter="pv">Solar PV</button><button class="chip" data-filter="wind">Wind</button><button class="chip" data-filter="storage">Storage &amp; markets</button><button class="chip" data-filter="system">Power system &amp; resource</button><button class="chip" data-filter="ops">Monitoring</button><button class="chip" data-filter="method">Own methods</button></div>
     <div class="grid">
     <article class="card" data-group="storage" data-method="0">
       <a class="thumb" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/" tabindex="-1" aria-hidden="true">
@@ -283,15 +283,54 @@ footer dd { margin: 0; }
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/grafana-fleet-as-code">Code</a></div>
       </div>
     </article>
+    <article class="card" data-group="system" data-method="0">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/pl-res-reliability-markov/" tabindex="-1" aria-hidden="true">
+        <img src="img/pl-res-reliability-markov.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-system">Power system &amp; resource</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/pl-res-reliability-markov">Capacity credit of wind and PV in Poland</a></h3>
+        <p class="summary">Multi-state Markov models of wind and PV from ERA5 at 29 points, sequential Monte Carlo LOLE/EENS on IEEE RTS-79 and real PSE demand, and an ELCC map of Poland: the method of the author&#x27;s MSc thesis rebuilt on open data.</p>
+        <p class="highlight">Reproduces the IEEE RTS-79 reference LOLE exactly; wind ELCC about 26.5 % and PV about 10 %, compared with capacity market derating factors.</p>
+        <ul class="tags"><li>Markov chains</li><li>Monte Carlo</li><li>ELCC</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pl-res-reliability-markov">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pl-res-reliability-markov/">Live page &#8599;</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="system" data-method="0">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/pl-flexibility-ramps/" tabindex="-1" aria-hidden="true">
+        <img src="img/pl-flexibility-ramps.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-system">Power system &amp; resource</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/pl-flexibility-ramps">Ramps and flexibility needs of the Polish grid</a></h3>
+        <p class="summary">Residual load from PSE data since 2020: ramp distributions, the evening ramp after sunset, midday minima, the IRRE flexibility metric and battery needs with +20 % and +50 % PV.</p>
+        <p class="highlight">The evening ramp grew from 1.5 to 4.3 GW between 2021 and 2025; the P99 hourly ramp is 3.2 GW, against 4.6 GW PSE expects for 2030.</p>
+        <ul class="tags"><li>PSE API</li><li>IRRE</li><li>storage sizing</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pl-flexibility-ramps">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pl-flexibility-ramps/">Live page &#8599;</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="system" data-method="0">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/era5-check-pl/" tabindex="-1" aria-hidden="true">
+        <img src="img/era5-check-pl.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-system">Power system &amp; resource</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/era5-check-pl">How good is ERA5 in Poland?</a></h3>
+        <p class="summary">ERA5 and CERRA reanalyses checked against 19 IMGW-PIB synoptic stations and Kelmarsh hub-height wind: bias by season and hour, the error in energy, and long-term (MCP) correction.</p>
+        <p class="highlight">ERA5 overstates 10 m wind by 8 % (median), about 15 % in wind energy; the matrix MCP method cuts the energy error from 41 % to 5 %.</p>
+        <ul class="tags"><li>ERA5 / CERRA</li><li>IMGW-PIB</li><li>MCP</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/era5-check-pl">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/era5-check-pl/">Live page &#8599;</a></div>
+      </div>
+    </article>
     </div>
   </section>
 
   <footer>
     <dl>
       <dt>Stack</dt><dd>Python · pandas · SciPy / HiGHS MILP · pvlib · PyWake · PyTorch · Plotly · Grafana · InfluxDB 2 / Flux · GitHub Actions · pytest</dd>
-      <dt>Open data</dt><dd>PSE (Polish TSO) open API · AEMO NEM · NREL PVDAQ · Kelmarsh wind farm SCADA (Cubico, CC BY 4.0) · PVGIS · Open-Meteo / ERA5 · Met Office sunshine records · Zenodo LFP cell ageing data</dd>
+      <dt>Open data</dt><dd>PSE (Polish TSO) open API · AEMO NEM · NREL PVDAQ · Kelmarsh wind farm SCADA (Cubico, CC BY 4.0) · PVGIS · Open-Meteo / ERA5 · Met Office sunshine records · Zenodo LFP cell ageing data · IMGW-PIB synoptic stations · CERRA (Copernicus) · IEEE RTS-79</dd>
     </dl>
-    <p>All projects are personal work on public datasets, credited in each repository. Updated 21 Oct 2026.</p>
+    <p>All projects are personal work on public datasets, credited in each repository. Updated 22 Oct 2026.</p>
   </footer>
 </div>
 <script>

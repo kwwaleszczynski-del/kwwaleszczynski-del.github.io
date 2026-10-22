@@ -20,6 +20,10 @@
       "label": "Storage & markets"
     },
     {
+      "id": "system",
+      "label": "Power system & resource"
+    },
+    {
       "id": "ops",
       "label": "Monitoring"
     }
@@ -45,7 +49,10 @@
     "PVGIS",
     "Open-Meteo / ERA5",
     "Met Office sunshine records",
-    "Zenodo LFP cell ageing data"
+    "Zenodo LFP cell ageing data",
+    "IMGW-PIB synoptic stations",
+    "CERRA (Copernicus)",
+    "IEEE RTS-79"
   ],
   "projects": [
     {
@@ -224,6 +231,48 @@
         "Grafana",
         "InfluxDB / Flux",
         "alerting"
+      ]
+    },
+    {
+      "repo": "pl-res-reliability-markov",
+      "title": "Capacity credit of wind and PV in Poland",
+      "group": "system",
+      "summary": "Multi-state Markov models of wind and PV from ERA5 at 29 points, sequential Monte Carlo LOLE/EENS on IEEE RTS-79 and real PSE demand, and an ELCC map of Poland: the method of the author's MSc thesis rebuilt on open data.",
+      "highlight": "Reproduces the IEEE RTS-79 reference LOLE exactly; wind ELCC about 26.5 % and PV about 10 %, compared with capacity market derating factors.",
+      "image": "docs/img/transition_matrices.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-res-reliability-markov/",
+      "tags": [
+        "Markov chains",
+        "Monte Carlo",
+        "ELCC"
+      ]
+    },
+    {
+      "repo": "pl-flexibility-ramps",
+      "title": "Ramps and flexibility needs of the Polish grid",
+      "group": "system",
+      "summary": "Residual load from PSE data since 2020: ramp distributions, the evening ramp after sunset, midday minima, the IRRE flexibility metric and battery needs with +20 % and +50 % PV.",
+      "highlight": "The evening ramp grew from 1.5 to 4.3 GW between 2021 and 2025; the P99 hourly ramp is 3.2 GW, against 4.6 GW PSE expects for 2030.",
+      "image": "docs/img/duck_curve.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-flexibility-ramps/",
+      "tags": [
+        "PSE API",
+        "IRRE",
+        "storage sizing"
+      ]
+    },
+    {
+      "repo": "era5-check-pl",
+      "title": "How good is ERA5 in Poland?",
+      "group": "system",
+      "summary": "ERA5 and CERRA reanalyses checked against 19 IMGW-PIB synoptic stations and Kelmarsh hub-height wind: bias by season and hour, the error in energy, and long-term (MCP) correction.",
+      "highlight": "ERA5 overstates 10 m wind by 8 % (median), about 15 % in wind energy; the matrix MCP method cuts the energy error from 41 % to 5 %.",
+      "image": "docs/img/bias_map.png",
+      "demo": "https://kwwaleszczynski-del.github.io/era5-check-pl/",
+      "tags": [
+        "ERA5 / CERRA",
+        "IMGW-PIB",
+        "MCP"
       ]
     }
   ]
