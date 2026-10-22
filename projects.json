@@ -61,7 +61,8 @@
     "Zenodo LFP cell ageing data",
     "IMGW-PIB synoptic stations",
     "CERRA (Copernicus)",
-    "IEEE RTS-79"
+    "IEEE RTS-79",
+    "CARE to Compare benchmark (CC BY-SA 4.0)"
   ],
   "projects": [
     {
@@ -102,6 +103,20 @@
       "tags": [
         "MILP",
         "HiGHS",
+        "PSE API"
+      ]
+    },
+    {
+      "repo": "pl-bess-revenue-stack",
+      "title": "Battery revenue stacking in Poland",
+      "group": "storage",
+      "summary": "Day-ahead arbitrage co-optimised with balancing capacity (FCR, aFRR, mFRR, RR) on PSE data since June 2024, a capacity market layer, and how much battery capacity the shallow reserve markets can absorb, from the published offer stacks.",
+      "highlight": "Over the last 12 months a 2-hour battery could stack about 3.3 m PLN/MW against 0.38 m from arbitrage alone, but a fleet of 1 GW cuts that by about 70 %.",
+      "image": "docs/img/revenue_stack.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-bess-revenue-stack/",
+      "tags": [
+        "MILP",
+        "balancing reserves",
         "PSE API"
       ]
     },
@@ -242,6 +257,20 @@
         "PyWake",
         "CUSUM",
         "SCADA"
+      ]
+    },
+    {
+      "repo": "wind-thermal-nbm",
+      "title": "Drivetrain temperatures: early fault detection",
+      "group": "wind",
+      "summary": "Normal behaviour models of nine drivetrain temperatures on Kelmarsh SCADA: a physical RC thermal model, gradient boosting and a fleet reference, validated on 8,100 injected faults, real logged events and the CARE to Compare benchmark.",
+      "highlight": "A +5 °C drift is caught in 97-99 % of cases within about 20 days by every method; on CARE the temperature-only models are precise but miss faults no thermometer can see.",
+      "image": "docs/img/fit_example.png",
+      "demo": "https://kwwaleszczynski-del.github.io/wind-thermal-nbm/",
+      "tags": [
+        "SCADA",
+        "thermal model",
+        "CUSUM"
       ]
     },
     {
