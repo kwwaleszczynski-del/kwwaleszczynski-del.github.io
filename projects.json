@@ -161,6 +161,20 @@
       ]
     },
     {
+      "repo": "bess-capacity-augmentation",
+      "title": "Battery ageing vs capacity market obligation",
+      "group": "storage",
+      "summary": "LFP ageing under real RCE arbitrage and capped-cycling profiles against a 17-year Polish capacity market contract: when the battery falls short, and overbuild, augmentation or module replacement compared in NPV and risk.",
+      "highlight": "Built to nominal energy, a battery misses its obligation in year one; +20 % headroom lasts 7-10 years, and full arbitrage leaves 62-68 % SoH after 17 years.",
+      "image": "docs/img/strategy_energy.png",
+      "demo": "https://kwwaleszczynski-del.github.io/bess-capacity-augmentation/",
+      "tags": [
+        "battery ageing",
+        "capacity market",
+        "optimisation"
+      ]
+    },
+    {
       "repo": "pv-shade-fingerprint",
       "title": "PV shading from AC power alone",
       "group": "pv",
@@ -199,6 +213,20 @@
       "tags": [
         "PyTorch",
         "anomaly detection",
+        "NREL PVDAQ"
+      ]
+    },
+    {
+      "repo": "pv-thermal-check",
+      "title": "PV thermal check: modules, inverter, transformer",
+      "group": "pv",
+      "summary": "Module temperature models (Faiman, SAPM, PVsyst, Ross) fitted on PVDAQ data with cell temperature recovered from open-circuit voltage, temperature-corrected PR, sensor-fault detection, inverter and transformer thermal checks, and losses moved to Poland.",
+      "highlight": "The back-of-module sensor saw only about half of the real heating: thermal losses are 10.5 % a year, not 6.7 %; temperature-corrected PR cuts the seasonal spread from 13.1 to 4.8 pp.",
+      "image": "docs/img/voc_thermometry.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pv-thermal-check/",
+      "tags": [
+        "pvlib",
+        "IEC 61724-1",
         "NREL PVDAQ"
       ]
     },
