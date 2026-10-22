@@ -96,9 +96,9 @@ footer dd { margin: 0; }
     <h1><span>Renewable energy data analytics</span></h1>
     <p class="intro">Analytics for solar, wind and battery assets: performance verification, fault detection, power market analysis and dashboards. Every project below is written from scratch on open data and can be rerun from its repository, with tests and CI.</p>
     <ul class="stats">
-      <li><b>16</b><span>projects on open data</span></li>
+      <li><b>17</b><span>projects on open data</span></li>
       <li><b>3</b><span>own verification methods</span></li>
-      <li><b>8</b><span>live interactive pages</span></li>
+      <li><b>9</b><span>live interactive pages</span></li>
     </ul>
     <div class="actions">
       <a class="btn primary" href="https://github.com/kwwaleszczynski-del">GitHub profile</a>
@@ -107,7 +107,7 @@ footer dd { margin: 0; }
 
   <section aria-labelledby="live-h">
     <h2 id="live-h">Live pages</h2>
-    <div class="lives"><a class="live" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/"><img src="img/pl-power-market-live.webp" alt="" loading="lazy"><span>Polish power market, live</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-capture-price/"><img src="img/pl-capture-price.webp" alt="" loading="lazy"><span>How solar eats its own price in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/cable-pooling-sizer/"><img src="img/cable-pooling-sizer.webp" alt="" loading="lazy"><span>Cable pooling: PV, wind and storage behind one connection</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-tracker-shading-3d/"><img src="img/pv-tracker-shading-3d.webp" alt="" loading="lazy"><span>Single-axis trackers in 3D</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-wake-shadow/"><img src="img/wind-wake-shadow.webp" alt="" loading="lazy"><span>Wakes and shadow flicker</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-res-reliability-markov/"><img src="img/pl-res-reliability-markov.webp" alt="" loading="lazy"><span>Capacity credit of wind and PV in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-flexibility-ramps/"><img src="img/pl-flexibility-ramps.webp" alt="" loading="lazy"><span>Ramps and flexibility needs of the Polish grid</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/era5-check-pl/"><img src="img/era5-check-pl.webp" alt="" loading="lazy"><span>How good is ERA5 in Poland?</span></a></div>
+    <div class="lives"><a class="live" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/"><img src="img/pl-power-market-live.webp" alt="" loading="lazy"><span>Polish power market, live</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-capture-price/"><img src="img/pl-capture-price.webp" alt="" loading="lazy"><span>How solar eats its own price in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-bess-saturation/"><img src="img/pl-bess-saturation.webp" alt="" loading="lazy"><span>When batteries flatten their own spreads</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/cable-pooling-sizer/"><img src="img/cable-pooling-sizer.webp" alt="" loading="lazy"><span>Cable pooling: PV, wind and storage behind one connection</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-tracker-shading-3d/"><img src="img/pv-tracker-shading-3d.webp" alt="" loading="lazy"><span>Single-axis trackers in 3D</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-wake-shadow/"><img src="img/wind-wake-shadow.webp" alt="" loading="lazy"><span>Wakes and shadow flicker</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-res-reliability-markov/"><img src="img/pl-res-reliability-markov.webp" alt="" loading="lazy"><span>Capacity credit of wind and PV in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-flexibility-ramps/"><img src="img/pl-flexibility-ramps.webp" alt="" loading="lazy"><span>Ramps and flexibility needs of the Polish grid</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/era5-check-pl/"><img src="img/era5-check-pl.webp" alt="" loading="lazy"><span>How good is ERA5 in Poland?</span></a></div>
   </section>
 
   <section aria-labelledby="proj-h">
@@ -151,6 +151,19 @@ footer dd { margin: 0; }
         <p class="highlight">859-day backtest: a 2-hour battery earned 308 k PLN per MW in 2025, and negative prices reached 354 hours that year.</p>
         <ul class="tags"><li>MILP</li><li>HiGHS</li><li>PSE API</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-arbitrage-pl">Code</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="storage" data-method="0">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/pl-bess-saturation/" tabindex="-1" aria-hidden="true">
+        <img src="img/pl-bess-saturation.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-storage">Storage &amp; markets</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/pl-bess-saturation">When batteries flatten their own spreads</a></h3>
+        <p class="summary">A 0-10 GW battery fleet dispatched against an empirical Polish supply curve from PSE data: how spreads, revenue per MW, negative-price hours and the evening peak change as storage grows.</p>
+        <p class="highlight">At 2025 prices a 2-hour battery earns 308 k PLN/MW alone, 203 k at 2 GW of fleet and 72 k at 10 GW; the marginal value of the fleet turns negative near 10 GW.</p>
+        <ul class="tags"><li>PSE API</li><li>merit order</li><li>linear programming</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pl-bess-saturation">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pl-bess-saturation/">Live page &#8599;</a></div>
       </div>
     </article>
     <article class="card" data-group="storage" data-method="0">

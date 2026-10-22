@@ -97,6 +97,20 @@
       ]
     },
     {
+      "repo": "pl-bess-saturation",
+      "title": "When batteries flatten their own spreads",
+      "group": "storage",
+      "summary": "A 0-10 GW battery fleet dispatched against an empirical Polish supply curve from PSE data: how spreads, revenue per MW, negative-price hours and the evening peak change as storage grows.",
+      "highlight": "At 2025 prices a 2-hour battery earns 308 k PLN/MW alone, 203 k at 2 GW of fleet and 72 k at 10 GW; the marginal value of the fleet turns negative near 10 GW.",
+      "image": "docs/img/revenue.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-bess-saturation/",
+      "tags": [
+        "PSE API",
+        "merit order",
+        "linear programming"
+      ]
+    },
+    {
       "repo": "cable-pooling-sizer",
       "title": "Cable pooling: PV, wind and storage behind one connection",
       "group": "storage",
