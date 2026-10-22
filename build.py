@@ -244,8 +244,9 @@ def build_profile(cfg: dict) -> str:
     repo = lambda p: f"https://github.com/{user}/{p['repo']}"  # noqa: E731
     live = " · ".join(f"[{p['title']}]({p['demo']})" for p in projects if p.get("demo"))
     methods = " · ".join(f"[{p['title']}]({repo(p)})" for p in projects if p.get("method"))
-    out = [f"### {owner['headline']}", "", owner["intro"], "",
-           f"**Portfolio:** [{site.removeprefix('https://').rstrip('/')}]({site})  ",
+    contact = " · ".join([f"[**Interactive Portfolio**]({site})"]
+                         + [f"[**{l['label']}**]({l['url']})" for l in owner.get("links", [])])
+    out = [f"### {owner['headline']}", "", contact, "", owner["intro"], "",
            f"**Live pages:** {live}  ",
            f"**Own verification methods:** {methods}", ""]
     for gid, label in groups.items():
