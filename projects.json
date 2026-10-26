@@ -127,6 +127,20 @@
       ]
     },
     {
+      "repo": "pl-bess-paper-trading",
+      "title": "Battery paper trading, live track record",
+      "group": "storage",
+      "summary": "Every morning before the day-ahead gate closure a forecast of tomorrow's prices and an optimal 1 MW / 2 MWh battery plan; the next day it is settled on real prices and appended to a ledger that is never recomputed.",
+      "highlight": "Backtest since June 2024: forecast + MILP earns 83 % of perfect foresight (324 k PLN/MW/yr), but a plain 7-day price average does as well; live record from 28 Oct 2026.",
+      "image": "docs/img/backtest_cumulative.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-bess-paper-trading/",
+      "tags": [
+        "quantile forecast",
+        "MILP",
+        "GitHub Actions"
+      ]
+    },
+    {
       "repo": "pl-bess-saturation",
       "title": "When batteries flatten their own spreads",
       "group": "storage",
@@ -337,7 +351,7 @@
       "repo": "pl-res-reliability-markov",
       "title": "Capacity credit of wind and PV in Poland",
       "group": "system",
-      "summary": "Multi-state Markov models of wind and PV from ERA5 at 29 points, sequential Monte Carlo LOLE/EENS on IEEE RTS-79 and real PSE demand, and an ELCC map of Poland: the method of the author's MSc thesis rebuilt on open data.",
+      "summary": "Multi-state Markov models of wind and PV from ERA5 at 29 points, sequential Monte Carlo LOLE/EENS on IEEE RTS-79 and real PSE demand, and an ELCC map of Poland: the method of the author's MSc thesis rebuilt on open data, extended with battery ELCC and multi-day lulls from a regime-switching weather model.",
       "highlight": "Reproduces the IEEE RTS-79 reference LOLE exactly; wind ELCC about 26.5 % and PV about 10 %, compared with capacity market derating factors.",
       "image": "docs/img/transition_matrices.png",
       "demo": "https://kwwaleszczynski-del.github.io/pl-res-reliability-markov/",
@@ -359,6 +373,20 @@
         "PSE API",
         "IRRE",
         "storage sizing"
+      ]
+    },
+    {
+      "repo": "pl-res-curtailment",
+      "title": "PV and wind curtailed by the Polish TSO",
+      "group": "system",
+      "summary": "Non-market redispatch of PV and wind by PSE from the reports API and parsed system announcements since late 2023: volumes, drivers, overlap with negative prices and the value of curtailed energy under the published compensation formula.",
+      "highlight": "1.8 TWh curtailed in 2026 to 25 Oct, 50 % more than a year earlier; 98 % for balancing reasons and most of it at positive prices.",
+      "image": "docs/img/monthly_volumes.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-res-curtailment/",
+      "tags": [
+        "PSE API",
+        "redispatch",
+        "curtailment"
       ]
     },
     {
