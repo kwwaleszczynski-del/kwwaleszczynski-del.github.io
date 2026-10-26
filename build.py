@@ -55,6 +55,16 @@ def e(text: str) -> str:
     return html.escape(text, quote=True)
 
 
+def thumb_src(p: dict) -> str:
+    """Live preview published by the project itself if it has one, else the thumbnail built here."""
+    return e(p.get("thumb_url") or f"img/{p['repo']}.webp")
+
+
+def thumb_fallback(p: dict) -> str:
+    # if the live preview is missing, fall back to the copy built from the project's figure
+    return f" onerror=\"this.onerror=null;this.src='img/{p['repo']}.webp'\"" if p.get("thumb_url") else ""
+
+
 def card(p: dict, user: str, groups: dict) -> str:
     repo_url = f"https://github.com/{user}/{p['repo']}"
     links = [f'<a class="btn" href="{repo_url}">Code</a>']
@@ -65,7 +75,7 @@ def card(p: dict, user: str, groups: dict) -> str:
     return f"""
     <article class="card" data-group="{p['group']}" data-method="{'1' if p.get('method') else '0'}">
       <a class="thumb" href="{e(p.get('demo') or repo_url)}" tabindex="-1" aria-hidden="true">
-        <img src="img/{p['repo']}.webp" alt="" loading="lazy" width="{THUMB[0]}" height="{THUMB[1]}">
+        <img src="{thumb_src(p)}" alt="" loading="lazy" width="{THUMB[0]}" height="{THUMB[1]}"{thumb_fallback(p)}>
       </a>
       <div class="body">
         <div class="meta"><span class="group g-{p['group']}">{e(groups[p['group']])}</span>{badge}</div>
@@ -88,7 +98,7 @@ def build_site(cfg: dict) -> str:
     chips += [f'<button class="chip" data-filter="{gid}">{e(label)}</button>' for gid, label in groups.items()]
     chips.append('<button class="chip" data-filter="method">Own methods</button>')
     live = "".join(
-        f'<a class="live" href="{e(p["demo"])}"><img src="img/{p["repo"]}.webp" alt="" loading="lazy">'
+        f'<a class="live" href="{e(p["demo"])}"><img src="{thumb_src(p)}" alt="" loading="lazy"{thumb_fallback(p)}>'
         f'<span>{e(p["title"])}</span></a>' for p in demos)
     owner_links = "".join(f'<a class="btn" href="{e(l["url"])}">{e(l["label"])}</a>' for l in owner.get("links", []))
     name = owner.get("name") or user
@@ -259,7 +269,7 @@ def build_profile(cfg: dict) -> str:
             for p in items[i:i + 2]:
                 demo = f' · <a href="{p["demo"]}">{p.get("demo_label", "Live page").lower()}</a>' if p.get("demo") else ""
                 out.append(
-                    f'<td width="50%" valign="top"><a href="{repo(p)}"><img src="{site}img/{p["repo"]}.webp" '
+                    f'<td width="50%" valign="top"><a href="{repo(p)}"><img src="{p.get("thumb_url") or site + "img/" + p["repo"] + ".webp"}" '
                     f'alt="{html.escape(p["title"])}"></a><br><b><a href="{repo(p)}">{html.escape(p["title"], quote=False)}</a></b>'
                     f'{demo}<br><sub>{html.escape(p["highlight"], quote=False)}</sub></td>')
             if len(items[i:i + 2]) == 1:
