@@ -35,6 +35,10 @@
     {
       "id": "ops",
       "label": "Monitoring"
+    },
+    {
+      "id": "tools",
+      "label": "Open-source tools"
     }
   ],
   "stack": [
@@ -382,6 +386,21 @@
         "FlyWire",
         "reservoir computing",
         "negative result"
+      ]
+    },
+    {
+      "repo": "pse-opendata",
+      "title": "pse-opendata: Python client for PSE data",
+      "group": "tools",
+      "summary": "An open-source library for the public data of the Polish TSO: 16 reports plus the legacy CSV export since 2009 as tidy pandas frames with explicit interval times in UTC and local time, monthly Parquet cache aware of PSE's late corrections, and a CLI.",
+      "highlight": "103 offline tests on recorded responses plus live checks against PSE's API description; documents pitfalls such as DST labels, the 100,000-row cap and pagination that drops rows.",
+      "image": "site:assets/pse-opendata-card.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pse-opendata/",
+      "demo_label": "Docs",
+      "tags": [
+        "Python library",
+        "pandas",
+        "PSE API"
       ]
     }
   ]
