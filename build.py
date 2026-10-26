@@ -59,7 +59,7 @@ def card(p: dict, user: str, groups: dict) -> str:
     repo_url = f"https://github.com/{user}/{p['repo']}"
     links = [f'<a class="btn" href="{repo_url}">Code</a>']
     if p.get("demo"):
-        links.append(f'<a class="btn primary" href="{e(p["demo"])}">Live page &#8599;</a>')
+        links.append(f'<a class="btn primary" href="{e(p["demo"])}">{e(p.get("demo_label", "Live page"))} &#8599;</a>')
     badge = '<span class="badge">Own method</span>' if p.get("method") else ""
     tags = "".join(f"<li>{e(t)}</li>" for t in p.get("tags", []))
     return f"""
@@ -257,7 +257,7 @@ def build_profile(cfg: dict) -> str:
         for i in range(0, len(items), 2):
             out.append("<tr>")
             for p in items[i:i + 2]:
-                demo = f' · <a href="{p["demo"]}">live page</a>' if p.get("demo") else ""
+                demo = f' · <a href="{p["demo"]}">{p.get("demo_label", "Live page").lower()}</a>' if p.get("demo") else ""
                 out.append(
                     f'<td width="50%" valign="top"><a href="{repo(p)}"><img src="{site}img/{p["repo"]}.webp" '
                     f'alt="{html.escape(p["title"])}"></a><br><b><a href="{repo(p)}">{html.escape(p["title"], quote=False)}</a></b>'
@@ -282,8 +282,9 @@ def main() -> None:
     cfg = json.loads(args.config.read_text(encoding="utf-8"))
     if not args.skip_images:
         for p in cfg["projects"]:
-            thumbnail(args.repos_root / p["repo"] / p["image"], HERE / "img" / f"{p['repo']}.webp",
-                      p.get("anchor", "top"), p.get("frame", 0.4))
+            # "site:" images live in this repository (e.g. a code card for a library without figures)
+            src = HERE / p["image"][5:] if p["image"].startswith("site:") else args.repos_root / p["repo"] / p["image"]
+            thumbnail(src, HERE / "img" / f"{p['repo']}.webp", p.get("anchor", "top"), p.get("frame", 0.4))
     (HERE / "index.html").write_text(build_site(cfg), encoding="utf-8")
     log.info("wrote index.html")
     args.profile_readme.parent.mkdir(parents=True, exist_ok=True)
