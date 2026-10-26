@@ -62,7 +62,8 @@
     "IMGW-PIB synoptic stations",
     "CERRA (Copernicus)",
     "IEEE RTS-79",
-    "CARE to Compare benchmark (CC BY-SA 4.0)"
+    "CARE to Compare benchmark (CC BY-SA 4.0)",
+    "FlyWire connectome v783 (CC BY 4.0)"
   ],
   "projects": [
     {
@@ -367,6 +368,20 @@
         "ERA5 / CERRA",
         "IMGW-PIB",
         "MCP"
+      ]
+    },
+    {
+      "repo": "fly-connectome-forecast",
+      "title": "Can a fly brain forecast wind and solar?",
+      "group": "system",
+      "summary": "The FlyWire connectome of the fruit fly brain used as an echo state network reservoir to forecast Polish wind and PV generation, against random and rewired reservoirs, ridge, gradient boosting and the PSE day-ahead plan.",
+      "highlight": "No: tuned separately, the fly brain matches a random reservoir within 2 %; its compressed eigenvalue spectrum makes it robust to bad settings, not a better forecaster.",
+      "image": "docs/img/spectra.png",
+      "demo": "https://kwwaleszczynski-del.github.io/fly-connectome-forecast/",
+      "tags": [
+        "FlyWire",
+        "reservoir computing",
+        "negative result"
       ]
     }
   ]
