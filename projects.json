@@ -348,6 +348,20 @@
       ]
     },
     {
+      "repo": "poland-mix-sandbox",
+      "title": "Build Poland's power mix with sliders",
+      "group": "system",
+      "summary": "An hourly merit-order toy that runs entirely in the browser: set PV, onshore and offshore wind, storage, nuclear, gas, coal and interconnectors, pick a weather year 2010-2025, and see curtailment, energy not served, CO2 and an approximate price; every scenario is a shareable link.",
+      "highlight": "Coal out by 2030 without new firm capacity leaves 6-10 TWh unserved in every weather year; the 2040 plan makes curtailment the main issue (17-24 % of wind and PV).",
+      "image": "docs/card.png",
+      "demo": "https://kwwaleszczynski-del.github.io/poland-mix-sandbox/",
+      "tags": [
+        "JavaScript",
+        "merit order",
+        "PSE + ERA5"
+      ]
+    },
+    {
       "repo": "pl-res-reliability-markov",
       "title": "Capacity credit of wind and PV in Poland",
       "group": "system",
