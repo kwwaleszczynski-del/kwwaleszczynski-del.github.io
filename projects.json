@@ -294,6 +294,20 @@
       ]
     },
     {
+      "repo": "fly-novelty-scada",
+      "title": "A fly-brain novelty detector for turbine faults",
+      "group": "wind",
+      "summary": "The fruit fly's mushroom-body novelty detector (FlyHash and the fly Bloom filter), wired with the real FlyWire projection-neuron to Kenyon-cell connectome, run as a streaming fault detector on 95 wind turbine datasets of the CARE to Compare benchmark.",
+      "highlight": "Honest negative result: the fly scores 0.47 against 0.51 for k-NN (0.5 is random), real wiring does no better than shuffled, and after a year of training the filter saturates and stops alarming.",
+      "image": "docs/img/pn_kc_wiring.png",
+      "demo": "https://kwwaleszczynski-del.github.io/fly-novelty-scada/",
+      "tags": [
+        "FlyWire",
+        "novelty detection",
+        "CARE benchmark"
+      ]
+    },
+    {
       "repo": "wind-power-curve-kelmarsh",
       "title": "Wind power curves (IEC 61400-12-1)",
       "group": "wind",
