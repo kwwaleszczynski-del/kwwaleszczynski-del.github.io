@@ -314,6 +314,20 @@
       ]
     },
     {
+      "repo": "pl-res-forecast-climate",
+      "title": "Wind and solar outlook for Poland, live",
+      "group": "system",
+      "summary": "A 7-day probabilistic forecast of national wind and PV generation from 122 ensemble members (ECMWF, ICON, GFS), calibrated daily against PSE data and refreshed every morning by GitHub Actions, with an ERA5 resource climatology since 1991.",
+      "highlight": "Day-ahead nMAE 10.5 % for solar and 17.7 % for wind over a 12-month test; the forecast beats climatology by 60-68 % in CRPS.",
+      "image": "docs/img/forecast_fan.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-res-forecast-climate/",
+      "tags": [
+        "ensemble forecast",
+        "Open-Meteo",
+        "GitHub Actions"
+      ]
+    },
+    {
       "repo": "pl-res-reliability-markov",
       "title": "Capacity credit of wind and PV in Poland",
       "group": "system",
