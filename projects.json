@@ -351,6 +351,20 @@
       ]
     },
     {
+      "repo": "res-uplift-verification",
+      "title": "Did the upgrade work? Causal O&M verification",
+      "group": "ops",
+      "summary": "Five causal estimators (test-control bins, gradient boosting with conformal intervals, synthetic control, BSTS, difference-in-differences) validated by injecting known uplifts into real Kelmarsh wind and PVDAQ PV data, with a test-plan calculator, wake spillover and real logged events.",
+      "highlight": "A +3 % uplift needs about 9 weeks to prove with five control turbines, +1 % stays unproven after a year; on real events before/after reports -3.2 % to +3.0 % where the turbines came back within ±1 %.",
+      "image": "docs/img/method_comparison.png",
+      "demo": "https://kwwaleszczynski-del.github.io/res-uplift-verification/",
+      "tags": [
+        "causal inference",
+        "conformal prediction",
+        "SCADA"
+      ]
+    },
+    {
       "repo": "grafana-fleet-as-code",
       "title": "Fleet monitoring as code",
       "group": "ops",
