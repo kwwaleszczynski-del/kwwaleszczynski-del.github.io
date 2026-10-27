@@ -48,6 +48,7 @@
     "pvlib",
     "PyWake",
     "PyTorch",
+    "NumPyro / JAX",
     "Plotly",
     "Grafana",
     "InfluxDB 2 / Flux",
@@ -263,6 +264,21 @@
         "pvlib",
         "IEC 61724-1",
         "NREL PVDAQ"
+      ]
+    },
+    {
+      "repo": "wind-bayes-twin",
+      "title": "A Bayesian digital twin of a wind farm",
+      "group": "wind",
+      "method": true,
+      "summary": "A probabilistic model of every Kelmarsh turbine updated day by day from SCADA: posteriors with credible intervals for efficiency, anemometer error, yaw offset, derating and bearing cooling, the probability of each fault type, lost energy by cause and inspections ranked by value of information.",
+      "highlight": "On 624 injected faults it names the right cause in 95 % of detections against 72 % for CUSUM and NBM charts, with 0.50 false alarms per turbine-year against 2.08.",
+      "image": "docs/img/replay_gen.png",
+      "demo": "https://kwwaleszczynski-del.github.io/wind-bayes-twin/",
+      "tags": [
+        "Bayesian filtering",
+        "change-point detection",
+        "NumPyro"
       ]
     },
     {
