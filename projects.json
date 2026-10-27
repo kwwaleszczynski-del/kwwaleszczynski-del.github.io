@@ -398,6 +398,20 @@
       ]
     },
     {
+      "repo": "pl-biogas-flex",
+      "title": "What is a flexible biogas plant worth?",
+      "group": "biogas",
+      "summary": "Day-by-day backtest of an agricultural biogas CHP plant on Polish day-ahead prices 2024-2026: a mixed-integer plant model with engines, gas storage and a heat tank, a realizable strategy that only uses a forecast available before gate closure, a design grid of engine capacity and storage hours, support-scheme scenarios and Germany as the reference market.",
+      "highlight": "Twice the engine capacity and 12 h of gas storage add about 360 thousand PLN a year on a forecast alone (86 % of perfect foresight); with only 2 h of storage the extra engines earn less than a third of that.",
+      "image": "docs/img/value_grid_PL.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-biogas-flex/",
+      "tags": [
+        "MILP",
+        "day-ahead market",
+        "CHP"
+      ]
+    },
+    {
       "repo": "biogas-digester-twin",
       "title": "Which method catches a sick digester first?",
       "group": "biogas",
