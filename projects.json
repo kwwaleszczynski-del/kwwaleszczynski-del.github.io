@@ -282,6 +282,20 @@
       ]
     },
     {
+      "repo": "wind-downtime-availability",
+      "title": "Wind turbine downtime, causes and availability",
+      "group": "wind",
+      "summary": "Stops, deratings and curtailment found in 10-minute SCADA without status codes (rules, power-curve residual, pitch / rotor-speed signature, HMM, gradient boosting), classified into IEC 61400-26 categories, priced in lost energy and turned into time- and energy-based availability on three open farms, with a CLI for any farm's long-format SCADA.",
+      "highlight": "The pitch / rotor-speed signature finds stops with F1 0.80-0.91 without training, while the usual \"power ≤ 0\" rule raises 4,833 alarms for 1,412 logged stops; booking grid and curtailment stops as turbine faults cuts warranty availability from 97.9 % to 93.5 %.",
+      "image": "docs/img/detection.png",
+      "demo": "https://kwwaleszczynski-del.github.io/wind-downtime-availability/",
+      "tags": [
+        "IEC 61400-26",
+        "outage detection",
+        "gradient boosting"
+      ]
+    },
+    {
       "repo": "wind-wake-aware-verification",
       "title": "WARP: wake-aware turbine verification",
       "group": "wind",
