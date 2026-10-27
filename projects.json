@@ -240,6 +240,20 @@
       ]
     },
     {
+      "repo": "pv-outage-classifier",
+      "title": "PV outages: detection, cause and availability",
+      "group": "pv",
+      "summary": "Seven ways to find production losses at string, inverter and meter level (threshold, expected PR model, peer median, Hampel, CUSUM, isolation forest, gradient boosting) plus a hybrid, cause classification, lost energy and IEC 61724-1 style availability on a simulated plant with ground truth, real PVDAQ data and an open shading dataset.",
+      "highlight": "Requiring events of at least 1 h lifts the hybrid detector's precision from 0.73 to 0.97 and cuts alarms about 20-fold; thresholds tuned on simulation give 257 alarms per inverter-year on real roofs, a short site set-up brings it to 6 with all real outages still found.",
+      "image": "docs/img/method_comparison.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pv-outage-classifier/",
+      "tags": [
+        "outage detection",
+        "IEC 61724-1",
+        "NREL PVDAQ"
+      ]
+    },
+    {
       "repo": "pv-anomaly-autoencoder",
       "title": "PV fault detection: autoencoder vs baselines",
       "group": "pv",
