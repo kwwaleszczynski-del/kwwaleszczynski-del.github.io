@@ -398,6 +398,20 @@
       ]
     },
     {
+      "repo": "biogas-digester-twin",
+      "title": "Which method catches a sick digester first?",
+      "group": "biogas",
+      "summary": "An ADM1 (BSM2) twin of an agricultural co-digestion plant with realistic sensors and lab samples, 140 injected process upsets and instrument faults, and eight ways to catch them: FOS/TAC thresholds, EWMA and CUSUM on yield, PCA, expert rules, gradient boosting and an EKF twin, plus a check on real farm digesters.",
+      "highlight": "Twice-weekly FOS/TAC warns before the yield loss in 1 % of upsets; PCA on online signals does it in 75 % with 0.7 false alarms a year, and the EKF twin names all 20 CH4 analyser drifts as instrument faults without any failure examples.",
+      "image": "docs/img/tradeoff.png",
+      "demo": "https://kwwaleszczynski-del.github.io/biogas-digester-twin/",
+      "tags": [
+        "ADM1",
+        "state estimation",
+        "fault detection"
+      ]
+    },
+    {
       "repo": "res-uplift-verification",
       "title": "Did the upgrade work? Causal O&M verification",
       "group": "ops",
