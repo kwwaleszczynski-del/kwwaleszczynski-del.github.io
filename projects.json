@@ -25,6 +25,10 @@
       "label": "Wind"
     },
     {
+      "id": "biogas",
+      "label": "Biogas"
+    },
+    {
       "id": "storage",
       "label": "Storage & markets"
     },
@@ -376,6 +380,21 @@
         "PyWake",
         "shadow flicker",
         "Plotly"
+      ]
+    },
+    {
+      "repo": "pl-biogas-siting",
+      "title": "Untapped biogas potential in Poland",
+      "group": "biogas",
+      "summary": "Manure and cereal straw from the 2020 Agricultural Census turned into methane per gmina and 15 km catchment, minus what the registered plants (KOWR) already digest, set against free DSO connection capacity and gas pipelines, with a Monte Carlo on the coefficients and a check of how well the score ranks existing plants.",
+      "highlight": "About 2.2 billion m³ of methane a year sits in farm residues and existing plants digest about 1.4 % of the manure; of 816 MWe within reach of published grid nodes only 473 MWe fits their free capacity.",
+      "image": "docs/img/map_residual.png",
+      "fit": "pad",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-biogas-siting/",
+      "tags": [
+        "GIS",
+        "biomethane",
+        "Leaflet"
       ]
     },
     {
