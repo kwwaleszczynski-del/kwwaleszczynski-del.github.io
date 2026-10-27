@@ -25,7 +25,7 @@ SITE_URL = "https://{user}.github.io/"
 THUMB = (960, 600)
 
 
-def thumbnail(src: Path, dst: Path, anchor: str = "top", frame: float = 0.4) -> None:
+def thumbnail(src: Path, dst: Path, anchor: str = "top", frame: float = 0.4, fit: str = "crop") -> None:
     """Fit an image (or one frame of a GIF) to 16:10 and save it as WebP."""
     with Image.open(src) as im:
         if getattr(im, "is_animated", False):
@@ -40,6 +40,11 @@ def thumbnail(src: Path, dst: Path, anchor: str = "top", frame: float = 0.4) -> 
         new_h = round(w / target)
         padded = Image.new("RGB", (w, new_h), "white")
         padded.paste(im, (0, (new_h - h) // 2))
+        im = padded
+    elif fit == "pad":  # too tall, but a map should keep its edges: pad left and right
+        new_w = round(h * target)
+        padded = Image.new("RGB", (new_w, h), "white")
+        padded.paste(im, ((new_w - w) // 2, 0))
         im = padded
     else:  # too tall: crop top/centre/bottom
         new_h = round(w / target)
@@ -117,13 +122,13 @@ def build_site(cfg: dict) -> str:
 <style>
 :root {{
   --bg: #f6f7f9; --card: #ffffff; --text: #151a22; --muted: #5a6474; --line: #e2e6ec; --chip: #edf0f4;
-  --hl-bg: #fff8eb; --hl-line: #e8a33a; --pv: #c97a06; --wind: #0e7490; --storage: #6d43c9; --ops: #475569;
+  --hl-bg: #fff8eb; --hl-line: #e8a33a; --pv: #c97a06; --wind: #0e7490; --storage: #6d43c9; --ops: #475569; --bio: #4d7c0f;
   --accent: #0e7490; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 4px 16px rgba(16,24,40,.06);
 }}
 @media (prefers-color-scheme: dark) {{
   :root {{
     --bg: #0d1117; --card: #151b24; --text: #e6eaf0; --muted: #98a2b3; --line: #252e3a; --chip: #1d2530;
-    --hl-bg: #231d12; --hl-line: #d4912c; --pv: #f0a83a; --wind: #38bdd8; --storage: #a78bfa; --ops: #94a3b8;
+    --hl-bg: #231d12; --hl-line: #d4912c; --pv: #f0a83a; --wind: #38bdd8; --storage: #a78bfa; --ops: #94a3b8; --bio: #9ccc65;
     --accent: #38bdd8; --shadow: none;
   }}
 }}
@@ -169,7 +174,7 @@ h2 {{ font-size: 22px; margin: 40px 0 16px; letter-spacing: -.01em; }}
 .group {{ font-weight: 600; }}
 .group::before {{ content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;
   background: currentColor; vertical-align: 1px; }}
-.g-pv {{ color: var(--pv); }} .g-wind {{ color: var(--wind); }} .g-storage {{ color: var(--storage); }} .g-ops {{ color: var(--ops); }}
+.g-pv {{ color: var(--pv); }} .g-wind {{ color: var(--wind); }} .g-storage {{ color: var(--storage); }} .g-ops {{ color: var(--ops); }} .g-biogas {{ color: var(--bio); }}
 .badge {{ font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--hl-line);
   color: var(--hl-line); }}
 .card h3 {{ font-size: 19px; line-height: 1.3; margin: 0 0 8px; }}
@@ -294,7 +299,8 @@ def main() -> None:
         for p in cfg["projects"]:
             # "site:" images live in this repository (e.g. a code card for a library without figures)
             src = HERE / p["image"][5:] if p["image"].startswith("site:") else args.repos_root / p["repo"] / p["image"]
-            thumbnail(src, HERE / "img" / f"{p['repo']}.webp", p.get("anchor", "top"), p.get("frame", 0.4))
+            thumbnail(src, HERE / "img" / f"{p['repo']}.webp", p.get("anchor", "top"), p.get("frame", 0.4),
+                      p.get("fit", "crop"))
     (HERE / "index.html").write_text(build_site(cfg), encoding="utf-8")
     log.info("wrote index.html")
     args.profile_readme.parent.mkdir(parents=True, exist_ok=True)
