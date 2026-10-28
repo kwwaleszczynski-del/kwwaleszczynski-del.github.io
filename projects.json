@@ -216,15 +216,15 @@
     },
     {
       "repo": "pl-hems-mpc",
-      "title": "Home & C&I energy management: 15-min MILP, net-billing and Modbus TCP HIL",
+      "title": "Home and C&I energy management on 15-minute Polish prices",
       "group": "storage",
-      "summary": "Co-optimised rooftop PV curtailment, LFP battery, 2R2C floor-slab heat pump and EV charger under Polish 12-month FIFO net-billing (RCE) and C&I B23 + PSE capacity fee (K1-K4), verified over a closed-loop Modbus TCP (SunSpec) socket with a hardware watchdog.",
-      "highlight": "Over 2025-10..2026-09 (357.5 h of RCE <= 0), 15-min MILP-MPC cuts a dynamic-tariff prosumer's annual cost by 36 % (2,277 PLN/yr) and shifts 87 % of C&I working days into the K1 capacity-fee band (-71 % capacity fee).",
+      "summary": "15-minute MILP dispatch of rooftop PV, battery, floor-slab heat pump and EV under Polish FIFO net-billing (RCE) and C&I B23 with the PSE capacity fee (K1-K4), checked over a localhost Modbus TCP loop with a hardware watchdog and packaged for Home Assistant.",
+      "highlight": "Over Oct 2025 - Sep 2026 (357.5 h of RCE <= 0), the forecast MILP cuts a dynamic-tariff house's annual cost by 36 % (2,277 PLN/yr) and puts 87 % of C&I working days in the K1 capacity-fee band (-71 % capacity fee).",
       "image": "docs/img/dispatch_week.png",
       "demo": "https://kwwaleszczynski-del.github.io/pl-hems-mpc/",
       "tags": [
-        "MILP / MPC",
-        "Modbus TCP HIL",
+        "MILP",
+        "Modbus TCP",
         "Home Assistant"
       ]
     },
