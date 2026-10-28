@@ -201,6 +201,21 @@
       ]
     },
     {
+      "repo": "bess-ops-warranty",
+      "title": "Grid battery operations against warranty and LTSA",
+      "group": "storage",
+      "method": true,
+      "summary": "Monthly warranty and LTSA reporting for an operating grid battery: SoC-corrected round-trip efficiency with and without auxiliaries, time-, capacity- and energy-based availability, rainflow cycles, warranty violations, capacity tests with guard bands, and a benchmark of all 55 grid batteries in Australia's NEM validated against ACEN's New England BESS data.",
+      "highlight": "Across 55 NEM batteries conversion RTE is 0.92, but metered RTE is 0.82 median (0.75 for 1 h, 0.88 for 4 h) because of auxiliaries and standby drain; PASA technical availability is 95.8 % median while commercial offered availability is 78.1 %.",
+      "image": "docs/img/fleet_rte.png",
+      "demo": "https://kwwaleszczynski-del.github.io/bess-ops-warranty/",
+      "tags": [
+        "AEMO NEM",
+        "LTSA / warranty",
+        "RTE & availability"
+      ]
+    },
+    {
       "repo": "bess-capacity-augmentation",
       "title": "Battery ageing vs capacity market obligation",
       "group": "storage",
@@ -226,6 +241,49 @@
         "MILP",
         "Modbus TCP",
         "Home Assistant"
+      ]
+    },
+    {
+      "repo": "bess-thermal-aux-load",
+      "title": "Container thermal balance, HVAC auxiliary load and net RTE of a grid battery",
+      "group": "storage",
+      "summary": "Coupled electro-thermal and auxiliary-power model of a 2.5 MW / 5 MWh LFP container in Polish weather: irreversible Joule and reversible entropic heat, liquid-cooling chiller COP vs forced-air DX, winter PTC heating, and PCS/MV transformer losses across reserve and arbitrage duties.",
+      "highlight": "At 1 cycle/day DC cell RTE is 94.2 % and PCS AC RTE is 89.6 %, but 15 kV metered RTE averages 84.2 % (79.4 % in January, 82.8 % in July) and falls to 73.9 % under 0.35 cycle/day reserve duty due to 89 MWh/yr of standing transformer, BMS and heating load.",
+      "image": "docs/img/monthly_rte_waterfall.png",
+      "demo": "https://kwwaleszczynski-del.github.io/bess-thermal-aux-load/",
+      "tags": [
+        "LFP thermal model",
+        "HVAC / chiller",
+        "auxiliary load"
+      ]
+    },
+    {
+      "repo": "pl-cppa-shaping-risk",
+      "title": "Corporate PPA structuring and shaping risk on Polish power prices",
+      "group": "storage",
+      "summary": "Pay-as-produced vs baseload and two-shift industrial cPPAs on Polish spot prices: exact 4-term decomposition into price level, profile shaping cost, volume risk and hourly residual exposure, negative-price floor clauses, and PV + wind + BESS portfolio sizing across 500 bootstrap years.",
+      "highlight": "A 65 % wind + 35 % PV hybrid cuts baseload shaping cost from 142 PLN/MWh (pure PV) to 31 PLN/MWh, and adding a 2 h battery brings it to 11 PLN/MWh while lifting 24/7 hourly carbon-free matching from 44 % to 81 %.",
+      "image": "docs/img/shaping_cost_mix.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-cppa-shaping-risk/",
+      "tags": [
+        "cPPA",
+        "shaping risk",
+        "Monte Carlo"
+      ]
+    },
+    {
+      "repo": "pv-budget-bridge",
+      "title": "PV budget bridge: monthly P50 to actual waterfall and sensor QC",
+      "group": "pv",
+      "method": true,
+      "summary": "Monthly asset-management bridge from P50 budget to measured production (irradiance, temperature, degradation, soiling, snow, clipping, availability, curtailment, data gaps and unexplained residual), weather-corrected PR, contractual guarantee tests and pyranometer QC, checked on NREL PVDAQ and synthetic Polish plants.",
+      "highlight": "Recovers injected outages and curtailment within 0.5 % on synthetic truth and flags clock shifts, sensor tilt errors and pyranometer drift across three multi-year NREL PVDAQ rooftops.",
+      "image": "site:assets/pv-budget-bridge-card.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pv-budget-bridge/",
+      "tags": [
+        "IEC 61724-1",
+        "waterfall bridge",
+        "NREL PVDAQ"
       ]
     },
     {
@@ -313,6 +371,36 @@
       ]
     },
     {
+      "repo": "pv-string-iv-faults",
+      "title": "PV string fault diagnosis from inverter MPPT voltage and current",
+      "group": "pv",
+      "method": true,
+      "summary": "Separating shorted bypass diodes, PID voltage loss, corroded MC4 series resistance, partial shading and uniform soiling from 15-minute inverter MPPT voltage and current alone, verified on a 72-sub-string Bishop one-diode model.",
+      "highlight": "Shorted bypass diodes produce a current-independent 14.3 V step per sub-string while connector resistance slopes linearly with current (dV = dR_s * I), recovering injected dR_s within 2 % and classifying six fault modes at 0.968 macro-F1.",
+      "image": "docs/img/dv_vs_current_signature.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pv-string-iv-faults/",
+      "tags": [
+        "Bishop I-V model",
+        "MPPT diagnostics",
+        "bypass diodes"
+      ]
+    },
+    {
+      "repo": "wind-les-gpu",
+      "title": "Kelmarsh wind farm in a laptop-GPU LES",
+      "group": "wind",
+      "method": true,
+      "summary": "A home-made D3Q19 lattice Boltzmann large-eddy simulator in ~550 lines of NVIDIA Warp kernels (regularized collision, Smagorinsky subgrid, log-law wall, actuator disks and precursor turbulence), run across all 72 wind directions on Kelmarsh and compared record-by-record with 6 years of SCADA and PyWake.",
+      "highlight": "Without a tunable wake parameter the LES predicts 9.79 % farm wake loss against 9.24 % measured in 159,289 SCADA records (sector RMSE 2.2 pp vs 2.6 pp for PyWake Gaussian) in 81 s per wind direction on a 6 GB laptop GPU.",
+      "image": "docs/img/hub_plane.png",
+      "demo": "https://kwwaleszczynski-del.github.io/wind-les-gpu/",
+      "tags": [
+        "NVIDIA Warp",
+        "Lattice Boltzmann LES",
+        "Kelmarsh SCADA"
+      ]
+    },
+    {
       "repo": "wind-bayes-twin",
       "title": "A Bayesian digital twin of a wind farm",
       "group": "wind",
@@ -339,6 +427,21 @@
         "IEC 61400-26",
         "outage detection",
         "gradient boosting"
+      ]
+    },
+    {
+      "repo": "wind-om-reliability",
+      "title": "Wind turbine O&M reliability from status and alarm logs",
+      "group": "wind",
+      "method": true,
+      "summary": "Turns status and alarm logs from Kelmarsh, Penmanshiel and Hill of Towie (352 turbine-years) into first-up Pareto downtime, MTBF/MTTR, Weibull and Crow-AMSAA reliability trends, bad-actor turbines, 7-day repeat bursts, alarm cascades and SCADA cross-checks.",
+      "highlight": "7 of 69 codes cause 80 % of Kelmarsh stop hours; 43 % of Penmanshiel failures repeat the same code within 7 days of restart (3.5 % by chance), and Crow-AMSAA separates improving fleets (Kelmarsh beta 0.82) from deteriorating ones (Penmanshiel beta 1.12).",
+      "image": "site:assets/wind-om-reliability-card.png",
+      "demo": "https://kwwaleszczynski-del.github.io/wind-om-reliability/",
+      "tags": [
+        "IEC 61400-26",
+        "Crow-AMSAA",
+        "alarm logs"
       ]
     },
     {
@@ -576,6 +679,20 @@
         "FlyWire",
         "reservoir computing",
         "negative result"
+      ]
+    },
+    {
+      "repo": "pl-grid-connection-ncrfg",
+      "title": "Grid connection studies and non-firm capacity on Polish MV/110 kV feeders",
+      "group": "system",
+      "summary": "Steady-state and N-1 grid connection study of a Polish 110/15 kV GPZ substation and radial 15 kV feeders using a polar Newton-Raphson Ybus solver: voltage rise, thermal loading, NC RfG Type B/C Q(U) and cos-phi(P) reactive control, non-firm export caps and co-located BESS cable pooling.",
+      "highlight": "On a 14.2 km overhead 15 kV feeder, NC RfG Q(U) droop lifts hosting capacity from 6.17 MW to 11.53 MW (+87 %) with 84 % lower reactive line losses than fixed cos-phi = 0.95; a 70 % export cap plus 2 h BESS unlocks 35.6 MW across the GPZ under N-1.",
+      "image": "docs/img/hosting_capacity.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-grid-connection-ncrfg/",
+      "tags": [
+        "NC RfG Q(U)",
+        "Newton-Raphson Ybus",
+        "N-1 hosting capacity"
       ]
     },
     {
