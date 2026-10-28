@@ -598,6 +598,21 @@
       ]
     },
     {
+      "repo": "pl-forecast-bench",
+      "title": "A citable forecast benchmark for the Polish grid",
+      "group": "system",
+      "summary": "Wind, solar, demand and day-ahead price forecasts for Poland at 15-minute resolution, day-ahead (issued at 10:00 on D-1) and intraday, with fixed data, splits and metrics and a strict as-of rule enforced by leakage tests; ten reference models from persistence and the PSE plan to gradient boosting and zero-shot Chronos and TimesFM foundation models, with a public leaderboard.",
+      "highlight": "Intraday models beat the PSE plan by 20-26 %; day-ahead nothing that respects the 10:00 issue time beats it for volumes, and the price is the one task a foundation model wins (Chronos-2 with weather covariates, 88.5 PLN/MWh MAE, 9 % better than gradient boosting).",
+      "image": "docs/img/skill.png",
+      "anchor": "bottom",
+      "demo": "https://kwwaleszczynski-del.github.io/pl-forecast-bench/",
+      "tags": [
+        "forecasting benchmark",
+        "Chronos / TimesFM",
+        "PSE"
+      ]
+    },
+    {
       "repo": "poland-mix-sandbox",
       "title": "Build Poland's power mix with sliders",
       "group": "system",
