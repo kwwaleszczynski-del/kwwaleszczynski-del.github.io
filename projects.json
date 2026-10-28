@@ -215,6 +215,20 @@
       ]
     },
     {
+      "repo": "pv-site-to-pvsyst",
+      "title": "From a parcel to a PVsyst 3D scene, and what the MV network costs",
+      "group": "pv",
+      "summary": "A parcel or drawn polygon turned into a PVsyst near-shading scene (.dae) from GUGiK LiDAR (NMT/NMPT) and BDOT10k exclusions, checked by ray casting, plus a MILP optimiser for transformer placement, MV cable routing and hourly LV/MV/transformer losses at RCE prices.",
+      "highlight": "Ray casting on the exported .dae matches the analytic row-to-row shading within 0.01 % (0.54 vs 0.53 %); on a 19.2 MWp plant five 3150 kVA stations with night disconnect save 0.4 MPLN over 30 years.",
+      "image": "docs/img/layout.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pv-site-to-pvsyst/",
+      "tags": [
+        "COLLADA / PVsyst",
+        "GUGiK LiDAR",
+        "MILP"
+      ]
+    },
+    {
       "repo": "pv-shade-fingerprint",
       "title": "PV shading from AC power alone",
       "group": "pv",
