@@ -711,6 +711,21 @@
       ]
     },
     {
+      "repo": "res-asset-kpi",
+      "title": "res-asset-kpi: KPI library for PV, wind and BESS",
+      "group": "tools",
+      "summary": "An open-source Python library for the indicators asset managers report every month: PR and weather-corrected PR, contract availability for PV, wind (IEC 61400-26 categories) and batteries, the budget-to-actual energy bridge, power curves and AEP, MTBF/MTTR and Crow-AMSAA, SoC-corrected round-trip efficiency, cycles, capacity tests with uncertainty and contract damages set in YAML.",
+      "highlight": "Extracted from six analysis projects and reproducing their results exactly (41 checks over about a million values, largest relative difference 1.3e-13); a hand-worked test for every formula, Hypothesis property tests, mypy strict, CI on Python 3.11-3.13.",
+      "image": "site:assets/res-asset-kpi-card.png",
+      "demo": "https://kwwaleszczynski-del.github.io/res-asset-kpi/",
+      "demo_label": "Docs",
+      "tags": [
+        "Python library",
+        "IEC 61724-1 / 61400-26",
+        "asset management"
+      ]
+    },
+    {
       "repo": "pse-opendata",
       "title": "pse-opendata: Python client for PSE data",
       "group": "tools",
