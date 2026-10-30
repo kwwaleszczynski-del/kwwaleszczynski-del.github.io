@@ -75,11 +75,42 @@ h2 { font-size: 22px; margin: 40px 0 16px; letter-spacing: -.01em; }
   border-radius: 0 8px 8px 0; font-size: 15px; }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0 0 16px; }
 .tags li { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--chip); color: var(--muted); }
-.links { display: flex; gap: 8px; margin-top: auto; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
 footer { margin: 56px 0 0; padding: 28px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
 footer dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0 0 16px; }
 footer dt { font-weight: 600; color: var(--text); }
 footer dd { margin: 0; }
+.lead { max-width: 760px; color: var(--muted); margin: -4px 0 18px; }
+.pick .owner { margin: 0 0 16px; font-size: 15px; }
+.case { max-width: 800px; }
+.crumb { margin: 28px 0 0; font-size: 14px; }
+.crumb a { color: var(--muted); text-decoration: none; }
+.crumb a:hover { color: var(--accent); }
+.case header { padding: 28px 0 4px; }
+.kicker { display: flex; gap: 8px; align-items: center; font-size: 13px; margin: 0 0 10px; }
+.case h1 { font-size: clamp(28px, 4.4vw, 40px); line-height: 1.15; margin: 0 0 14px; letter-spacing: -.02em; }
+.dek { font-size: 18px; color: var(--muted); margin: 0 0 24px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; list-style: none;
+  padding: 0; margin: 0 0 28px; }
+.kpis li { padding: 14px 16px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+.kpis b { display: block; font-size: 24px; line-height: 1.2; margin-bottom: 4px; }
+.kpis span { font-size: 14px; color: var(--muted); }
+figure { margin: 0; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.case h2 { font-size: 21px; margin: 36px 0 12px; }
+.case section ul { margin: 0; padding-left: 20px; }
+.case section li { margin: 0 0 10px; }
+.case section > p { margin: 0 0 12px; }
+.tablewrap { overflow-x: auto; margin: 18px 0 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--card); }
+caption { text-align: left; font-weight: 600; padding: 0 0 8px; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-weight: 600; }
+td + td, th + th { text-align: right; }
+td + td { white-space: nowrap; }
+.note { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+.case .links { margin: 0 0 16px; }
 @media (max-width: 560px) {
   .wrap { padding: 0 16px; }
   header.hero { padding-top: 40px; }
@@ -96,24 +127,97 @@ footer dd { margin: 0; }
     <h1><span>Renewable energy data analytics</span></h1>
     <p class="intro">Analytics for solar, wind and battery assets: performance verification, fault detection, power market analysis and dashboards. Every project below is written from scratch on open data and can be rerun from its repository, with tests and CI.</p>
     <ul class="stats">
-      <li><b>47</b><span>projects on open data</span></li>
-      <li><b>9</b><span>own verification methods</span></li>
-      <li><b>39</b><span>live interactive pages</span></li>
+      <li><b>49</b><span>projects on open data</span></li>
+      <li><b>11</b><span>own verification methods</span></li>
+      <li><b>41</b><span>live interactive pages</span></li>
     </ul>
     <div class="actions">
-      <a class="btn primary" href="https://github.com/kwwaleszczynski-del">GitHub profile</a><a class="btn" href="https://www.linkedin.com/in/kw00">LinkedIn</a><a class="btn" href="mailto:energoanaliza@gmail.com">energoanaliza@gmail.com</a>
+      <a class="btn primary" href="https://github.com/kwwaleszczynski-del">GitHub profile</a><a class="btn" href="#start">Start here &#8595;</a><a class="btn" href="https://www.linkedin.com/in/kw00">LinkedIn</a><a class="btn" href="mailto:energoanaliza@gmail.com">energoanaliza@gmail.com</a>
     </div>
   </header>
 
+  <section id="start" aria-labelledby="start-h">
+    <h2 id="start-h">Start here</h2>
+    <p class="lead">Six projects to look at first. The first three come with a short case study written for asset owners: the problem, the data, the numbers and what they mean for a decision.</p>
+    <div class="grid">
+    <article class="card pick">
+      <a class="thumb" href="case-studies/pv-budget-bridge.html" tabindex="-1" aria-hidden="true">
+        <img src="img/pv-budget-bridge.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-pv">Solar PV</span><span class="badge">Case study</span></div>
+        <h3><a href="case-studies/pv-budget-bridge.html">PV budget bridge: monthly P50 to actual waterfall and sensor QC</a></h3>
+        <p class="owner">Splits every month&#x27;s gap to the P50 budget into kWh by cause (weather, availability, curtailment, soiling, snow, data gaps) and checks the irradiance sensor first; outage and curtailment losses come back within 0.5 % of a known truth.</p>
+        <div class="links"><a class="btn primary" href="case-studies/pv-budget-bridge.html">Case study</a><a class="btn" href="https://kwwaleszczynski-del.github.io/pv-budget-bridge/">Live page &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-budget-bridge">Code</a></div>
+      </div>
+    </article>
+    <article class="card pick">
+      <a class="thumb" href="case-studies/wind-downtime-availability.html" tabindex="-1" aria-hidden="true">
+        <img src="img/wind-downtime-availability.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-wind">Wind</span><span class="badge">Case study</span></div>
+        <h3><a href="case-studies/wind-downtime-availability.html">Wind turbine downtime, causes and availability</a></h3>
+        <p class="owner">Shows that the category a stop is booked under moves warranty availability more than detecting the stop does: grid and curtailment stops booked as turbine faults turn 97.9 % into 93.5 % for one open farm-year.</p>
+        <div class="links"><a class="btn primary" href="case-studies/wind-downtime-availability.html">Case study</a><a class="btn" href="https://kwwaleszczynski-del.github.io/wind-downtime-availability/">Live page &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-downtime-availability">Code</a></div>
+      </div>
+    </article>
+    <article class="card pick">
+      <a class="thumb" href="case-studies/bess-ops-warranty.html" tabindex="-1" aria-hidden="true">
+        <img src="img/bess-ops-warranty.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-storage">Storage &amp; markets</span><span class="badge">Case study</span></div>
+        <h3><a href="case-studies/bess-ops-warranty.html">Grid battery operations against warranty and LTSA</a></h3>
+        <p class="owner">Checks round-trip efficiency, availability, cycles and capacity tests against warranty and LTSA terms, and shows why the metering point matters: 55 Australian grid batteries convert at about 0.92 but deliver 0.82 at the meter.</p>
+        <div class="links"><a class="btn primary" href="case-studies/bess-ops-warranty.html">Case study</a><a class="btn" href="https://kwwaleszczynski-del.github.io/bess-ops-warranty/">Live page &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-ops-warranty">Code</a></div>
+      </div>
+    </article>
+    <article class="card pick">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/wind-les-gpu/" tabindex="-1" aria-hidden="true">
+        <img src="img/wind-les-gpu.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-wind">Wind</span></div>
+        <h3><a href="https://kwwaleszczynski-del.github.io/wind-les-gpu/">Kelmarsh wind farm in a laptop-GPU LES</a></h3>
+        <p class="owner">A second opinion on the wake loss in a yield assessment: a home-made LES on a laptop GPU, with no tuned wake parameter, gives 9.8 % against 9.2 % measured in six years of SCADA.</p>
+        <div class="links"><a class="btn primary" href="https://kwwaleszczynski-del.github.io/wind-les-gpu/">Live page &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-les-gpu">Code</a></div>
+      </div>
+    </article>
+    <article class="card pick">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/res-asset-kpi/" tabindex="-1" aria-hidden="true">
+        <img src="img/res-asset-kpi.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-tools">Open-source tools</span></div>
+        <h3><a href="https://kwwaleszczynski-del.github.io/res-asset-kpi/">res-asset-kpi: KPI library for PV, wind and BESS</a></h3>
+        <p class="owner">The monthly indicators of PV, wind and battery assets (PR, contract availability, budget bridge, RTE, cycles, capacity tests) as one tested library on PyPI with a DOI, so a report can be reproduced and audited.</p>
+        <div class="links"><a class="btn primary" href="https://kwwaleszczynski-del.github.io/res-asset-kpi/">Docs &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/res-asset-kpi">Code</a></div>
+      </div>
+    </article>
+    <article class="card pick">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/pl-forecast-bench/" tabindex="-1" aria-hidden="true">
+        <img src="img/pl-forecast-bench.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-system">Power system &amp; resource</span></div>
+        <h3><a href="https://kwwaleszczynski-del.github.io/pl-forecast-bench/">A citable forecast benchmark for the Polish grid</a></h3>
+        <p class="owner">Before paying for a forecast, compare it with the free PSE plan under the same as-of rule: intraday models beat the plan by 20-26 %, but day-ahead nothing that respects the 10:00 issue time beats it for volumes.</p>
+        <div class="links"><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pl-forecast-bench/">Live page &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/pl-forecast-bench">Code</a></div>
+      </div>
+    </article>
+    </div>
+  </section>
+
   <section aria-labelledby="live-h">
     <h2 id="live-h">Live pages</h2>
-    <div class="lives"><a class="live" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/"><img src="https://kwwaleszczynski-del.github.io/pl-power-market-live/thumb.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='img/pl-power-market-live.webp'"><span>Polish power market, live</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-capture-price/"><img src="img/pl-capture-price.webp" alt="" loading="lazy"><span>How solar eats its own price in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-bess-revenue-stack/"><img src="img/pl-bess-revenue-stack.webp" alt="" loading="lazy"><span>Battery revenue stacking in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-bess-paper-trading/"><img src="img/pl-bess-paper-trading.webp" alt="" loading="lazy"><span>Battery paper trading, live track record</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-bess-saturation/"><img src="img/pl-bess-saturation.webp" alt="" loading="lazy"><span>When batteries flatten their own spreads</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/cable-pooling-sizer/"><img src="img/cable-pooling-sizer.webp" alt="" loading="lazy"><span>Cable pooling: PV, wind and storage behind one connection</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/bess-ops-warranty/"><img src="img/bess-ops-warranty.webp" alt="" loading="lazy"><span>Grid battery operations against warranty and LTSA</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/bess-capacity-augmentation/"><img src="img/bess-capacity-augmentation.webp" alt="" loading="lazy"><span>Battery ageing vs capacity market obligation</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-hems-mpc/"><img src="img/pl-hems-mpc.webp" alt="" loading="lazy"><span>Home and C&amp;I energy management on 15-minute Polish prices</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/bess-thermal-aux-load/"><img src="img/bess-thermal-aux-load.webp" alt="" loading="lazy"><span>Container thermal balance, HVAC auxiliary load and net RTE of a grid battery</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-cppa-shaping-risk/"><img src="img/pl-cppa-shaping-risk.webp" alt="" loading="lazy"><span>Corporate PPA structuring and shaping risk on Polish power prices</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-budget-bridge/"><img src="img/pv-budget-bridge.webp" alt="" loading="lazy"><span>PV budget bridge: monthly P50 to actual waterfall and sensor QC</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-site-to-pvsyst/"><img src="img/pv-site-to-pvsyst.webp" alt="" loading="lazy"><span>From a parcel to a PVsyst 3D scene, and what the MV network costs</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-tracker-shading-3d/"><img src="img/pv-tracker-shading-3d.webp" alt="" loading="lazy"><span>Single-axis trackers in 3D</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-outage-classifier/"><img src="img/pv-outage-classifier.webp" alt="" loading="lazy"><span>PV outages: detection, cause and availability</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-thermal-check/"><img src="img/pv-thermal-check.webp" alt="" loading="lazy"><span>PV thermal check: modules, inverter, transformer</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-string-iv-faults/"><img src="img/pv-string-iv-faults.webp" alt="" loading="lazy"><span>PV string fault diagnosis from inverter MPPT voltage and current</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-les-gpu/"><img src="img/wind-les-gpu.webp" alt="" loading="lazy"><span>Kelmarsh wind farm in a laptop-GPU LES</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-bayes-twin/"><img src="img/wind-bayes-twin.webp" alt="" loading="lazy"><span>A Bayesian digital twin of a wind farm</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-downtime-availability/"><img src="img/wind-downtime-availability.webp" alt="" loading="lazy"><span>Wind turbine downtime, causes and availability</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-om-reliability/"><img src="img/wind-om-reliability.webp" alt="" loading="lazy"><span>Wind turbine O&amp;M reliability from status and alarm logs</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-thermal-nbm/"><img src="img/wind-thermal-nbm.webp" alt="" loading="lazy"><span>Drivetrain temperatures: early fault detection</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/fly-novelty-scada/"><img src="img/fly-novelty-scada.webp" alt="" loading="lazy"><span>A fly-brain novelty detector for turbine faults</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-wake-shadow/"><img src="img/wind-wake-shadow.webp" alt="" loading="lazy"><span>Wakes and shadow flicker</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-biogas-siting/"><img src="img/pl-biogas-siting.webp" alt="" loading="lazy"><span>Untapped biogas potential in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-biogas-flex/"><img src="img/pl-biogas-flex.webp" alt="" loading="lazy"><span>What is a flexible biogas plant worth?</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/biogas-digester-twin/"><img src="img/biogas-digester-twin.webp" alt="" loading="lazy"><span>Which method catches a sick digester first?</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/res-uplift-verification/"><img src="img/res-uplift-verification.webp" alt="" loading="lazy"><span>Did the upgrade work? Causal O&amp;M verification</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-res-forecast-climate/"><img src="img/pl-res-forecast-climate.webp" alt="" loading="lazy"><span>Wind and solar outlook for Poland, live</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-forecast-bench/"><img src="img/pl-forecast-bench.webp" alt="" loading="lazy"><span>A citable forecast benchmark for the Polish grid</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/poland-mix-sandbox/"><img src="img/poland-mix-sandbox.webp" alt="" loading="lazy"><span>Build Poland&#x27;s power mix with sliders</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-res-reliability-markov/"><img src="img/pl-res-reliability-markov.webp" alt="" loading="lazy"><span>Capacity credit of wind and PV in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-flexibility-ramps/"><img src="img/pl-flexibility-ramps.webp" alt="" loading="lazy"><span>Ramps and flexibility needs of the Polish grid</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-res-curtailment/"><img src="img/pl-res-curtailment.webp" alt="" loading="lazy"><span>PV and wind curtailed by the Polish TSO</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/era5-check-pl/"><img src="img/era5-check-pl.webp" alt="" loading="lazy"><span>How good is ERA5 in Poland?</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/fly-connectome-forecast/"><img src="img/fly-connectome-forecast.webp" alt="" loading="lazy"><span>Can a fly brain forecast wind and solar?</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-grid-connection-ncrfg/"><img src="img/pl-grid-connection-ncrfg.webp" alt="" loading="lazy"><span>Grid connection studies and non-firm capacity on Polish MV/110 kV feeders</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/res-asset-kpi/"><img src="img/res-asset-kpi.webp" alt="" loading="lazy"><span>res-asset-kpi: KPI library for PV, wind and BESS</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pse-opendata/"><img src="img/pse-opendata.webp" alt="" loading="lazy"><span>pse-opendata: Python client for PSE data</span></a></div>
+    <div class="lives"><a class="live" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/"><img src="https://kwwaleszczynski-del.github.io/pl-power-market-live/thumb.webp" alt="" loading="lazy" onerror="this.onerror=null;this.src='img/pl-power-market-live.webp'"><span>Polish power market, live</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-capture-price/"><img src="img/pl-capture-price.webp" alt="" loading="lazy"><span>How solar eats its own price in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-bess-revenue-stack/"><img src="img/pl-bess-revenue-stack.webp" alt="" loading="lazy"><span>Battery revenue stacking in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-bess-paper-trading/"><img src="img/pl-bess-paper-trading.webp" alt="" loading="lazy"><span>Battery paper trading, live track record</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-bess-saturation/"><img src="img/pl-bess-saturation.webp" alt="" loading="lazy"><span>When batteries flatten their own spreads</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/cable-pooling-sizer/"><img src="img/cable-pooling-sizer.webp" alt="" loading="lazy"><span>Cable pooling: PV, wind and storage behind one connection</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/bess-ops-warranty/"><img src="img/bess-ops-warranty.webp" alt="" loading="lazy"><span>Grid battery operations against warranty and LTSA</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/bess-capacity-augmentation/"><img src="img/bess-capacity-augmentation.webp" alt="" loading="lazy"><span>Battery ageing vs capacity market obligation</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-hems-mpc/"><img src="img/pl-hems-mpc.webp" alt="" loading="lazy"><span>Home and C&amp;I energy management on 15-minute Polish prices</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/bess-thermal-aux-load/"><img src="img/bess-thermal-aux-load.webp" alt="" loading="lazy"><span>Container thermal balance, HVAC auxiliary load and net RTE of a grid battery</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-cppa-shaping-risk/"><img src="img/pl-cppa-shaping-risk.webp" alt="" loading="lazy"><span>Corporate PPA structuring and shaping risk on Polish power prices</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-budget-bridge/"><img src="img/pv-budget-bridge.webp" alt="" loading="lazy"><span>PV budget bridge: monthly P50 to actual waterfall and sensor QC</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-site-to-pvsyst/"><img src="img/pv-site-to-pvsyst.webp" alt="" loading="lazy"><span>From a parcel to a PVsyst 3D scene, and what the MV network costs</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-tracker-shading-3d/"><img src="img/pv-tracker-shading-3d.webp" alt="" loading="lazy"><span>Single-axis trackers in 3D</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-outage-classifier/"><img src="img/pv-outage-classifier.webp" alt="" loading="lazy"><span>PV outages: detection, cause and availability</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-thermal-check/"><img src="img/pv-thermal-check.webp" alt="" loading="lazy"><span>PV thermal check: modules, inverter, transformer</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-string-iv-faults/"><img src="img/pv-string-iv-faults.webp" alt="" loading="lazy"><span>PV string fault diagnosis from inverter MPPT voltage and current</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pv-canopy-pac-verification/"><img src="img/pv-canopy-pac-verification.webp" alt="" loading="lazy"><span>1 m LiDAR canopy horizon shading, 3D tracker slopes and IEC 61724-1 PAC acceptance verification</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-les-gpu/"><img src="img/wind-les-gpu.webp" alt="" loading="lazy"><span>Kelmarsh wind farm in a laptop-GPU LES</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-bayes-twin/"><img src="img/wind-bayes-twin.webp" alt="" loading="lazy"><span>A Bayesian digital twin of a wind farm</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-downtime-availability/"><img src="img/wind-downtime-availability.webp" alt="" loading="lazy"><span>Wind turbine downtime, causes and availability</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-om-reliability/"><img src="img/wind-om-reliability.webp" alt="" loading="lazy"><span>Wind turbine O&amp;M reliability from status and alarm logs</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-thermal-nbm/"><img src="img/wind-thermal-nbm.webp" alt="" loading="lazy"><span>Drivetrain temperatures: early fault detection</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/fly-novelty-scada/"><img src="img/fly-novelty-scada.webp" alt="" loading="lazy"><span>A fly-brain novelty detector for turbine faults</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/wind-wake-shadow/"><img src="img/wind-wake-shadow.webp" alt="" loading="lazy"><span>Wakes and shadow flicker</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-biogas-siting/"><img src="img/pl-biogas-siting.webp" alt="" loading="lazy"><span>Untapped biogas potential in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-biogas-flex/"><img src="img/pl-biogas-flex.webp" alt="" loading="lazy"><span>What is a flexible biogas plant worth?</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/biogas-digester-twin/"><img src="img/biogas-digester-twin.webp" alt="" loading="lazy"><span>Which method catches a sick digester first?</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/res-uplift-verification/"><img src="img/res-uplift-verification.webp" alt="" loading="lazy"><span>Did the upgrade work? Causal O&amp;M verification</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/scada-lakehouse-streaming/"><img src="img/scada-lakehouse-streaming.webp" alt="" loading="lazy"><span>Streaming SCADA ingestion, event-time watermarks and Bronze-Silver-Gold lakehouse for wind and PV fleets</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-res-forecast-climate/"><img src="img/pl-res-forecast-climate.webp" alt="" loading="lazy"><span>Wind and solar outlook for Poland, live</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-forecast-bench/"><img src="img/pl-forecast-bench.webp" alt="" loading="lazy"><span>A citable forecast benchmark for the Polish grid</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/poland-mix-sandbox/"><img src="img/poland-mix-sandbox.webp" alt="" loading="lazy"><span>Build Poland&#x27;s power mix with sliders</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-res-reliability-markov/"><img src="img/pl-res-reliability-markov.webp" alt="" loading="lazy"><span>Capacity credit of wind and PV in Poland</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-flexibility-ramps/"><img src="img/pl-flexibility-ramps.webp" alt="" loading="lazy"><span>Ramps and flexibility needs of the Polish grid</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-res-curtailment/"><img src="img/pl-res-curtailment.webp" alt="" loading="lazy"><span>PV and wind curtailed by the Polish TSO</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/era5-check-pl/"><img src="img/era5-check-pl.webp" alt="" loading="lazy"><span>How good is ERA5 in Poland?</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/fly-connectome-forecast/"><img src="img/fly-connectome-forecast.webp" alt="" loading="lazy"><span>Can a fly brain forecast wind and solar?</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pl-grid-connection-ncrfg/"><img src="img/pl-grid-connection-ncrfg.webp" alt="" loading="lazy"><span>Grid connection studies and non-firm capacity on Polish MV/110 kV feeders</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/res-asset-kpi/"><img src="img/res-asset-kpi.webp" alt="" loading="lazy"><span>res-asset-kpi: KPI library for PV, wind and BESS</span></a><a class="live" href="https://kwwaleszczynski-del.github.io/pse-opendata/"><img src="img/pse-opendata.webp" alt="" loading="lazy"><span>pse-opendata: Python client for PSE data</span></a></div>
   </section>
 
   <section aria-labelledby="proj-h">
     <h2 id="proj-h">Projects</h2>
     <div class="filters" role="toolbar" aria-label="Filter projects"><button class="chip active" data-filter="all">All</button><button class="chip" data-filter="pv">Solar PV</button><button class="chip" data-filter="wind">Wind</button><button class="chip" data-filter="biogas">Biogas</button><button class="chip" data-filter="storage">Storage &amp; markets</button><button class="chip" data-filter="system">Power system &amp; resource</button><button class="chip" data-filter="ops">Monitoring</button><button class="chip" data-filter="tools">Open-source tools</button><button class="chip" data-filter="method">Own methods</button></div>
-    <div class="grid">
+    <div class="grid" id="projects">
     <article class="card" data-group="storage" data-method="0">
       <a class="thumb" href="https://kwwaleszczynski-del.github.io/pl-power-market-live/" tabindex="-1" aria-hidden="true">
         <img src="https://kwwaleszczynski-del.github.io/pl-power-market-live/thumb.webp" alt="" loading="lazy" width="960" height="600" onerror="this.onerror=null;this.src='img/pl-power-market-live.webp'">
@@ -241,7 +345,7 @@ footer dd { margin: 0; }
         <p class="summary">Monthly warranty and LTSA reporting for an operating grid battery: SoC-corrected round-trip efficiency with and without auxiliaries, time-, capacity- and energy-based availability, rainflow cycles, warranty violations, capacity tests with guard bands, and a benchmark of all 55 grid batteries in Australia&#x27;s NEM validated against ACEN&#x27;s New England BESS data.</p>
         <p class="highlight">Across 55 NEM batteries conversion RTE is 0.92, but metered RTE is 0.82 median (0.75 for 1 h, 0.88 for 4 h) because of auxiliaries and standby drain; PASA technical availability is 95.8 % median while commercial offered availability is 78.1 %.</p>
         <ul class="tags"><li>AEMO NEM</li><li>LTSA / warranty</li><li>RTE &amp; availability</li></ul>
-        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-ops-warranty">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/bess-ops-warranty/">Live page &#8599;</a></div>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-ops-warranty">Code</a><a class="btn" href="case-studies/bess-ops-warranty.html">Case study</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/bess-ops-warranty/">Live page &#8599;</a></div>
       </div>
     </article>
     <article class="card" data-group="storage" data-method="0">
@@ -306,7 +410,7 @@ footer dd { margin: 0; }
         <p class="summary">Monthly asset-management bridge from P50 budget to measured production (irradiance, temperature, degradation, soiling, snow, clipping, availability, curtailment, data gaps and unexplained residual), weather-corrected PR, contractual guarantee tests and pyranometer QC, checked on NREL PVDAQ and synthetic Polish plants.</p>
         <p class="highlight">Recovers injected outages and curtailment within 0.5 % on synthetic truth and flags clock shifts, sensor tilt errors and pyranometer drift across three multi-year NREL PVDAQ rooftops.</p>
         <ul class="tags"><li>IEC 61724-1</li><li>waterfall bridge</li><li>NREL PVDAQ</li></ul>
-        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-budget-bridge">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-budget-bridge/">Live page &#8599;</a></div>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-budget-bridge">Code</a><a class="btn" href="case-studies/pv-budget-bridge.html">Case study</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-budget-bridge/">Live page &#8599;</a></div>
       </div>
     </article>
     <article class="card" data-group="pv" data-method="0">
@@ -400,6 +504,19 @@ footer dd { margin: 0; }
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-string-iv-faults">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-string-iv-faults/">Live page &#8599;</a></div>
       </div>
     </article>
+    <article class="card" data-group="pv" data-method="1">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/pv-canopy-pac-verification/" tabindex="-1" aria-hidden="true">
+        <img src="img/pv-canopy-pac-verification.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-pv">Solar PV</span><span class="badge">Own method</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/pv-canopy-pac-verification">1 m LiDAR canopy horizon shading, 3D tracker slopes and IEC 61724-1 PAC acceptance verification</a></h3>
+        <p class="summary">Reconciling a 14-day IEC 61724-1 Provisional Acceptance Certificate (PAC) test on a 45 MWp single-axis tracker plant by combining a 1 m Cloud-Optimized GeoTIFF canopy height raycaster, 3D tracker pile-slope regression and SCADA MPPT string-dropout records.</p>
+        <p class="highlight">A 12-18 m off-site forest stand 22-38 m east of Station 5 explains 93 % of morning MPPT string dropouts (R² = 0.93, F1 = 0.96) and depresses raw station PR to 74.8 %; excluding off-site canopy shading while retaining an EPC cross-slope defect on Station 3 lifts plant PAC PR from 81.4 % to 83.6 % (vs 82.5 % guarantee).</p>
+        <ul class="tags"><li>1 m LiDAR CHM COG</li><li>IEC 61724-1 PAC</li><li>3D tracker raycasting</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-canopy-pac-verification">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-canopy-pac-verification/">Live page &#8599;</a></div>
+      </div>
+    </article>
     <article class="card" data-group="wind" data-method="1">
       <a class="thumb" href="https://kwwaleszczynski-del.github.io/wind-les-gpu/" tabindex="-1" aria-hidden="true">
         <img src="img/wind-les-gpu.webp" alt="" loading="lazy" width="960" height="600">
@@ -436,7 +553,7 @@ footer dd { margin: 0; }
         <p class="summary">Stops, deratings and curtailment found in 10-minute SCADA without status codes (rules, power-curve residual, pitch / rotor-speed signature, HMM, gradient boosting), classified into IEC 61400-26 categories, priced in lost energy and turned into time- and energy-based availability on three open farms, with a CLI for any farm&#x27;s long-format SCADA.</p>
         <p class="highlight">The pitch / rotor-speed signature finds stops with F1 0.80-0.91 without training, while the usual &quot;power ≤ 0&quot; rule raises 4,833 alarms for 1,412 logged stops; booking grid and curtailment stops as turbine faults cuts warranty availability from 97.9 % to 93.5 %.</p>
         <ul class="tags"><li>IEC 61400-26</li><li>outage detection</li><li>gradient boosting</li></ul>
-        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-downtime-availability">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/wind-downtime-availability/">Live page &#8599;</a></div>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-downtime-availability">Code</a><a class="btn" href="case-studies/wind-downtime-availability.html">Case study</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/wind-downtime-availability/">Live page &#8599;</a></div>
       </div>
     </article>
     <article class="card" data-group="wind" data-method="1">
@@ -580,6 +697,19 @@ footer dd { margin: 0; }
         <p class="highlight">Alerts fire on real faults, including a PV inverter that stopped producing ten days before it reported an error code.</p>
         <ul class="tags"><li>Grafana</li><li>InfluxDB / Flux</li><li>alerting</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/grafana-fleet-as-code">Code</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="ops" data-method="1">
+      <a class="thumb" href="https://kwwaleszczynski-del.github.io/scada-lakehouse-streaming/" tabindex="-1" aria-hidden="true">
+        <img src="img/scada-lakehouse-streaming.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-ops">Monitoring</span><span class="badge">Own method</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/scada-lakehouse-streaming">Streaming SCADA ingestion, event-time watermarks and Bronze-Silver-Gold lakehouse for wind and PV fleets</a></h3>
+        <p class="summary">Bronze-Silver-Gold Parquet and TimescaleDB telemetry pipeline for a 50 MW hybrid wind and solar fleet: event-time watermarking and idempotent upserts across LTE router outages, Europe/Warsaw DST transition reconciliation, uint32 energy counter unwrapping and 5-class sensor QC.</p>
+        <p class="highlight">Naive ingestion-time windowing inflates 15-minute peak power 3.8x on LTE reconnect bursts (14.2 % hourly MAE) and loses 4 quarter-hours (-6.0 % daily energy) on the autumn CEST-&gt;CET fallback; a 6 h event-time watermark with monotonic counter continuity recovers 100 % of intervals at 0.986 QC macro-F1.</p>
+        <ul class="tags"><li>TimescaleDB / Parquet</li><li>event-time watermarks</li><li>SCADA data quality</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/scada-lakehouse-streaming">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/scada-lakehouse-streaming/">Live page &#8599;</a></div>
       </div>
     </article>
     <article class="card" data-group="system" data-method="0">
@@ -730,7 +860,7 @@ footer dd { margin: 0; }
 
   <footer>
     <dl>
-      <dt>Stack</dt><dd>Python · pandas · SciPy / HiGHS MILP · pvlib · PyWake · PyTorch · NumPyro / JAX · Plotly · Grafana · InfluxDB 2 / Flux · GitHub Actions · pytest</dd>
+      <dt>Stack</dt><dd>Python · pandas · SciPy / HiGHS MILP · pvlib · PyWake · PyTorch · NumPyro / JAX · Plotly · Grafana · InfluxDB 2 / Flux · TimescaleDB / Parquet · GitHub Actions · pytest</dd>
       <dt>Open data</dt><dd>PSE (Polish TSO) open API · AEMO NEM · NREL PVDAQ · Kelmarsh wind farm SCADA (Cubico, CC BY 4.0) · PVGIS · Open-Meteo / ERA5 · Met Office sunshine records · Zenodo LFP cell ageing data · IMGW-PIB synoptic stations · CERRA (Copernicus) · IEEE RTS-79 · CARE to Compare benchmark (CC BY-SA 4.0) · FlyWire connectome v783 (CC BY 4.0)</dd>
     </dl>
     <p>All projects are personal work on public datasets, credited in each repository. Updated 30 Oct 2026.</p>
@@ -741,7 +871,7 @@ document.querySelectorAll(".chip").forEach(function (chip) {
   chip.addEventListener("click", function () {
     var f = chip.dataset.filter;
     document.querySelectorAll(".chip").forEach(function (c) { c.classList.toggle("active", c === chip); });
-    document.querySelectorAll(".card").forEach(function (card) {
+    document.querySelectorAll("#projects .card").forEach(function (card) {
       card.hidden = !(f === "all" || card.dataset.group === f || (f === "method" && card.dataset.method === "1"));
     });
   });

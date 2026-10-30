@@ -56,6 +56,7 @@
     "Plotly",
     "Grafana",
     "InfluxDB 2 / Flux",
+    "TimescaleDB / Parquet",
     "GitHub Actions",
     "pytest"
   ],
@@ -386,6 +387,21 @@
       ]
     },
     {
+      "repo": "pv-canopy-pac-verification",
+      "title": "1 m LiDAR canopy horizon shading, 3D tracker slopes and IEC 61724-1 PAC acceptance verification",
+      "group": "pv",
+      "method": true,
+      "summary": "Reconciling a 14-day IEC 61724-1 Provisional Acceptance Certificate (PAC) test on a 45 MWp single-axis tracker plant by combining a 1 m Cloud-Optimized GeoTIFF canopy height raycaster, 3D tracker pile-slope regression and SCADA MPPT string-dropout records.",
+      "highlight": "A 12-18 m off-site forest stand 22-38 m east of Station 5 explains 93 % of morning MPPT string dropouts (R² = 0.93, F1 = 0.96) and depresses raw station PR to 74.8 %; excluding off-site canopy shading while retaining an EPC cross-slope defect on Station 3 lifts plant PAC PR from 81.4 % to 83.6 % (vs 82.5 % guarantee).",
+      "image": "docs/img/pac_pr_waterfall.png",
+      "demo": "https://kwwaleszczynski-del.github.io/pv-canopy-pac-verification/",
+      "tags": [
+        "1 m LiDAR CHM COG",
+        "IEC 61724-1 PAC",
+        "3D tracker raycasting"
+      ]
+    },
+    {
       "repo": "wind-les-gpu",
       "title": "Kelmarsh wind farm in a laptop-GPU LES",
       "group": "wind",
@@ -581,6 +597,21 @@
         "Grafana",
         "InfluxDB / Flux",
         "alerting"
+      ]
+    },
+    {
+      "repo": "scada-lakehouse-streaming",
+      "title": "Streaming SCADA ingestion, event-time watermarks and Bronze-Silver-Gold lakehouse for wind and PV fleets",
+      "group": "ops",
+      "method": true,
+      "summary": "Bronze-Silver-Gold Parquet and TimescaleDB telemetry pipeline for a 50 MW hybrid wind and solar fleet: event-time watermarking and idempotent upserts across LTE router outages, Europe/Warsaw DST transition reconciliation, uint32 energy counter unwrapping and 5-class sensor QC.",
+      "highlight": "Naive ingestion-time windowing inflates 15-minute peak power 3.8x on LTE reconnect bursts (14.2 % hourly MAE) and loses 4 quarter-hours (-6.0 % daily energy) on the autumn CEST->CET fallback; a 6 h event-time watermark with monotonic counter continuity recovers 100 % of intervals at 0.986 QC macro-F1.",
+      "image": "docs/img/lte_backfill_watermark.png",
+      "demo": "https://kwwaleszczynski-del.github.io/scada-lakehouse-streaming/",
+      "tags": [
+        "TimescaleDB / Parquet",
+        "event-time watermarks",
+        "SCADA data quality"
       ]
     },
     {
