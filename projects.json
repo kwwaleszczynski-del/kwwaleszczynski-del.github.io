@@ -3,7 +3,7 @@
     "name": "Konrad Waleszczyński",
     "github": "kwwaleszczynski-del",
     "headline": "Renewable energy data analytics",
-    "intro": "Analytics for solar, wind and battery assets: performance verification, fault detection, power market analysis and dashboards. Every project below is written from scratch on open data and can be rerun from its repository, with tests and CI.",
+    "intro": "Analytics for solar, wind and battery assets: performance verification, fault detection, power market analysis and dashboards. Every project below is written from scratch on open data or on a disclosed synthetic plant and can be rerun from its repository, with tests and CI.",
     "links": [
       {
         "label": "LinkedIn",
@@ -56,7 +56,6 @@
     "Plotly",
     "Grafana",
     "InfluxDB 2 / Flux",
-    "TimescaleDB / Parquet",
     "GitHub Actions",
     "pytest"
   ],
@@ -231,48 +230,6 @@
       ]
     },
     {
-      "repo": "pl-hems-mpc",
-      "title": "Home and C&I energy management on 15-minute Polish prices",
-      "group": "storage",
-      "summary": "15-minute MILP dispatch of rooftop PV, battery, floor-slab heat pump and EV under Polish FIFO net-billing (RCE) and C&I B23 with the PSE capacity fee (K1-K4), checked over a localhost Modbus TCP loop with a hardware watchdog and packaged for Home Assistant.",
-      "highlight": "Over Oct 2025 - Sep 2026 (357.5 h of RCE <= 0), the forecast MILP cuts a dynamic-tariff house's annual cost by 36 % (2,277 PLN/yr) and puts 87 % of C&I working days in the K1 capacity-fee band (-71 % capacity fee).",
-      "image": "docs/img/dispatch_week.png",
-      "demo": "https://kwwaleszczynski-del.github.io/pl-hems-mpc/",
-      "tags": [
-        "MILP",
-        "Modbus TCP",
-        "Home Assistant"
-      ]
-    },
-    {
-      "repo": "bess-thermal-aux-load",
-      "title": "Container thermal balance, HVAC auxiliary load and net RTE of a grid battery",
-      "group": "storage",
-      "summary": "Coupled electro-thermal and auxiliary-power model of a 2.5 MW / 5 MWh LFP container in Polish weather: irreversible Joule and reversible entropic heat, liquid-cooling chiller COP vs forced-air DX, winter PTC heating, and PCS/MV transformer losses across reserve and arbitrage duties.",
-      "highlight": "At 1 cycle/day DC cell RTE is 94.2 % and PCS AC RTE is 89.6 %, but 15 kV metered RTE averages 84.2 % (79.4 % in January, 82.8 % in July) and falls to 73.9 % under 0.35 cycle/day reserve duty due to 89 MWh/yr of standing transformer, BMS and heating load.",
-      "image": "docs/img/monthly_rte_waterfall.png",
-      "demo": "https://kwwaleszczynski-del.github.io/bess-thermal-aux-load/",
-      "tags": [
-        "LFP thermal model",
-        "HVAC / chiller",
-        "auxiliary load"
-      ]
-    },
-    {
-      "repo": "pl-cppa-shaping-risk",
-      "title": "Corporate PPA structuring and shaping risk on Polish power prices",
-      "group": "storage",
-      "summary": "Pay-as-produced vs baseload and two-shift industrial cPPAs on Polish spot prices: exact 4-term decomposition into price level, profile shaping cost, volume risk and hourly residual exposure, negative-price floor clauses, and PV + wind + BESS portfolio sizing across 500 bootstrap years.",
-      "highlight": "A 65 % wind + 35 % PV hybrid cuts baseload shaping cost from 142 PLN/MWh (pure PV) to 31 PLN/MWh, and adding a 2 h battery brings it to 11 PLN/MWh while lifting 24/7 hourly carbon-free matching from 44 % to 81 %.",
-      "image": "docs/img/shaping_cost_mix.png",
-      "demo": "https://kwwaleszczynski-del.github.io/pl-cppa-shaping-risk/",
-      "tags": [
-        "cPPA",
-        "shaping risk",
-        "Monte Carlo"
-      ]
-    },
-    {
       "repo": "pv-budget-bridge",
       "title": "PV budget bridge: monthly P50 to actual waterfall and sensor QC",
       "group": "pv",
@@ -369,36 +326,6 @@
         "pvlib",
         "IEC 61724-1",
         "NREL PVDAQ"
-      ]
-    },
-    {
-      "repo": "pv-string-iv-faults",
-      "title": "PV string fault diagnosis from inverter MPPT voltage and current",
-      "group": "pv",
-      "method": true,
-      "summary": "Separating shorted bypass diodes, PID voltage loss, corroded MC4 series resistance, partial shading and uniform soiling from 15-minute inverter MPPT voltage and current alone, verified on a 72-sub-string Bishop one-diode model.",
-      "highlight": "Shorted bypass diodes produce a current-independent 14.3 V step per sub-string while connector resistance slopes linearly with current (dV = dR_s * I), recovering injected dR_s within 2 % and classifying six fault modes at 0.968 macro-F1.",
-      "image": "docs/img/dv_vs_current_signature.png",
-      "demo": "https://kwwaleszczynski-del.github.io/pv-string-iv-faults/",
-      "tags": [
-        "Bishop I-V model",
-        "MPPT diagnostics",
-        "bypass diodes"
-      ]
-    },
-    {
-      "repo": "pv-canopy-pac-verification",
-      "title": "1 m LiDAR canopy horizon shading, 3D tracker slopes and IEC 61724-1 PAC acceptance verification",
-      "group": "pv",
-      "method": true,
-      "summary": "Reconciling a 14-day IEC 61724-1 Provisional Acceptance Certificate (PAC) test on a 45 MWp single-axis tracker plant by combining a 1 m Cloud-Optimized GeoTIFF canopy height raycaster, 3D tracker pile-slope regression and SCADA MPPT string-dropout records.",
-      "highlight": "A 12-18 m off-site forest stand 22-38 m east of Station 5 explains 93 % of morning MPPT string dropouts (R² = 0.93, F1 = 0.96) and depresses raw station PR to 74.8 %; excluding off-site canopy shading while retaining an EPC cross-slope defect on Station 3 lifts plant PAC PR from 81.4 % to 83.6 % (vs 82.5 % guarantee).",
-      "image": "docs/img/pac_pr_waterfall.png",
-      "demo": "https://kwwaleszczynski-del.github.io/pv-canopy-pac-verification/",
-      "tags": [
-        "1 m LiDAR CHM COG",
-        "IEC 61724-1 PAC",
-        "3D tracker raycasting"
       ]
     },
     {
@@ -600,21 +527,6 @@
       ]
     },
     {
-      "repo": "scada-lakehouse-streaming",
-      "title": "Streaming SCADA ingestion, event-time watermarks and Bronze-Silver-Gold lakehouse for wind and PV fleets",
-      "group": "ops",
-      "method": true,
-      "summary": "Bronze-Silver-Gold Parquet and TimescaleDB telemetry pipeline for a 50 MW hybrid wind and solar fleet: event-time watermarking and idempotent upserts across LTE router outages, Europe/Warsaw DST transition reconciliation, uint32 energy counter unwrapping and 5-class sensor QC.",
-      "highlight": "Naive ingestion-time windowing inflates 15-minute peak power 3.8x on LTE reconnect bursts (14.2 % hourly MAE) and loses 4 quarter-hours (-6.0 % daily energy) on the autumn CEST->CET fallback; a 6 h event-time watermark with monotonic counter continuity recovers 100 % of intervals at 0.986 QC macro-F1.",
-      "image": "docs/img/lte_backfill_watermark.png",
-      "demo": "https://kwwaleszczynski-del.github.io/scada-lakehouse-streaming/",
-      "tags": [
-        "TimescaleDB / Parquet",
-        "event-time watermarks",
-        "SCADA data quality"
-      ]
-    },
-    {
       "repo": "pl-res-forecast-climate",
       "title": "Wind and solar outlook for Poland, live",
       "group": "system",
@@ -632,14 +544,14 @@
       "repo": "pl-forecast-bench",
       "title": "A citable forecast benchmark for the Polish grid",
       "group": "system",
-      "summary": "Wind, solar, demand and day-ahead price forecasts for Poland at 15-minute resolution, day-ahead (issued at 10:00 on D-1) and intraday, with fixed data, splits and metrics and a strict as-of rule enforced by leakage tests; ten reference models from persistence and the PSE plan to gradient boosting and zero-shot Chronos and TimesFM foundation models, with a public leaderboard.",
+      "summary": "Wind, solar, demand and day-ahead price forecasts for Poland at 15-minute resolution, day-ahead (issued at 10:00 on D-1) and intraday, with fixed data, splits and metrics and a strict as-of rule enforced by leakage tests; eleven reference models from persistence and the PSE plan to gradient boosting and zero-shot Chronos, TimesFM and Toto foundation models, with a public leaderboard, a monthly live track and a Zenodo DOI.",
       "highlight": "Intraday models beat the PSE plan by 20-26 %; day-ahead nothing that respects the 10:00 issue time beats it for volumes, and the price is the one task a foundation model wins (Chronos-2 with weather covariates, 88.5 PLN/MWh MAE, 9 % better than gradient boosting).",
       "image": "docs/img/skill.png",
       "anchor": "bottom",
       "demo": "https://kwwaleszczynski-del.github.io/pl-forecast-bench/",
       "tags": [
         "forecasting benchmark",
-        "Chronos / TimesFM",
+        "Chronos / TimesFM / Toto",
         "PSE"
       ]
     },
@@ -725,20 +637,6 @@
         "FlyWire",
         "reservoir computing",
         "negative result"
-      ]
-    },
-    {
-      "repo": "pl-grid-connection-ncrfg",
-      "title": "Grid connection studies and non-firm capacity on Polish MV/110 kV feeders",
-      "group": "system",
-      "summary": "Steady-state and N-1 grid connection study of a Polish 110/15 kV GPZ substation and radial 15 kV feeders using a polar Newton-Raphson Ybus solver: voltage rise, thermal loading, NC RfG Type B/C Q(U) and cos-phi(P) reactive control, non-firm export caps and co-located BESS cable pooling.",
-      "highlight": "On a 14.2 km overhead 15 kV feeder, NC RfG Q(U) droop lifts hosting capacity from 6.17 MW to 11.53 MW (+87 %) with 84 % lower reactive line losses than fixed cos-phi = 0.95; a 70 % export cap plus 2 h BESS unlocks 35.6 MW across the GPZ under N-1.",
-      "image": "docs/img/hosting_capacity.png",
-      "demo": "https://kwwaleszczynski-del.github.io/pl-grid-connection-ncrfg/",
-      "tags": [
-        "NC RfG Q(U)",
-        "Newton-Raphson Ybus",
-        "N-1 hosting capacity"
       ]
     },
     {

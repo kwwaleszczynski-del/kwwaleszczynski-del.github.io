@@ -442,8 +442,6 @@ def build_profile(cfg: dict, start: dict) -> str:
     by_repo = {p["repo"]: p for p in projects}
     cases = {c["repo"] for c in start["case_studies"]}
     repo = lambda p: f"https://github.com/{user}/{p['repo']}"  # noqa: E731
-    live = " · ".join(f"[{p['title']}]({p['demo']})" for p in projects if p.get("demo"))
-    methods = " · ".join(f"[{p['title']}]({repo(p)})" for p in projects if p.get("method"))
     contact = " · ".join([f"[**Interactive Portfolio**]({site})"]
                          + [f"[**{l['label']}**]({l['url']})" for l in owner.get("links", [])])
     picks = []
@@ -454,13 +452,15 @@ def build_profile(cfg: dict, start: dict) -> str:
         picks.append(f"- **[{p['title']}]({repo(p)})**{extra}  \n  {s['for_owner']}")
     out = [f"### {owner['headline']}", "", contact, "", owner["intro"], "",
            "#### Start here", "", start["intro"], "", *picks, "",
-           f"**Live pages:** {live}  ",
-           f"**Own verification methods:** {methods}", ""]
+           f"#### All {len(projects)} projects", "",
+           "Grouped by topic; click a group to open it. Every card links to the repository and, where there is one, "
+           f"to its live page. The same list with filters is on the [interactive portfolio]({site}).", ""]
     for gid, label in groups.items():
         items = [p for p in projects if p["group"] == gid]
         if not items:
             continue
-        out += [f"#### {label}", "", "<table>"]
+        out += ["<details>", f"<summary><b>{html.escape(label, quote=False)}</b> · {len(items)} "
+                f"project{'s' if len(items) > 1 else ''}</summary>", "", "<table>"]
         for i in range(0, len(items), 2):
             out.append("<tr>")
             for p in items[i:i + 2]:
@@ -472,8 +472,8 @@ def build_profile(cfg: dict, start: dict) -> str:
             if len(items[i:i + 2]) == 1:
                 out.append('<td width="50%"></td>')
             out.append("</tr>")
-        out += ["</table>", ""]
-    out += [f"**Stack:** {' · '.join(cfg['stack'])}  ", f"**Open data:** {' · '.join(cfg['data_sources'])}", ""]
+        out += ["</table>", "</details>", ""]
+    out += ["", f"**Stack:** {' · '.join(cfg['stack'])}  ", f"**Open data:** {' · '.join(cfg['data_sources'])}", ""]
     return "\n".join(out)
 
 
