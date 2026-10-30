@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is the battery doing what its warranty and LTSA promise? | Konrad Waleszczyński</title>
+<meta name="description" content="Monthly checks of round-trip efficiency, availability, cycling and capacity for an operating grid battery, verified on a battery with a known truth and run on every grid battery in Australia&#x27;s NEM.">
+<meta property="og:title" content="Is the battery doing what its warranty and LTSA promise?">
+<meta property="og:description" content="Monthly checks of round-trip efficiency, availability, cycling and capacity for an operating grid battery, verified on a battery with a known truth and run on every grid battery in Australia&#x27;s NEM.">
+<meta property="og:image" content="https://kwwaleszczynski-del.github.io/img/case-bess-ops-warranty.png">
+<meta name="color-scheme" content="light dark">
+<style>
+:root {
+  --bg: #f6f7f9; --card: #ffffff; --text: #151a22; --muted: #5a6474; --line: #e2e6ec; --chip: #edf0f4;
+  --hl-bg: #fff8eb; --hl-line: #e8a33a; --pv: #c97a06; --wind: #0e7490; --storage: #6d43c9; --ops: #475569; --bio: #4d7c0f;
+  --accent: #0e7490; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 4px 16px rgba(16,24,40,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117; --card: #151b24; --text: #e6eaf0; --muted: #98a2b3; --line: #252e3a; --chip: #1d2530;
+    --hl-bg: #231d12; --hl-line: #d4912c; --pv: #f0a83a; --wind: #38bdd8; --storage: #a78bfa; --ops: #94a3b8; --bio: #9ccc65;
+    --accent: #38bdd8; --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+a { color: inherit; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+header.hero { padding: 64px 0 32px; }
+.hero .name { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.hero h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.1; margin: 0 0 16px; letter-spacing: -.02em; }
+.hero h1 span { background: linear-gradient(90deg, var(--pv), var(--wind)); -webkit-background-clip: text;
+  background-clip: text; color: transparent; }
+.hero p.intro { max-width: 720px; font-size: 18px; color: var(--muted); margin: 0 0 24px; }
+.stats { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 0 0 28px; padding: 0; list-style: none; }
+.stats b { display: block; font-size: 28px; line-height: 1.1; }
+.stats span { font-size: 14px; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-block; padding: 7px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--card);
+  text-decoration: none; font-size: 14px; font-weight: 600; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+@media (prefers-color-scheme: dark) { .btn.primary { color: #06141a; } }
+h2 { font-size: 22px; margin: 40px 0 16px; letter-spacing: -.01em; }
+.lives { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.live { display: flex; gap: 12px; align-items: center; padding: 10px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: var(--shadow); }
+.live:hover { border-color: var(--accent); }
+.live img { width: 96px; aspect-ratio: 16/10; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.chip { font: inherit; font-size: 14px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--chip); color: var(--text); cursor: pointer; }
+.chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; }
+.card { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  overflow: hidden; box-shadow: var(--shadow); }
+.card[hidden] { display: none; }
+.thumb { display: block; border-bottom: 1px solid var(--line); background: #fff; }
+.thumb img { display: block; width: 100%; height: auto; aspect-ratio: 16/10; object-fit: cover; }
+.body { display: flex; flex-direction: column; flex: 1; padding: 16px 18px 18px; }
+.meta { display: flex; gap: 8px; align-items: center; font-size: 13px; margin-bottom: 6px; }
+.group { font-weight: 600; }
+.group::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;
+  background: currentColor; vertical-align: 1px; }
+.g-pv { color: var(--pv); } .g-wind { color: var(--wind); } .g-storage { color: var(--storage); } .g-ops { color: var(--ops); } .g-biogas { color: var(--bio); }
+.badge { font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--hl-line);
+  color: var(--hl-line); }
+.card h3 { font-size: 19px; line-height: 1.3; margin: 0 0 8px; }
+.card h3 a { text-decoration: none; }
+.card h3 a:hover { text-decoration: underline; }
+.summary { margin: 0 0 12px; color: var(--muted); font-size: 15px; }
+.highlight { margin: 0 0 14px; padding: 10px 12px; background: var(--hl-bg); border-left: 3px solid var(--hl-line);
+  border-radius: 0 8px 8px 0; font-size: 15px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0 0 16px; }
+.tags li { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--chip); color: var(--muted); }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+footer { margin: 56px 0 0; padding: 28px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0 0 16px; }
+footer dt { font-weight: 600; color: var(--text); }
+footer dd { margin: 0; }
+.lead { max-width: 760px; color: var(--muted); margin: -4px 0 18px; }
+.pick .owner { margin: 0 0 16px; font-size: 15px; }
+.case { max-width: 800px; }
+.crumb { margin: 28px 0 0; font-size: 14px; }
+.crumb a { color: var(--muted); text-decoration: none; }
+.crumb a:hover { color: var(--accent); }
+.case header { padding: 28px 0 4px; }
+.kicker { display: flex; gap: 8px; align-items: center; font-size: 13px; margin: 0 0 10px; }
+.case h1 { font-size: clamp(28px, 4.4vw, 40px); line-height: 1.15; margin: 0 0 14px; letter-spacing: -.02em; }
+.dek { font-size: 18px; color: var(--muted); margin: 0 0 24px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; list-style: none;
+  padding: 0; margin: 0 0 28px; }
+.kpis li { padding: 14px 16px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+.kpis b { display: block; font-size: 24px; line-height: 1.2; margin-bottom: 4px; }
+.kpis span { font-size: 14px; color: var(--muted); }
+figure { margin: 0; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.case h2 { font-size: 21px; margin: 36px 0 12px; }
+.case section ul { margin: 0; padding-left: 20px; }
+.case section li { margin: 0 0 10px; }
+.case section > p { margin: 0 0 12px; }
+.tablewrap { overflow-x: auto; margin: 18px 0 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--card); }
+caption { text-align: left; font-weight: 600; padding: 0 0 8px; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-weight: 600; }
+td + td, th + th { text-align: right; }
+td + td { white-space: nowrap; }
+.note { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+.case .links { margin: 0 0 16px; }
+@media (max-width: 560px) {
+  .wrap { padding: 0 16px; }
+  header.hero { padding-top: 40px; }
+  .grid { grid-template-columns: 1fr; }
+  footer dl { grid-template-columns: 1fr; }
+  footer dd { margin-bottom: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap case">
+  <p class="crumb"><a href="../#start">&#8592; Konrad Waleszczyński: all projects</a></p>
+  <header>
+    <p class="kicker"><span class="group g-storage">Storage &amp; markets</span><span class="badge">Case study</span></p>
+    <h1>Is the battery doing what its warranty and LTSA promise?</h1>
+    <p class="dek">Monthly checks of round-trip efficiency, availability, cycling and capacity for an operating grid battery, verified on a battery with a known truth and run on every grid battery in Australia&#x27;s NEM.</p>
+    <ul class="kpis"><li><b>0.92 vs 0.82</b><span>median conversion efficiency against round-trip efficiency at the meter, 55 NEM batteries</span></li><li><b>7.3 pp</b><span>daily RTE gap between the operator&#x27;s own meter and the market SCADA point at one battery</span></li><li><b>95.8 % vs 78.1 %</b><span>median technical against offered availability, 38 batteries in service</span></li></ul>
+  </header>
+  <figure>
+    <img src="../img/case-bess-ops-warranty.png" alt="New England BESS, section 1: daily RTE from the operator&#x27;s own data (A) and from market data (B, C). The gap between A and B is the metering point." width="998" height="412">
+    <figcaption>New England BESS, section 1: daily RTE from the operator&#x27;s own data (A) and from market data (B, C). The gap between A and B is the metering point.</figcaption>
+  </figure>
+
+  <section aria-labelledby="problem-h">
+    <h2 id="problem-h">The problem</h2>
+    <p>Once a battery is built, the asset manager&#x27;s question changes from what it can earn to whether it does what the contracts promise: round-trip efficiency, availability, cycles, operating limits and usable capacity, against the supplier&#x27;s warranty and the long-term service agreement (LTSA).</p><p>Each of these numbers depends on where it is metered, over which window and how events are treated. A figure from market data measures something different from what a contract tests.</p>
+  </section>
+
+  <section aria-labelledby="method-h">
+    <h2 id="method-h">Data and method</h2>
+    <ul><li><b>Input and output:</b> a generic long table from any EMS or SCADA, with the site, warranty and LTSA terms in YAML; a monthly report in Excel and HTML.</li><li><b>Estimators:</b> round-trip efficiency corrected for the change of state of charge, with and without auxiliaries; LTSA time-, capacity- and energy-based availability with event treatments; rainflow cycles and warranty-limit violations; capacity tests with measurement uncertainty and a guard band.</li><li><b>Verification</b> on a synthetic 50 MW / 100 MWh battery: two years of 15-minute data exported like a real EMS (kW, two PCS and BMS blocks, local time with DST), with known efficiencies, auxiliaries, outages and fade.</li><li><b>Benchmark</b> on AEMO data for every grid battery in the NEM (October 2025 to September 2026), checked against the 5-minute power and state of charge that ACEN publishes for its New England BESS.</li></ul>
+  </section>
+
+  <section aria-labelledby="result-h">
+    <h2 id="result-h">Result</h2>
+    <ul><li>On the synthetic battery the RTE without auxiliaries is recovered exactly (0.91298), availability exactly including the DST days, and every injected warranty violation is found and nothing else. The SoC correction makes daily RTE usable: uncorrected, daily values spread over 2.8 pp; corrected, 90 % of days are within 0.25 pp of the truth.</li><li>Auxiliaries decide the RTE guarantee. Including them, the same battery reaches 0.859-0.865 a year, but its winter months fall to 0.831-0.841 because of heating, below an illustrative 85 % monthly guarantee.</li><li>With class 0.2S metering the expanded uncertainty of a capacity test is 0.7-1.4 MWh, more than the first two tests&#x27; margin over the guaranteed curve (0.6 and 1.0 MWh). Their verdict is inconclusive, not pass.</li><li>Across 55 NEM batteries (8.9 GW / 20.3 GWh) the RTE at the SCADA point has a median of <b>0.82</b> (interquartile range 0.78-0.85) and grows with duration, while the conversion efficiency is about <b>0.92</b> for all of them: the difference is standby losses and auxiliaries seen at the connection point.</li><li>At New England BESS the daily RTE is 0.868 from the operator&#x27;s own meter and state of charge, and 0.794 from AEMO SCADA with the same state of charge. The metering point accounts for <b>7.3 pp</b>, the source of the stored energy for 3.1 pp (mean absolute daily differences).</li><li>Declared physical availability (PASA, counted like an LTSA capacity formula) has a median of <b>95.8 %</b> for the 38 batteries in service for at least six months; 15 of them reach an illustrative 97 % guarantee. Offered availability is 78.1 %: what is held back is commercial, for example capacity reserved under other contracts, not technical.</li></ul>
+    <div class="tablewrap"><table><caption>NEM batteries, October 2025 to September 2026: round-trip efficiency by duration</caption><thead><tr><th>Duration</th><th>Batteries</th><th>RTE at the SCADA point, median (range)</th><th>Conversion RTE</th></tr></thead><tbody><tr><td>About 1 h</td><td>7</td><td>0.75 (0.47-0.81)</td><td>0.919</td></tr><tr><td>About 2 h</td><td>41</td><td>0.83 (0.74-0.86)</td><td>0.924</td></tr><tr><td>3 h or more</td><td>5</td><td>0.88 (0.87-0.90)</td><td>0.925</td></tr></tbody></table></div><p class="note">Conversion RTE from the hourly regression of reported stored energy in the companion project bess-soc-soh-degradation, which separates a standby drain.</p>
+  </section>
+
+  <section aria-labelledby="decision-h">
+    <h2 id="decision-h">What it means for a decision</h2>
+    <ul><li><b>Before comparing an RTE with a guarantee, check where it is measured and whether the auxiliaries are inside.</b> An RTE from revenue-meter or market data includes auxiliaries and standby; it cannot be compared with one guaranteed at the PCS terminals.</li><li><b>Monthly RTE clauses are tested hardest in winter.</b> Heating can take an otherwise compliant battery below the guarantee.</li><li><b>Read capacity tests with their uncertainty.</b> Early tests close to the guaranteed curve can be inconclusive rather than a pass, which matters when a claim or an augmentation is planned from them.</li><li><b>Low offered availability in market data is a trading or contract choice, not a fault.</b> The closest public proxy of what an LTSA measures is the declared physical availability, and it is still the operator&#x27;s own statement.</li></ul>
+  </section>
+
+  <section aria-labelledby="limits-h">
+    <h2 id="limits-h">Limitations</h2>
+    <ul><li>Every contract term (warranty, LTSA, damages) is an illustrative placeholder; real contracts differ in the details that decide money.</li><li>Market data has no auxiliary metering behind the connection point, no temperatures, no capacity tests, no outage log and no warranty terms.</li><li>The synthetic verification shows that the estimators are consistent with the physics they assume; real batteries add part-load efficiency curves, self-discharge, cell imbalance and SoC drift.</li><li>Capacity-test uncertainty covers the instruments and the temperature correction, not the test procedure itself, which can matter more.</li></ul>
+  </section>
+
+  <section aria-labelledby="links-h">
+    <h2 id="links-h">Links</h2>
+    <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-ops-warranty">Code and full results</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/bess-ops-warranty/">Live page &#8599;</a></div>
+    <p>Related projects:</p>
+    <ul><li><a href="https://github.com/kwwaleszczynski-del/bess-capacity-augmentation">Battery ageing vs capacity market obligation</a></li><li><a href="https://github.com/kwwaleszczynski-del/bess-soc-soh-degradation">Battery state of charge and ageing</a></li><li><a href="https://github.com/kwwaleszczynski-del/res-asset-kpi">res-asset-kpi: KPI library for PV, wind and BESS</a></li></ul>
+  </section>
+
+  <footer>
+    <p>Personal work on public data; the data sources are credited in the project's repository. Every number on
+    this page is taken from the repository's README and result files. Updated 30 Oct 2026.</p>
+  </footer>
+</div>
+</body>
+</html>

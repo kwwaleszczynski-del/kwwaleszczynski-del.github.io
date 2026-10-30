@@ -1,0 +1,222 @@
+{
+  "intro": "Six projects to look at first. The first three come with a short case study written for asset owners: the problem, the data, the numbers and what they mean for a decision.",
+  "picks": [
+    {
+      "repo": "pv-budget-bridge",
+      "for_owner": "Splits every month's gap to the P50 budget into kWh by cause (weather, availability, curtailment, soiling, snow, data gaps) and checks the irradiance sensor first; outage and curtailment losses come back within 0.5 % of a known truth."
+    },
+    {
+      "repo": "wind-downtime-availability",
+      "for_owner": "Shows that the category a stop is booked under moves warranty availability more than detecting the stop does: grid and curtailment stops booked as turbine faults turn 97.9 % into 93.5 % for one open farm-year."
+    },
+    {
+      "repo": "bess-ops-warranty",
+      "for_owner": "Checks round-trip efficiency, availability, cycles and capacity tests against warranty and LTSA terms, and shows why the metering point matters: 55 Australian grid batteries convert at about 0.92 but deliver 0.82 at the meter."
+    },
+    {
+      "repo": "wind-les-gpu",
+      "for_owner": "A second opinion on the wake loss in a yield assessment: a home-made LES on a laptop GPU, with no tuned wake parameter, gives 9.8 % against 9.2 % measured in six years of SCADA."
+    },
+    {
+      "repo": "res-asset-kpi",
+      "for_owner": "The monthly indicators of PV, wind and battery assets (PR, contract availability, budget bridge, RTE, cycles, capacity tests) as one tested library on PyPI with a DOI, so a report can be reproduced and audited."
+    },
+    {
+      "repo": "pl-forecast-bench",
+      "for_owner": "Before paying for a forecast, compare it with the free PSE plan under the same as-of rule: intraday models beat the plan by 20-26 %, but day-ahead nothing that respects the 10:00 issue time beats it for volumes."
+    }
+  ],
+  "case_studies": [
+    {
+      "repo": "pv-budget-bridge",
+      "title": "Where did the PV energy go? A monthly bridge from P50 budget to actual",
+      "dek": "A monthly waterfall that explains the gap between the budget and metered production in kWh, cause by cause, and checks the irradiance sensor before anything else. Every bar is tested against losses of known size.",
+      "figures": [
+        {
+          "value": "0.5 %",
+          "label": "error on availability and curtailment losses against a known truth, 48 months"
+        },
+        {
+          "value": "4 of 4",
+          "label": "logger clock shifts found; unchecked, they shift the bars of those months by 3.7-5.5 % of budget"
+        },
+        {
+          "value": "9.5-16.4 %",
+          "label": "how far the real rooftops' shared pyranometer reads above ERA5"
+        }
+      ],
+      "image": "site:assets/pv-budget-bridge-card.png",
+      "caption": "The monthly waterfall on the project's live page (synthetic plant, December 2024). The bars add up to the difference between budget and actual exactly.",
+      "problem": [
+        "Every month an asset manager reports how far each plant was from its P50 budget. The performance ratio alone does not say why. A sunny month can hide an inverter outage, curtailment looks like underperformance, and a pyranometer that reads high makes a healthy plant look poor.",
+        "Owners, O&M contractors and lenders need the gap split into causes they can act on, claim for or accept, in energy rather than in ratios."
+      ],
+      "method": [
+        "**Budget:** a pvlib model on the PVGIS typical meteorological year, written in a PVsyst-like hourly layout. A monthly P50 table or a real export can be read instead.",
+        "**Data:** three NREL PVDAQ rooftops in Las Vegas (2016-2018, 15-minute data, one shared pyranometer) and a synthetic 1.32 MWp plant in central Poland on ERA5 weather 2021-2024, whose true losses are known.",
+        "**Bridge:** weather and age first (irradiance, temperature, degradation), then soiling, snow, clipping, availability, curtailment and data gaps, measured in kWh on the weather that actually occurred, and an unexplained rest. The bars add up exactly every month; a Shapley allocation is computed alongside.",
+        "**Sensor checks before anything else:** clock shifts, orientation and level, shading, and drift against three references.",
+        "**Verification:** faults of known size are injected one at a time into the real and the synthetic data and compared with what the bridge recovers."
+      ],
+      "result": [
+        "On the synthetic plant (48 months) the availability and curtailment losses come back within **0.5 %** of the truth; data gaps, soiling and snow within 7-10 %.",
+        "A 3-day outage of one inverter, injected into the real rooftops, is recovered within **1 %** (-0.0 to +0.9 %).",
+        "Four of four 1-hour logger clock shifts are found. Without the check they shift the bars of the affected months by 3.7-5.5 % of the budget in sum, with it by 0-0.2 %. A pyranometer drifting to -3 % is flagged in all four runs, but late: 53-288 days after the drift started.",
+        "On the real rooftops the shared sensor reads 9.5-16.4 % above ERA5. Left uncorrected, the irradiance bar would read +10-16 % and the unexplained bar -15 to -25 %.",
+        "Three long outages turn up that nobody logged (availability 91.8-95.6 % in those years). After all known causes, **-6 to -10 %** of the budget stays unexplained: these 2010-2011 rooftops run at a PR of 0.63-0.67 against the 0.76 of a generic budget model."
+      ],
+      "table": {
+        "caption": "Synthetic plant, 48 months: every loss against its truth",
+        "head": ["Loss", "Truth MWh", "Estimate MWh", "Total error"],
+        "rows": [
+          ["Availability", "46.7", "46.5", "-0.5 %"],
+          ["Curtailment (set-points)", "78.3", "77.9", "-0.5 %"],
+          ["Data gaps", "14.4", "13.4", "-7.2 %"],
+          ["Soiling (rain-washed)", "52.0", "47.9", "-7.9 %"],
+          ["Snow", "112.1", "101.1", "-9.9 %"],
+          ["Clipping", "5.4", "7.5", "+40 %"]
+        ],
+        "note": "Monthly production is 20-190 MWh, so the mean monthly errors are 0.01-0.24 % of the month's energy. The clipping error is the model's: the synthetic plant has an incidence-angle loss that the configured model does not."
+      },
+      "decision": [
+        "**Check the sensor before blaming the plant.** A pyranometer that reads 10-16 % high, or a logger an hour off, moves more energy between the bars than most faults do.",
+        "**The availability and curtailment bars are the measured kWh lost, net of what the budget assumed:** the quantity an availability or performance clause pays for. Each bar can be recomputed by hand.",
+        "**Soiling of 2 % a month is within the noise of a noisy plant.** Where soiling matters contractually, a soiling station or a cleaned reference string is the right tool, not a model.",
+        "**A large and steady unexplained bar points at the budget model first.** Here the rooftops underperform a generic model with 8 % DC losses; that calls for a look at the budget assumptions before an O&M investigation."
+      ],
+      "limitations": [
+        "A PVWatts-level model: no beam/diffuse split for measured irradiance, no string or MPPT level, no partial inverter availability.",
+        "Soiling estimates need rain or cleanings to anchor them. Drift detection needs about 1.4 years of data and flags only beyond 2.5 %.",
+        "The examples are small rooftops on one campus sharing one sensor, and a synthetic Polish plant. The PVsyst-like budget reader has not been tested on a file produced by PVsyst.",
+        "The IEC 61724-1 definitions follow public descriptions and are not certified; the contract clauses are illustrative."
+      ],
+      "related": ["res-asset-kpi", "pv-outage-classifier", "pv-thermal-check"]
+    },
+    {
+      "repo": "wind-downtime-availability",
+      "title": "Warranty availability depends on how a stop is booked",
+      "dek": "Stops, their causes and the energy they cost, found in the 10-minute SCADA of three open UK wind farms, and what a wrong category does to contractual availability.",
+      "figures": [
+        {
+          "value": "97.9 % to 93.5 %",
+          "label": "one farm-year's warranty availability when grid and curtailment stops are booked as turbine faults"
+        },
+        {
+          "value": "EUR 0.23 m",
+          "label": "liquidated damages that would follow at a 97 % guarantee, but are not owed"
+        },
+        {
+          "value": "0.5-1.0 pp",
+          "label": "mean error of availability from SCADA signals alone against the operator's logs, per turbine-year"
+        }
+      ],
+      "image": "docs/img/scenarios.png",
+      "caption": "Change of the time-based warranty availability when stops are booked under the wrong category (test years: Kelmarsh 2020-2021, Penmanshiel 2020).",
+      "problem": [
+        "Every availability guarantee, O&M invoice and lost-production claim starts from three questions: when was a turbine stopped or limited, why, and how much energy did it cost. The usual answer is the controller's status log, mapped by the manufacturer onto the IEC 61400-26 categories.",
+        "An owner who wants to check that figure, or whose logs are incomplete, needs to know how far the 10-minute signals go on their own, and how much the category of a stop moves the contractual number."
+      ],
+      "method": [
+        "**Three open farms, two manufacturers:** Kelmarsh (6 x Senvion MM92, 2016-2021), Penmanshiel (14 x Senvion MM82, 2018 and 2020) and Hill of Towie (21 x Siemens SWT-2.3, 2021). The operators' own logs are the yardstick.",
+        "**Held-out test periods:** all numbers are measured on data no method saw during development (Kelmarsh 2020-2021, Penmanshiel 2020, Hill of Towie July-December 2021).",
+        "**Finding stops and deratings** from power, wind speed, rotor speed, pitch, yaw and temperature only: a simple rule, a power-curve residual, a pitch and rotor-speed signature, a hidden Markov model and gradient boosting.",
+        "**Cause and cost:** categories from transparent rules or gradient boosting; lost energy from the turbine's own anemometer, its running neighbours or a wake-aware reference.",
+        "**Availability:** time- and energy-based, under two illustrative presets (IEC operational, and a typical manufacturer warranty with a 60-hour maintenance allowance), plus what-if scenarios for wrong categories."
+      ],
+      "result": [
+        "The everyday rule \"no power although the wind is above cut-in\" raises 4,833 alarms for 1,412 logged stops at Penmanshiel. A parked rotor, with the blades at the parking angle and the rotor still, finds stops with F1 **0.86, 0.91 and 0.80** on the three farms without any training. Gradient boosting trained on the two Senvion farms reaches 0.92 and 0.93 there and 0.83 on the Siemens farm.",
+        "Time-based warranty availability from the signals alone is within **0.5-1.0 percentage points** of the figure from the logs (mean absolute error per turbine-year).",
+        "Booking the cause wrong moves it further. Counting grid trips, curtailment and park-controller stops as turbine faults costs 0.6 pp at Kelmarsh and **4.4 pp** at Penmanshiel, where the logged 97.9 % for 2020 becomes 93.5 %. That is below a typical 97 % guarantee: about **EUR 0.23 million** of liquidated damages for one farm-year (81.5 GWh potential, 80 EUR/MWh) that are not owed.",
+        "The signals recognise grid trips, park-controller stops and technical standby well, but they cannot separate scheduled maintenance, planned corrective work and forced outages. These look the same in SCADA, and it is the distinction a warranty depends on.",
+        "A stopped turbine's own anemometer is biased: 3.0 % high at Kelmarsh, 2.6 % low at Penmanshiel and 9.2 % low at Hill of Towie. On Hill of Towie it books 14 % less lost energy than the wake-aware reference."
+      ],
+      "table": {
+        "caption": "Warranty time-based availability (typical manufacturer preset), change against the logs",
+        "head": ["Booking", "Kelmarsh", "Penmanshiel"],
+        "rows": [
+          ["Every stop counted as a turbine fault", "-1.9 pp", "-5.1 pp"],
+          ["Grid trips and curtailment / park-controller stops counted as turbine faults", "-0.6 pp", "-4.4 pp"],
+          ["High-wind, icing and low-temperature stops counted as faults", "-0.7 pp", "-0.4 pp"],
+          ["Scheduled maintenance counted as forced outage (60 h allowance lost)", "-0.4 pp", "-0.2 pp"],
+          ["Missing data counted as downtime", "-0.3 pp", "-0.3 pp"]
+        ],
+        "note": "Test years: Kelmarsh 2020-2021 (12 turbine-years), Penmanshiel 2020 (14 turbine-years)."
+      },
+      "decision": [
+        "**Reconcile the category mapping, not only the availability percentage.** At Penmanshiel the treatment of grid and curtailment stops moved availability by 4.4 pp, several times the error of detecting the stops from signals.",
+        "**10-minute signals are enough to check the timing, duration and lost energy of stops independently of the manufacturer's log.** The split between maintenance and faults still needs status codes.",
+        "**Choose the lost-energy reference on purpose.** The stopped turbine's own anemometer can be off by several per cent, and the sign depends on the turbine type.",
+        "**Read how the contract treats data gaps** before trusting an availability figure computed from SCADA. Penmanshiel's 15-day park-controller stop in 2020 appears in SCADA as missing data, while the operator booked 3.8 GWh of lost production to it."
+      ],
+      "limitations": [
+        "The logs are the operator's booking, not the truth, and conventions differ: low-wind stops are technical standby at the Senvion farms and environmental at Hill of Towie, where the cause classifiers transfer poorly (19-30 % of events right).",
+        "Deratings are the weak part: there are few in the test periods, and the best detector reaches F1 0.42.",
+        "Three UK farms and two manufacturers; rule thresholds and trained models may not transfer to other turbines.",
+        "The contract presets are illustrative. IEC 61400-26 leaves the allocation of categories to the contract."
+      ],
+      "related": ["wind-om-reliability", "wind-wake-aware-verification", "res-asset-kpi"]
+    },
+    {
+      "repo": "bess-ops-warranty",
+      "title": "Is the battery doing what its warranty and LTSA promise?",
+      "dek": "Monthly checks of round-trip efficiency, availability, cycling and capacity for an operating grid battery, verified on a battery with a known truth and run on every grid battery in Australia's NEM.",
+      "figures": [
+        {
+          "value": "0.92 vs 0.82",
+          "label": "median conversion efficiency against round-trip efficiency at the meter, 55 NEM batteries"
+        },
+        {
+          "value": "7.3 pp",
+          "label": "daily RTE gap between the operator's own meter and the market SCADA point at one battery"
+        },
+        {
+          "value": "95.8 % vs 78.1 %",
+          "label": "median technical against offered availability, 38 batteries in service"
+        }
+      ],
+      "image": "docs/img/acen_rte.png",
+      "caption": "New England BESS, section 1: daily RTE from the operator's own data (A) and from market data (B, C). The gap between A and B is the metering point.",
+      "problem": [
+        "Once a battery is built, the asset manager's question changes from what it can earn to whether it does what the contracts promise: round-trip efficiency, availability, cycles, operating limits and usable capacity, against the supplier's warranty and the long-term service agreement (LTSA).",
+        "Each of these numbers depends on where it is metered, over which window and how events are treated. A figure from market data measures something different from what a contract tests."
+      ],
+      "method": [
+        "**Input and output:** a generic long table from any EMS or SCADA, with the site, warranty and LTSA terms in YAML; a monthly report in Excel and HTML.",
+        "**Estimators:** round-trip efficiency corrected for the change of state of charge, with and without auxiliaries; LTSA time-, capacity- and energy-based availability with event treatments; rainflow cycles and warranty-limit violations; capacity tests with measurement uncertainty and a guard band.",
+        "**Verification** on a synthetic 50 MW / 100 MWh battery: two years of 15-minute data exported like a real EMS (kW, two PCS and BMS blocks, local time with DST), with known efficiencies, auxiliaries, outages and fade.",
+        "**Benchmark** on AEMO data for every grid battery in the NEM (October 2025 to September 2026), checked against the 5-minute power and state of charge that ACEN publishes for its New England BESS."
+      ],
+      "result": [
+        "On the synthetic battery the RTE without auxiliaries is recovered exactly (0.91298), availability exactly including the DST days, and every injected warranty violation is found and nothing else. The SoC correction makes daily RTE usable: uncorrected, daily values spread over 2.8 pp; corrected, 90 % of days are within 0.25 pp of the truth.",
+        "Auxiliaries decide the RTE guarantee. Including them, the same battery reaches 0.859-0.865 a year, but its winter months fall to 0.831-0.841 because of heating, below an illustrative 85 % monthly guarantee.",
+        "With class 0.2S metering the expanded uncertainty of a capacity test is 0.7-1.4 MWh, more than the first two tests' margin over the guaranteed curve (0.6 and 1.0 MWh). Their verdict is inconclusive, not pass.",
+        "Across 55 NEM batteries (8.9 GW / 20.3 GWh) the RTE at the SCADA point has a median of **0.82** (interquartile range 0.78-0.85) and grows with duration, while the conversion efficiency is about **0.92** for all of them: the difference is standby losses and auxiliaries seen at the connection point.",
+        "At New England BESS the daily RTE is 0.868 from the operator's own meter and state of charge, and 0.794 from AEMO SCADA with the same state of charge. The metering point accounts for **7.3 pp**, the source of the stored energy for 3.1 pp (mean absolute daily differences).",
+        "Declared physical availability (PASA, counted like an LTSA capacity formula) has a median of **95.8 %** for the 38 batteries in service for at least six months; 15 of them reach an illustrative 97 % guarantee. Offered availability is 78.1 %: what is held back is commercial, for example capacity reserved under other contracts, not technical."
+      ],
+      "table": {
+        "caption": "NEM batteries, October 2025 to September 2026: round-trip efficiency by duration",
+        "head": ["Duration", "Batteries", "RTE at the SCADA point, median (range)", "Conversion RTE"],
+        "rows": [
+          ["About 1 h", "7", "0.75 (0.47-0.81)", "0.919"],
+          ["About 2 h", "41", "0.83 (0.74-0.86)", "0.924"],
+          ["3 h or more", "5", "0.88 (0.87-0.90)", "0.925"]
+        ],
+        "note": "Conversion RTE from the hourly regression of reported stored energy in the companion project bess-soc-soh-degradation, which separates a standby drain."
+      },
+      "decision": [
+        "**Before comparing an RTE with a guarantee, check where it is measured and whether the auxiliaries are inside.** An RTE from revenue-meter or market data includes auxiliaries and standby; it cannot be compared with one guaranteed at the PCS terminals.",
+        "**Monthly RTE clauses are tested hardest in winter.** Heating can take an otherwise compliant battery below the guarantee.",
+        "**Read capacity tests with their uncertainty.** Early tests close to the guaranteed curve can be inconclusive rather than a pass, which matters when a claim or an augmentation is planned from them.",
+        "**Low offered availability in market data is a trading or contract choice, not a fault.** The closest public proxy of what an LTSA measures is the declared physical availability, and it is still the operator's own statement."
+      ],
+      "limitations": [
+        "Every contract term (warranty, LTSA, damages) is an illustrative placeholder; real contracts differ in the details that decide money.",
+        "Market data has no auxiliary metering behind the connection point, no temperatures, no capacity tests, no outage log and no warranty terms.",
+        "The synthetic verification shows that the estimators are consistent with the physics they assume; real batteries add part-load efficiency curves, self-discharge, cell imbalance and SoC drift.",
+        "Capacity-test uncertainty covers the instruments and the temperature correction, not the test procedure itself, which can matter more."
+      ],
+      "related": ["bess-capacity-augmentation", "bess-soc-soh-degradation", "res-asset-kpi"]
+    }
+  ]
+}

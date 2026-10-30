@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Warranty availability depends on how a stop is booked | Konrad Waleszczyński</title>
+<meta name="description" content="Stops, their causes and the energy they cost, found in the 10-minute SCADA of three open UK wind farms, and what a wrong category does to contractual availability.">
+<meta property="og:title" content="Warranty availability depends on how a stop is booked">
+<meta property="og:description" content="Stops, their causes and the energy they cost, found in the 10-minute SCADA of three open UK wind farms, and what a wrong category does to contractual availability.">
+<meta property="og:image" content="https://kwwaleszczynski-del.github.io/img/case-wind-downtime-availability.png">
+<meta name="color-scheme" content="light dark">
+<style>
+:root {
+  --bg: #f6f7f9; --card: #ffffff; --text: #151a22; --muted: #5a6474; --line: #e2e6ec; --chip: #edf0f4;
+  --hl-bg: #fff8eb; --hl-line: #e8a33a; --pv: #c97a06; --wind: #0e7490; --storage: #6d43c9; --ops: #475569; --bio: #4d7c0f;
+  --accent: #0e7490; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 4px 16px rgba(16,24,40,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117; --card: #151b24; --text: #e6eaf0; --muted: #98a2b3; --line: #252e3a; --chip: #1d2530;
+    --hl-bg: #231d12; --hl-line: #d4912c; --pv: #f0a83a; --wind: #38bdd8; --storage: #a78bfa; --ops: #94a3b8; --bio: #9ccc65;
+    --accent: #38bdd8; --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+a { color: inherit; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+header.hero { padding: 64px 0 32px; }
+.hero .name { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.hero h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.1; margin: 0 0 16px; letter-spacing: -.02em; }
+.hero h1 span { background: linear-gradient(90deg, var(--pv), var(--wind)); -webkit-background-clip: text;
+  background-clip: text; color: transparent; }
+.hero p.intro { max-width: 720px; font-size: 18px; color: var(--muted); margin: 0 0 24px; }
+.stats { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 0 0 28px; padding: 0; list-style: none; }
+.stats b { display: block; font-size: 28px; line-height: 1.1; }
+.stats span { font-size: 14px; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-block; padding: 7px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--card);
+  text-decoration: none; font-size: 14px; font-weight: 600; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+@media (prefers-color-scheme: dark) { .btn.primary { color: #06141a; } }
+h2 { font-size: 22px; margin: 40px 0 16px; letter-spacing: -.01em; }
+.lives { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.live { display: flex; gap: 12px; align-items: center; padding: 10px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: var(--shadow); }
+.live:hover { border-color: var(--accent); }
+.live img { width: 96px; aspect-ratio: 16/10; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.chip { font: inherit; font-size: 14px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--chip); color: var(--text); cursor: pointer; }
+.chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; }
+.card { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  overflow: hidden; box-shadow: var(--shadow); }
+.card[hidden] { display: none; }
+.thumb { display: block; border-bottom: 1px solid var(--line); background: #fff; }
+.thumb img { display: block; width: 100%; height: auto; aspect-ratio: 16/10; object-fit: cover; }
+.body { display: flex; flex-direction: column; flex: 1; padding: 16px 18px 18px; }
+.meta { display: flex; gap: 8px; align-items: center; font-size: 13px; margin-bottom: 6px; }
+.group { font-weight: 600; }
+.group::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;
+  background: currentColor; vertical-align: 1px; }
+.g-pv { color: var(--pv); } .g-wind { color: var(--wind); } .g-storage { color: var(--storage); } .g-ops { color: var(--ops); } .g-biogas { color: var(--bio); }
+.badge { font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--hl-line);
+  color: var(--hl-line); }
+.card h3 { font-size: 19px; line-height: 1.3; margin: 0 0 8px; }
+.card h3 a { text-decoration: none; }
+.card h3 a:hover { text-decoration: underline; }
+.summary { margin: 0 0 12px; color: var(--muted); font-size: 15px; }
+.highlight { margin: 0 0 14px; padding: 10px 12px; background: var(--hl-bg); border-left: 3px solid var(--hl-line);
+  border-radius: 0 8px 8px 0; font-size: 15px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0 0 16px; }
+.tags li { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--chip); color: var(--muted); }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+footer { margin: 56px 0 0; padding: 28px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0 0 16px; }
+footer dt { font-weight: 600; color: var(--text); }
+footer dd { margin: 0; }
+.lead { max-width: 760px; color: var(--muted); margin: -4px 0 18px; }
+.pick .owner { margin: 0 0 16px; font-size: 15px; }
+.case { max-width: 800px; }
+.crumb { margin: 28px 0 0; font-size: 14px; }
+.crumb a { color: var(--muted); text-decoration: none; }
+.crumb a:hover { color: var(--accent); }
+.case header { padding: 28px 0 4px; }
+.kicker { display: flex; gap: 8px; align-items: center; font-size: 13px; margin: 0 0 10px; }
+.case h1 { font-size: clamp(28px, 4.4vw, 40px); line-height: 1.15; margin: 0 0 14px; letter-spacing: -.02em; }
+.dek { font-size: 18px; color: var(--muted); margin: 0 0 24px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; list-style: none;
+  padding: 0; margin: 0 0 28px; }
+.kpis li { padding: 14px 16px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+.kpis b { display: block; font-size: 24px; line-height: 1.2; margin-bottom: 4px; }
+.kpis span { font-size: 14px; color: var(--muted); }
+figure { margin: 0; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.case h2 { font-size: 21px; margin: 36px 0 12px; }
+.case section ul { margin: 0; padding-left: 20px; }
+.case section li { margin: 0 0 10px; }
+.case section > p { margin: 0 0 12px; }
+.tablewrap { overflow-x: auto; margin: 18px 0 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--card); }
+caption { text-align: left; font-weight: 600; padding: 0 0 8px; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-weight: 600; }
+td + td, th + th { text-align: right; }
+td + td { white-space: nowrap; }
+.note { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+.case .links { margin: 0 0 16px; }
+@media (max-width: 560px) {
+  .wrap { padding: 0 16px; }
+  header.hero { padding-top: 40px; }
+  .grid { grid-template-columns: 1fr; }
+  footer dl { grid-template-columns: 1fr; }
+  footer dd { margin-bottom: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap case">
+  <p class="crumb"><a href="../#start">&#8592; Konrad Waleszczyński: all projects</a></p>
+  <header>
+    <p class="kicker"><span class="group g-wind">Wind</span><span class="badge">Case study</span></p>
+    <h1>Warranty availability depends on how a stop is booked</h1>
+    <p class="dek">Stops, their causes and the energy they cost, found in the 10-minute SCADA of three open UK wind farms, and what a wrong category does to contractual availability.</p>
+    <ul class="kpis"><li><b>97.9 % to 93.5 %</b><span>one farm-year&#x27;s warranty availability when grid and curtailment stops are booked as turbine faults</span></li><li><b>EUR 0.23 m</b><span>liquidated damages that would follow at a 97 % guarantee, but are not owed</span></li><li><b>0.5-1.0 pp</b><span>mean error of availability from SCADA signals alone against the operator&#x27;s logs, per turbine-year</span></li></ul>
+  </header>
+  <figure>
+    <img src="../img/case-wind-downtime-availability.png" alt="Change of the time-based warranty availability when stops are booked under the wrong category (test years: Kelmarsh 2020-2021, Penmanshiel 2020)." width="935" height="374">
+    <figcaption>Change of the time-based warranty availability when stops are booked under the wrong category (test years: Kelmarsh 2020-2021, Penmanshiel 2020).</figcaption>
+  </figure>
+
+  <section aria-labelledby="problem-h">
+    <h2 id="problem-h">The problem</h2>
+    <p>Every availability guarantee, O&amp;M invoice and lost-production claim starts from three questions: when was a turbine stopped or limited, why, and how much energy did it cost. The usual answer is the controller&#x27;s status log, mapped by the manufacturer onto the IEC 61400-26 categories.</p><p>An owner who wants to check that figure, or whose logs are incomplete, needs to know how far the 10-minute signals go on their own, and how much the category of a stop moves the contractual number.</p>
+  </section>
+
+  <section aria-labelledby="method-h">
+    <h2 id="method-h">Data and method</h2>
+    <ul><li><b>Three open farms, two manufacturers:</b> Kelmarsh (6 x Senvion MM92, 2016-2021), Penmanshiel (14 x Senvion MM82, 2018 and 2020) and Hill of Towie (21 x Siemens SWT-2.3, 2021). The operators&#x27; own logs are the yardstick.</li><li><b>Held-out test periods:</b> all numbers are measured on data no method saw during development (Kelmarsh 2020-2021, Penmanshiel 2020, Hill of Towie July-December 2021).</li><li><b>Finding stops and deratings</b> from power, wind speed, rotor speed, pitch, yaw and temperature only: a simple rule, a power-curve residual, a pitch and rotor-speed signature, a hidden Markov model and gradient boosting.</li><li><b>Cause and cost:</b> categories from transparent rules or gradient boosting; lost energy from the turbine&#x27;s own anemometer, its running neighbours or a wake-aware reference.</li><li><b>Availability:</b> time- and energy-based, under two illustrative presets (IEC operational, and a typical manufacturer warranty with a 60-hour maintenance allowance), plus what-if scenarios for wrong categories.</li></ul>
+  </section>
+
+  <section aria-labelledby="result-h">
+    <h2 id="result-h">Result</h2>
+    <ul><li>The everyday rule &quot;no power although the wind is above cut-in&quot; raises 4,833 alarms for 1,412 logged stops at Penmanshiel. A parked rotor, with the blades at the parking angle and the rotor still, finds stops with F1 <b>0.86, 0.91 and 0.80</b> on the three farms without any training. Gradient boosting trained on the two Senvion farms reaches 0.92 and 0.93 there and 0.83 on the Siemens farm.</li><li>Time-based warranty availability from the signals alone is within <b>0.5-1.0 percentage points</b> of the figure from the logs (mean absolute error per turbine-year).</li><li>Booking the cause wrong moves it further. Counting grid trips, curtailment and park-controller stops as turbine faults costs 0.6 pp at Kelmarsh and <b>4.4 pp</b> at Penmanshiel, where the logged 97.9 % for 2020 becomes 93.5 %. That is below a typical 97 % guarantee: about <b>EUR 0.23 million</b> of liquidated damages for one farm-year (81.5 GWh potential, 80 EUR/MWh) that are not owed.</li><li>The signals recognise grid trips, park-controller stops and technical standby well, but they cannot separate scheduled maintenance, planned corrective work and forced outages. These look the same in SCADA, and it is the distinction a warranty depends on.</li><li>A stopped turbine&#x27;s own anemometer is biased: 3.0 % high at Kelmarsh, 2.6 % low at Penmanshiel and 9.2 % low at Hill of Towie. On Hill of Towie it books 14 % less lost energy than the wake-aware reference.</li></ul>
+    <div class="tablewrap"><table><caption>Warranty time-based availability (typical manufacturer preset), change against the logs</caption><thead><tr><th>Booking</th><th>Kelmarsh</th><th>Penmanshiel</th></tr></thead><tbody><tr><td>Every stop counted as a turbine fault</td><td>-1.9 pp</td><td>-5.1 pp</td></tr><tr><td>Grid trips and curtailment / park-controller stops counted as turbine faults</td><td>-0.6 pp</td><td>-4.4 pp</td></tr><tr><td>High-wind, icing and low-temperature stops counted as faults</td><td>-0.7 pp</td><td>-0.4 pp</td></tr><tr><td>Scheduled maintenance counted as forced outage (60 h allowance lost)</td><td>-0.4 pp</td><td>-0.2 pp</td></tr><tr><td>Missing data counted as downtime</td><td>-0.3 pp</td><td>-0.3 pp</td></tr></tbody></table></div><p class="note">Test years: Kelmarsh 2020-2021 (12 turbine-years), Penmanshiel 2020 (14 turbine-years).</p>
+  </section>
+
+  <section aria-labelledby="decision-h">
+    <h2 id="decision-h">What it means for a decision</h2>
+    <ul><li><b>Reconcile the category mapping, not only the availability percentage.</b> At Penmanshiel the treatment of grid and curtailment stops moved availability by 4.4 pp, several times the error of detecting the stops from signals.</li><li><b>10-minute signals are enough to check the timing, duration and lost energy of stops independently of the manufacturer&#x27;s log.</b> The split between maintenance and faults still needs status codes.</li><li><b>Choose the lost-energy reference on purpose.</b> The stopped turbine&#x27;s own anemometer can be off by several per cent, and the sign depends on the turbine type.</li><li><b>Read how the contract treats data gaps</b> before trusting an availability figure computed from SCADA. Penmanshiel&#x27;s 15-day park-controller stop in 2020 appears in SCADA as missing data, while the operator booked 3.8 GWh of lost production to it.</li></ul>
+  </section>
+
+  <section aria-labelledby="limits-h">
+    <h2 id="limits-h">Limitations</h2>
+    <ul><li>The logs are the operator&#x27;s booking, not the truth, and conventions differ: low-wind stops are technical standby at the Senvion farms and environmental at Hill of Towie, where the cause classifiers transfer poorly (19-30 % of events right).</li><li>Deratings are the weak part: there are few in the test periods, and the best detector reaches F1 0.42.</li><li>Three UK farms and two manufacturers; rule thresholds and trained models may not transfer to other turbines.</li><li>The contract presets are illustrative. IEC 61400-26 leaves the allocation of categories to the contract.</li></ul>
+  </section>
+
+  <section aria-labelledby="links-h">
+    <h2 id="links-h">Links</h2>
+    <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-downtime-availability">Code and full results</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/wind-downtime-availability/">Live page &#8599;</a></div>
+    <p>Related projects:</p>
+    <ul><li><a href="https://github.com/kwwaleszczynski-del/wind-om-reliability">Wind turbine O&amp;M reliability from status and alarm logs</a></li><li><a href="https://github.com/kwwaleszczynski-del/wind-wake-aware-verification">WARP: wake-aware turbine verification</a></li><li><a href="https://github.com/kwwaleszczynski-del/res-asset-kpi">res-asset-kpi: KPI library for PV, wind and BESS</a></li></ul>
+  </section>
+
+  <footer>
+    <p>Personal work on public data; the data sources are credited in the project's repository. Every number on
+    this page is taken from the repository's README and result files. Updated 30 Oct 2026.</p>
+  </footer>
+</div>
+</body>
+</html>

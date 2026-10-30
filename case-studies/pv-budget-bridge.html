@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where did the PV energy go? A monthly bridge from P50 budget to actual | Konrad Waleszczyński</title>
+<meta name="description" content="A monthly waterfall that explains the gap between the budget and metered production in kWh, cause by cause, and checks the irradiance sensor before anything else. Every bar is tested against losses of known size.">
+<meta property="og:title" content="Where did the PV energy go? A monthly bridge from P50 budget to actual">
+<meta property="og:description" content="A monthly waterfall that explains the gap between the budget and metered production in kWh, cause by cause, and checks the irradiance sensor before anything else. Every bar is tested against losses of known size.">
+<meta property="og:image" content="https://kwwaleszczynski-del.github.io/assets/pv-budget-bridge-card.png">
+<meta name="color-scheme" content="light dark">
+<style>
+:root {
+  --bg: #f6f7f9; --card: #ffffff; --text: #151a22; --muted: #5a6474; --line: #e2e6ec; --chip: #edf0f4;
+  --hl-bg: #fff8eb; --hl-line: #e8a33a; --pv: #c97a06; --wind: #0e7490; --storage: #6d43c9; --ops: #475569; --bio: #4d7c0f;
+  --accent: #0e7490; --shadow: 0 1px 2px rgba(16,24,40,.06), 0 4px 16px rgba(16,24,40,.06);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117; --card: #151b24; --text: #e6eaf0; --muted: #98a2b3; --line: #252e3a; --chip: #1d2530;
+    --hl-bg: #231d12; --hl-line: #d4912c; --pv: #f0a83a; --wind: #38bdd8; --storage: #a78bfa; --ops: #94a3b8; --bio: #9ccc65;
+    --accent: #38bdd8; --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+a { color: inherit; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+header.hero { padding: 64px 0 32px; }
+.hero .name { font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+.hero h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.1; margin: 0 0 16px; letter-spacing: -.02em; }
+.hero h1 span { background: linear-gradient(90deg, var(--pv), var(--wind)); -webkit-background-clip: text;
+  background-clip: text; color: transparent; }
+.hero p.intro { max-width: 720px; font-size: 18px; color: var(--muted); margin: 0 0 24px; }
+.stats { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 0 0 28px; padding: 0; list-style: none; }
+.stats b { display: block; font-size: 28px; line-height: 1.1; }
+.stats span { font-size: 14px; color: var(--muted); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-block; padding: 7px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--card);
+  text-decoration: none; font-size: 14px; font-weight: 600; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+@media (prefers-color-scheme: dark) { .btn.primary { color: #06141a; } }
+h2 { font-size: 22px; margin: 40px 0 16px; letter-spacing: -.01em; }
+.lives { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.live { display: flex; gap: 12px; align-items: center; padding: 10px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; text-decoration: none; font-weight: 600; box-shadow: var(--shadow); }
+.live:hover { border-color: var(--accent); }
+.live img { width: 96px; aspect-ratio: 16/10; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; }
+.chip { font: inherit; font-size: 14px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--chip); color: var(--text); cursor: pointer; }
+.chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 20px; }
+.card { display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+  overflow: hidden; box-shadow: var(--shadow); }
+.card[hidden] { display: none; }
+.thumb { display: block; border-bottom: 1px solid var(--line); background: #fff; }
+.thumb img { display: block; width: 100%; height: auto; aspect-ratio: 16/10; object-fit: cover; }
+.body { display: flex; flex-direction: column; flex: 1; padding: 16px 18px 18px; }
+.meta { display: flex; gap: 8px; align-items: center; font-size: 13px; margin-bottom: 6px; }
+.group { font-weight: 600; }
+.group::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;
+  background: currentColor; vertical-align: 1px; }
+.g-pv { color: var(--pv); } .g-wind { color: var(--wind); } .g-storage { color: var(--storage); } .g-ops { color: var(--ops); } .g-biogas { color: var(--bio); }
+.badge { font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--hl-line);
+  color: var(--hl-line); }
+.card h3 { font-size: 19px; line-height: 1.3; margin: 0 0 8px; }
+.card h3 a { text-decoration: none; }
+.card h3 a:hover { text-decoration: underline; }
+.summary { margin: 0 0 12px; color: var(--muted); font-size: 15px; }
+.highlight { margin: 0 0 14px; padding: 10px 12px; background: var(--hl-bg); border-left: 3px solid var(--hl-line);
+  border-radius: 0 8px 8px 0; font-size: 15px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; margin: 0 0 16px; }
+.tags li { font-size: 12px; padding: 2px 8px; border-radius: 6px; background: var(--chip); color: var(--muted); }
+.links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+footer { margin: 56px 0 0; padding: 28px 0 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+footer dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0 0 16px; }
+footer dt { font-weight: 600; color: var(--text); }
+footer dd { margin: 0; }
+.lead { max-width: 760px; color: var(--muted); margin: -4px 0 18px; }
+.pick .owner { margin: 0 0 16px; font-size: 15px; }
+.case { max-width: 800px; }
+.crumb { margin: 28px 0 0; font-size: 14px; }
+.crumb a { color: var(--muted); text-decoration: none; }
+.crumb a:hover { color: var(--accent); }
+.case header { padding: 28px 0 4px; }
+.kicker { display: flex; gap: 8px; align-items: center; font-size: 13px; margin: 0 0 10px; }
+.case h1 { font-size: clamp(28px, 4.4vw, 40px); line-height: 1.15; margin: 0 0 14px; letter-spacing: -.02em; }
+.dek { font-size: 18px; color: var(--muted); margin: 0 0 24px; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; list-style: none;
+  padding: 0; margin: 0 0 28px; }
+.kpis li { padding: 14px 16px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+.kpis b { display: block; font-size: 24px; line-height: 1.2; margin-bottom: 4px; }
+.kpis span { font-size: 14px; color: var(--muted); }
+figure { margin: 0; }
+figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.case h2 { font-size: 21px; margin: 36px 0 12px; }
+.case section ul { margin: 0; padding-left: 20px; }
+.case section li { margin: 0 0 10px; }
+.case section > p { margin: 0 0 12px; }
+.tablewrap { overflow-x: auto; margin: 18px 0 0; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; background: var(--card); }
+caption { text-align: left; font-weight: 600; padding: 0 0 8px; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { color: var(--muted); font-weight: 600; }
+td + td, th + th { text-align: right; }
+td + td { white-space: nowrap; }
+.note { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+.case .links { margin: 0 0 16px; }
+@media (max-width: 560px) {
+  .wrap { padding: 0 16px; }
+  header.hero { padding-top: 40px; }
+  .grid { grid-template-columns: 1fr; }
+  footer dl { grid-template-columns: 1fr; }
+  footer dd { margin-bottom: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap case">
+  <p class="crumb"><a href="../#start">&#8592; Konrad Waleszczyński: all projects</a></p>
+  <header>
+    <p class="kicker"><span class="group g-pv">Solar PV</span><span class="badge">Case study</span></p>
+    <h1>Where did the PV energy go? A monthly bridge from P50 budget to actual</h1>
+    <p class="dek">A monthly waterfall that explains the gap between the budget and metered production in kWh, cause by cause, and checks the irradiance sensor before anything else. Every bar is tested against losses of known size.</p>
+    <ul class="kpis"><li><b>0.5 %</b><span>error on availability and curtailment losses against a known truth, 48 months</span></li><li><b>4 of 4</b><span>logger clock shifts found; unchecked, they shift the bars of those months by 3.7-5.5 % of budget</span></li><li><b>9.5-16.4 %</b><span>how far the real rooftops&#x27; shared pyranometer reads above ERA5</span></li></ul>
+  </header>
+  <figure>
+    <img src="../assets/pv-budget-bridge-card.png" alt="The monthly waterfall on the project&#x27;s live page (synthetic plant, December 2024). The bars add up to the difference between budget and actual exactly." width="1160" height="605">
+    <figcaption>The monthly waterfall on the project&#x27;s live page (synthetic plant, December 2024). The bars add up to the difference between budget and actual exactly.</figcaption>
+  </figure>
+
+  <section aria-labelledby="problem-h">
+    <h2 id="problem-h">The problem</h2>
+    <p>Every month an asset manager reports how far each plant was from its P50 budget. The performance ratio alone does not say why. A sunny month can hide an inverter outage, curtailment looks like underperformance, and a pyranometer that reads high makes a healthy plant look poor.</p><p>Owners, O&amp;M contractors and lenders need the gap split into causes they can act on, claim for or accept, in energy rather than in ratios.</p>
+  </section>
+
+  <section aria-labelledby="method-h">
+    <h2 id="method-h">Data and method</h2>
+    <ul><li><b>Budget:</b> a pvlib model on the PVGIS typical meteorological year, written in a PVsyst-like hourly layout. A monthly P50 table or a real export can be read instead.</li><li><b>Data:</b> three NREL PVDAQ rooftops in Las Vegas (2016-2018, 15-minute data, one shared pyranometer) and a synthetic 1.32 MWp plant in central Poland on ERA5 weather 2021-2024, whose true losses are known.</li><li><b>Bridge:</b> weather and age first (irradiance, temperature, degradation), then soiling, snow, clipping, availability, curtailment and data gaps, measured in kWh on the weather that actually occurred, and an unexplained rest. The bars add up exactly every month; a Shapley allocation is computed alongside.</li><li><b>Sensor checks before anything else:</b> clock shifts, orientation and level, shading, and drift against three references.</li><li><b>Verification:</b> faults of known size are injected one at a time into the real and the synthetic data and compared with what the bridge recovers.</li></ul>
+  </section>
+
+  <section aria-labelledby="result-h">
+    <h2 id="result-h">Result</h2>
+    <ul><li>On the synthetic plant (48 months) the availability and curtailment losses come back within <b>0.5 %</b> of the truth; data gaps, soiling and snow within 7-10 %.</li><li>A 3-day outage of one inverter, injected into the real rooftops, is recovered within <b>1 %</b> (-0.0 to +0.9 %).</li><li>Four of four 1-hour logger clock shifts are found. Without the check they shift the bars of the affected months by 3.7-5.5 % of the budget in sum, with it by 0-0.2 %. A pyranometer drifting to -3 % is flagged in all four runs, but late: 53-288 days after the drift started.</li><li>On the real rooftops the shared sensor reads 9.5-16.4 % above ERA5. Left uncorrected, the irradiance bar would read +10-16 % and the unexplained bar -15 to -25 %.</li><li>Three long outages turn up that nobody logged (availability 91.8-95.6 % in those years). After all known causes, <b>-6 to -10 %</b> of the budget stays unexplained: these 2010-2011 rooftops run at a PR of 0.63-0.67 against the 0.76 of a generic budget model.</li></ul>
+    <div class="tablewrap"><table><caption>Synthetic plant, 48 months: every loss against its truth</caption><thead><tr><th>Loss</th><th>Truth MWh</th><th>Estimate MWh</th><th>Total error</th></tr></thead><tbody><tr><td>Availability</td><td>46.7</td><td>46.5</td><td>-0.5 %</td></tr><tr><td>Curtailment (set-points)</td><td>78.3</td><td>77.9</td><td>-0.5 %</td></tr><tr><td>Data gaps</td><td>14.4</td><td>13.4</td><td>-7.2 %</td></tr><tr><td>Soiling (rain-washed)</td><td>52.0</td><td>47.9</td><td>-7.9 %</td></tr><tr><td>Snow</td><td>112.1</td><td>101.1</td><td>-9.9 %</td></tr><tr><td>Clipping</td><td>5.4</td><td>7.5</td><td>+40 %</td></tr></tbody></table></div><p class="note">Monthly production is 20-190 MWh, so the mean monthly errors are 0.01-0.24 % of the month&#x27;s energy. The clipping error is the model&#x27;s: the synthetic plant has an incidence-angle loss that the configured model does not.</p>
+  </section>
+
+  <section aria-labelledby="decision-h">
+    <h2 id="decision-h">What it means for a decision</h2>
+    <ul><li><b>Check the sensor before blaming the plant.</b> A pyranometer that reads 10-16 % high, or a logger an hour off, moves more energy between the bars than most faults do.</li><li><b>The availability and curtailment bars are the measured kWh lost, net of what the budget assumed:</b> the quantity an availability or performance clause pays for. Each bar can be recomputed by hand.</li><li><b>Soiling of 2 % a month is within the noise of a noisy plant.</b> Where soiling matters contractually, a soiling station or a cleaned reference string is the right tool, not a model.</li><li><b>A large and steady unexplained bar points at the budget model first.</b> Here the rooftops underperform a generic model with 8 % DC losses; that calls for a look at the budget assumptions before an O&amp;M investigation.</li></ul>
+  </section>
+
+  <section aria-labelledby="limits-h">
+    <h2 id="limits-h">Limitations</h2>
+    <ul><li>A PVWatts-level model: no beam/diffuse split for measured irradiance, no string or MPPT level, no partial inverter availability.</li><li>Soiling estimates need rain or cleanings to anchor them. Drift detection needs about 1.4 years of data and flags only beyond 2.5 %.</li><li>The examples are small rooftops on one campus sharing one sensor, and a synthetic Polish plant. The PVsyst-like budget reader has not been tested on a file produced by PVsyst.</li><li>The IEC 61724-1 definitions follow public descriptions and are not certified; the contract clauses are illustrative.</li></ul>
+  </section>
+
+  <section aria-labelledby="links-h">
+    <h2 id="links-h">Links</h2>
+    <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-budget-bridge">Code and full results</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-budget-bridge/">Live page &#8599;</a></div>
+    <p>Related projects:</p>
+    <ul><li><a href="https://github.com/kwwaleszczynski-del/res-asset-kpi">res-asset-kpi: KPI library for PV, wind and BESS</a></li><li><a href="https://github.com/kwwaleszczynski-del/pv-outage-classifier">PV outages: detection, cause and availability</a></li><li><a href="https://github.com/kwwaleszczynski-del/pv-thermal-check">PV thermal check: modules, inverter, transformer</a></li></ul>
+  </section>
+
+  <footer>
+    <p>Personal work on public data; the data sources are credited in the project's repository. Every number on
+    this page is taken from the repository's README and result files. Updated 30 Oct 2026.</p>
+  </footer>
+</div>
+</body>
+</html>

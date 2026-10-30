@@ -16,4 +16,7 @@ python -m venv .venv
 Adding a project means adding one entry to `projects.json` (repository, title, group, one-line summary, one
 headline result, figure path, optional live page) and running the build.
 
+`start_here.json` holds the curated part: the "Start here" picks at the top of the page and of the profile README,
+and the case studies, each written to `case-studies/<repo>.html` with its figure copied into `img/`.
+
 Code: MIT. Figures belong to the projects they come from; data credits are in each project's README.
