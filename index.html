@@ -291,7 +291,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-storage">Storage &amp; markets</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/cable-pooling-sizer">Cable pooling: PV, wind and storage behind one connection</a></h3>
         <p class="summary">How much PV, wind and battery storage to build behind a shared grid connection in Poland: ERA5 profiles, RCE prices and an hourly LP dispatch for 856 size combinations per site, with NPV, LCOE and curtailment.</p>
-        <p class="highlight">Best oversizing is 1.75-2.25x the connection without a battery and 2.75-3x with one, curtailing 9-20 % of the energy.</p>
+        <p class="highlight">Best oversizing is 1.75-2.5x the connection without a battery and 2.25-3.25x with one; accepting 8-18 % curtailment is optimal, and for PV-heavy plants most of it falls in negative-price hours.</p>
         <ul class="tags"><li>linear programming</li><li>pvlib</li><li>ERA5</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/cable-pooling-sizer">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/cable-pooling-sizer/">Live page &#8599;</a></div>
       </div>
@@ -343,7 +343,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-storage">Storage &amp; markets</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/bess-capacity-augmentation">Battery ageing vs capacity market obligation</a></h3>
         <p class="summary">LFP ageing under real RCE arbitrage and capped-cycling profiles against a 17-year Polish capacity market contract: when the battery falls short, and overbuild, augmentation or module replacement compared in NPV and risk.</p>
-        <p class="highlight">Built to nominal energy, a battery misses its obligation in year one; +20 % headroom lasts 7-10 years, and full arbitrage leaves 62-68 % SoH after 17 years.</p>
+        <p class="highlight">Under a strict reading of the four-hour rule a battery built to nominal energy is short in year one; +20 % headroom lasts 7-10 years, and full arbitrage leaves 62-68 % SoH after 17 years.</p>
         <ul class="tags"><li>battery ageing</li><li>capacity market</li><li>optimisation</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-capacity-augmentation">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/bess-capacity-augmentation/">Live page &#8599;</a></div>
       </div>
@@ -668,7 +668,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-system">Power system &amp; resource</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/pl-res-forecast-climate">Wind and solar outlook for Poland, live</a></h3>
         <p class="summary">A 7-day probabilistic forecast of national wind and PV generation from 122 ensemble members (ECMWF, ICON, GFS), calibrated daily against PSE data and refreshed every morning by GitHub Actions, with an ERA5 resource climatology since 1991.</p>
-        <p class="highlight">Day-ahead nMAE 10.5 % for solar and 17.7 % for wind over a 12-month test; the forecast beats climatology by 60-68 % in CRPS.</p>
+        <p class="highlight">Day-ahead nMAE 11.3 % for solar and 19.8 % for wind over a 12-month test that uses only weather runs published by the 08:40 UTC issue time; the forecast beats climatology by 57-65 % in CRPS.</p>
         <ul class="tags"><li>ensemble forecast</li><li>Open-Meteo</li><li>GitHub Actions</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pl-res-forecast-climate">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pl-res-forecast-climate/">Live page &#8599;</a></div>
       </div>
