@@ -39,6 +39,10 @@
     {
       "id": "tools",
       "label": "Open-source tools"
+    },
+    {
+      "id": "experiments",
+      "label": "Experiments"
     }
   ],
   "stack": [
@@ -98,19 +102,6 @@
         "PSE API",
         "capture rate",
         "GitHub Actions"
-      ]
-    },
-    {
-      "repo": "bess-arbitrage-pl",
-      "title": "Battery arbitrage on Polish prices",
-      "group": "storage",
-      "summary": "Mixed-integer dispatch of a battery on 15-minute RCE prices, solved for every delivery day, with sensitivity to duration, efficiency and cycle limits.",
-      "highlight": "859-day backtest: a 2-hour battery earned 308 k PLN per MW in 2025, and negative prices reached 354 hours that year.",
-      "image": "docs/img/monthly_revenue.png",
-      "tags": [
-        "MILP",
-        "HiGHS",
-        "PSE API"
       ]
     },
     {
@@ -326,19 +317,6 @@
       ]
     },
     {
-      "repo": "pv-anomaly-autoencoder",
-      "title": "PV fault detection: autoencoder vs baselines",
-      "group": "pv",
-      "summary": "A PyTorch autoencoder against a PR threshold, an ASTM E2848 regression and a pvlib model, scored per fault type on 20 injected faults and on real PVDAQ data.",
-      "highlight": "F1 0.77 against 0.37-0.48 for the baselines; on real data it caught an inverter outage reported 10 days late by the inverter itself.",
-      "image": "docs/img/f1_by_fault.png",
-      "tags": [
-        "PyTorch",
-        "anomaly detection",
-        "NREL PVDAQ"
-      ]
-    },
-    {
       "repo": "pv-thermal-check",
       "title": "PV thermal check: modules, inverter, transformer",
       "group": "pv",
@@ -467,20 +445,6 @@
         "SCADA",
         "thermal model",
         "CUSUM"
-      ]
-    },
-    {
-      "repo": "fly-novelty-scada",
-      "title": "A fly-brain novelty detector for turbine faults",
-      "group": "wind",
-      "summary": "The fruit fly's mushroom-body novelty detector (FlyHash and the fly Bloom filter), wired with the real FlyWire projection-neuron to Kenyon-cell connectome, run as a streaming fault detector on 95 wind turbine datasets of the CARE to Compare benchmark.",
-      "highlight": "Honest negative result: the fly scores 0.47 against 0.51 for k-NN (0.5 is random), real wiring does no better than shuffled, and after a year of training the filter saturates and stops alarming.",
-      "image": "docs/img/pn_kc_wiring.png",
-      "demo": "https://kwwaleszczynski-del.github.io/fly-novelty-scada/",
-      "tags": [
-        "FlyWire",
-        "novelty detection",
-        "CARE benchmark"
       ]
     },
     {
@@ -695,20 +659,6 @@
       ]
     },
     {
-      "repo": "fly-connectome-forecast",
-      "title": "Can a fly brain forecast wind and solar?",
-      "group": "system",
-      "summary": "The FlyWire connectome of the fruit fly brain used as an echo state network reservoir to forecast Polish wind and PV generation, against random and rewired reservoirs, ridge, gradient boosting and the PSE day-ahead plan.",
-      "highlight": "No: tuned separately, the fly brain matches a random reservoir within 2 %; its compressed eigenvalue spectrum makes it robust to bad settings, not a better forecaster.",
-      "image": "docs/img/spectra.png",
-      "demo": "https://kwwaleszczynski-del.github.io/fly-connectome-forecast/",
-      "tags": [
-        "FlyWire",
-        "reservoir computing",
-        "negative result"
-      ]
-    },
-    {
       "repo": "pl-grid-connection-ncrfg",
       "title": "Grid connection studies and non-firm capacity on Polish MV/110 kV feeders",
       "group": "system",
@@ -750,6 +700,34 @@
         "Python library",
         "pandas",
         "PSE API"
+      ]
+    },
+    {
+      "repo": "fly-novelty-scada",
+      "title": "A fly-brain novelty detector for turbine faults",
+      "group": "experiments",
+      "summary": "The fruit fly's mushroom-body novelty detector (FlyHash and the fly Bloom filter), wired with the real FlyWire projection-neuron to Kenyon-cell connectome, run as a streaming fault detector on 95 wind turbine datasets of the CARE to Compare benchmark.",
+      "highlight": "Honest negative result: the fly scores 0.47 against 0.51 for k-NN (0.5 is random), real wiring does no better than shuffled, and after a year of training the filter saturates and stops alarming.",
+      "image": "docs/img/pn_kc_wiring.png",
+      "demo": "https://kwwaleszczynski-del.github.io/fly-novelty-scada/",
+      "tags": [
+        "FlyWire",
+        "novelty detection",
+        "CARE benchmark"
+      ]
+    },
+    {
+      "repo": "fly-connectome-forecast",
+      "title": "Can a fly brain forecast wind and solar?",
+      "group": "experiments",
+      "summary": "The FlyWire connectome of the fruit fly brain used as an echo state network reservoir to forecast Polish wind and PV generation, against random and rewired reservoirs, ridge, gradient boosting and the PSE day-ahead plan.",
+      "highlight": "No: tuned separately, the fly brain matches a random reservoir within 2 %; its compressed eigenvalue spectrum makes it robust to bad settings, not a better forecaster.",
+      "image": "docs/img/spectra.png",
+      "demo": "https://kwwaleszczynski-del.github.io/fly-connectome-forecast/",
+      "tags": [
+        "FlyWire",
+        "reservoir computing",
+        "negative result"
       ]
     }
   ]
