@@ -498,7 +498,7 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-pv">Solar PV</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/pv-canopy-pac-verification">Off-site canopy vs row-to-row shading in an autumn IEC 61724-1 PV acceptance test</a></h3>
-        <p class="summary">A hypothetical 10 MWp single-axis tracker plant next to a real forest edge in central Poland: a 1 m Meta/WRI canopy height window read with HTTP range requests, ERA5 weather for a September 2025 PAC campaign, and synthetic SCADA from a more detailed simulator than the analysis raycaster.</p>
+        <p class="summary">A hypothetical 10 MWp single-axis tracker plant next to a real forest edge in central Poland: a 1 m Meta/WRI canopy height window read with HTTP range requests, ERA5 weather for a September 2025 PAC campaign, and synthetic SCADA from a separate plant simulator that reuses the analysis&#x27;s shading geometry.</p>
         <p class="highlight">Row-to-row shading under flat-terrain backtracking, not the forest, drives the shortfall (2.05 pp vs 0.18 pp; estimated 1.78 and 0.22). Excluding canopy-shaded intervals turns a failed PAC into a pass, and the raycaster matches SCADA dropouts at interval F1 0.82 but only R² 0.12.</p>
         <ul class="tags"><li>Meta/WRI canopy height</li><li>IEC 61724-1 PAC</li><li>tracker backtracking</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-canopy-pac-verification">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-canopy-pac-verification/">Live page &#8599;</a></div>
@@ -694,7 +694,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-ops">Monitoring</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/scada-lakehouse-streaming">Streaming SCADA ingestion, event-time watermarks and a Bronze-Silver-Gold lakehouse for wind and PV</a></h3>
         <p class="summary">A simulated 50 MW wind and PV fleet with LTE router outages, MQTT QoS-1 duplicates, Europe/Warsaw DST days and sensor faults, replayed through naive ingestion-time windows and through an event-time Bronze-Silver-Gold Parquet pipeline with upserts, counter continuity and rule-based sensor QC.</p>
-        <p class="highlight">Across 18 simulated LTE outages, naive windowing puts a median 9.2x the true energy into the reconnect quarter-hour (185 % nMAE in affected intervals) and loses 6.0 % of fleet energy on the 25-hour DST day; the event-time pipeline recovers the true energy in every affected quarter-hour.</p>
+        <p class="highlight">Across 18 simulated LTE outages, naive windowing puts a median 9.2x the true energy into the reconnect quarter-hour (185 % nMAE in affected intervals) and loses 6.0 % of fleet energy on the 25-hour DST day. Event-time windows fix both; how much of the backlog they recover depends on the watermark: 47 % of delayed minutes at 1 h, 81 % at 2 h, 99.6 % at 4 h.</p>
         <ul class="tags"><li>event-time watermarks</li><li>Parquet medallion</li><li>SCADA data quality</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/scada-lakehouse-streaming">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/scada-lakehouse-streaming/">Live page &#8599;</a></div>
       </div>
