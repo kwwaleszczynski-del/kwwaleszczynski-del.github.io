@@ -382,7 +382,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-storage">Storage &amp; markets</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/bess-thermal-aux-load">Container thermal balance, HVAC auxiliary load and net RTE of a grid battery</a></h3>
         <p class="summary">Coupled electro-thermal and auxiliary-power model of a 2.5 MW / 5 MWh LFP container in 2025 ERA5 Polish weather: Joule and entropic cell heat, liquid-cooling chiller vs forced-air DX, heater, pumps, PCS and MV transformer losses, with round-trip efficiency at every metering boundary for reserve, arbitrage and two-cycle duty.</p>
-        <p class="highlight">Net RTE at the PCC is 92.4 % at 1 cycle/day and 89.8 % at 0.35 cycles/day: fixed transformer and control loads, not winter, cost the low-cycling case 2.5 pp, and no heating is needed all year. Reported fleet averages are nearer 82 %, so the model is an optimistic bound.</p>
+        <p class="highlight">Net RTE at the PCC is 92.4 % at 1 cycle/day with 0.18 C peaks and 88.2 % at the rated 0.5 C; at 0.35 cycles/day it is 89.8 %, because fixed transformer and control loads, not winter, weigh on low cycling. Reported fleet averages are nearer 82 %, so the model is an optimistic bound.</p>
         <ul class="tags"><li>LFP thermal model</li><li>HVAC / chiller</li><li>auxiliary load</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-thermal-aux-load">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/bess-thermal-aux-load/">Live page &#8599;</a></div>
       </div>
@@ -447,7 +447,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-pv">Solar PV</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/pv-outage-classifier">PV outages: detection, cause and availability</a></h3>
         <p class="summary">Seven ways to find production losses at string, inverter and meter level (threshold, expected PR model, peer median, Hampel, CUSUM, isolation forest, gradient boosting) plus a hybrid, cause classification, lost energy and IEC 61724-1 style availability on a simulated plant with ground truth, real PVDAQ data and an open shading dataset.</p>
-        <p class="highlight">Requiring events of at least 1 h lifts the hybrid detector&#x27;s precision from 0.73 to 0.97 and cuts alarms about 20-fold; thresholds tuned on simulation give 257 alarms per inverter-year on real roofs, a short site set-up brings it to 6 with all real outages still found.</p>
+        <p class="highlight">Requiring events of at least 1 h lifts the hybrid detector&#x27;s event precision from 0.14 to 0.74 and cuts false alarms from 2.9 to 0.13 per device-year; thresholds tuned on simulation give 257 alarms per inverter-year on real roofs, a short site set-up brings it to 6 with all real outages still found.</p>
         <ul class="tags"><li>outage detection</li><li>IEC 61724-1</li><li>NREL PVDAQ</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-outage-classifier">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-outage-classifier/">Live page &#8599;</a></div>
       </div>
@@ -512,7 +512,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-wind">Wind</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/wind-les-gpu">Kelmarsh wind farm in a laptop-GPU LES</a></h3>
         <p class="summary">A home-made D3Q19 lattice Boltzmann large-eddy simulator in ~550 lines of NVIDIA Warp kernels (regularized collision, Smagorinsky subgrid, log-law wall, actuator disks and precursor turbulence), run across all 72 wind directions on Kelmarsh and compared record-by-record with 6 years of SCADA and PyWake.</p>
-        <p class="highlight">Without a tunable wake parameter the LES predicts 9.79 % farm wake loss against 9.24 % measured in 159,289 SCADA records (sector RMSE 2.2 pp vs 2.6 pp for PyWake Gaussian) in 81 s per wind direction on a 6 GB laptop GPU.</p>
+        <p class="highlight">With no parameter fitted to the measured losses the LES predicts 9.79 % farm wake loss against 9.24 % measured in 159,289 SCADA records (sector RMSE 2.2 pp vs 2.6 pp for PyWake Gaussian) in 81 s per wind direction on a 6 GB laptop GPU.</p>
         <ul class="tags"><li>NVIDIA Warp</li><li>Lattice Boltzmann LES</li><li>Kelmarsh SCADA</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-les-gpu">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/wind-les-gpu/">Live page &#8599;</a></div>
       </div>
@@ -564,7 +564,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-wind">Wind</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/wind-wake-aware-verification">WARP: wake-aware turbine verification</a></h3>
         <p class="summary">Expected power from the unwaked neighbours carried through a calibrated wake model, with CUSUM charts for power loss, derating, anemometer bias and yaw misalignment.</p>
-        <p class="highlight">Validated on 288 injected faults: a 4 deg yaw misalignment is found in 100 % of cases (median 6 days), standard references find 6-10 %.</p>
+        <p class="highlight">On 288 faults injected into 2019-2020 data it finds a 3 % anemometer bias in 83 % of cases and a derating to 95 % of rated power in 94 %, where the neighbour index finds 4 %; yaw faults are found every time, partly by construction.</p>
         <ul class="tags"><li>PyWake</li><li>CUSUM</li><li>SCADA</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-wake-aware-verification">Code</a></div>
       </div>
@@ -602,9 +602,9 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-wind">Wind</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/wind-power-curve-kelmarsh">Wind power curves (IEC 61400-12-1)</a></h3>
-        <p class="summary">Six years of open Kelmarsh SCADA: cleaning with event logs, IEC power curves, underperformance tracking, static yaw misalignment and lost energy.</p>
+        <p class="summary">Six years of open Kelmarsh SCADA: cleaning with event logs, power curves with IEC 61400-12-1 binning on nacelle anemometry, underperformance tracking, static yaw misalignment and lost energy.</p>
         <p class="highlight">Caught a silent change of the SCADA wind speed definition that made the turbines look up to 14 % better than they were.</p>
-        <ul class="tags"><li>IEC 61400-12-1</li><li>SCADA</li><li>AEP</li></ul>
+        <ul class="tags"><li>IEC 61400-12-1 binning</li><li>SCADA</li><li>AEP</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-power-curve-kelmarsh">Code</a></div>
       </div>
     </article>
@@ -615,8 +615,8 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-wind">Wind</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/wind-wake-shadow">Wakes and shadow flicker</a></h3>
-        <p class="summary">Three PyWake wake models on the real Kelmarsh layout checked against SCADA, plus worst-case and expected shadow flicker maps.</p>
-        <p class="highlight">Measured wake loss 9.2 %: Gaussian model 9.7 %, Jensen 11.4 %, TurbOPark 12.1 %.</p>
+        <p class="summary">Shadow flicker maps for the six-turbine Kelmarsh farm, as an astronomical worst case and as an expected case from sunshine, rotor operation and orientation, plus PyWake wake flow maps and annual wake losses.</p>
+        <p class="highlight">The worst case exceeds 30 h/year on 2.4 km² up to 860 m from the nearest turbine; sunshine, operation and rotor orientation bring the expected hours to 20 % of that.</p>
         <ul class="tags"><li>PyWake</li><li>shadow flicker</li><li>Plotly</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-wake-shadow">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/wind-wake-shadow/">Live page &#8599;</a></div>
       </div>
@@ -811,7 +811,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-system">Power system &amp; resource</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/pl-grid-connection-ncrfg">Grid connection studies and non-firm capacity on Polish MV/110 kV feeders</a></h3>
         <p class="summary">Steady-state and N-1 study of a synthetic Polish 110/15 kV GPZ and four radial 15 kV feeders built from catalogue conductor data, solved with a polar Newton-Raphson Ybus power flow: hosting capacity under unity power factor, cos-phi(P) and Q(U), annual reactive energy, export caps with a battery, and cable pooling under N-1.</p>
-        <p class="highlight">On a 14.2 km overhead feeder cos-phi(P) and Q(U) lift hosting capacity from 2.30 MW to 3.21 and 3.11 MW, but cost capacity on a thermally limited cable feeder; a 70 % export cap curtails 1.78 % of PV energy, and pooling wind behind the same 21.54 MW connection carries 1.96 times the energy of firm PV.</p>
+        <p class="highlight">On a 14.2 km overhead feeder cos-phi(P) and Q(U) lift hosting capacity from 2.30 MW to 3.21 and 3.11 MW, but cost capacity on a thermally limited cable feeder; on a PVGIS profile a 70 % export cap curtails 6.53 % of PV energy, and pooling wind behind the same 21.54 MW connection carries 1.99 times the energy of firm PV.</p>
         <ul class="tags"><li>NC RfG Q(U)</li><li>Newton-Raphson Ybus</li><li>N-1 hosting capacity</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pl-grid-connection-ncrfg">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pl-grid-connection-ncrfg/">Live page &#8599;</a></div>
       </div>
@@ -837,7 +837,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-tools">Open-source tools</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/pse-opendata">pse-opendata: Python client for PSE data</a></h3>
         <p class="summary">An open-source library for the public data of the Polish TSO: 16 reports plus the legacy CSV export since 2009 as tidy pandas frames with explicit interval times in UTC and local time, monthly Parquet cache aware of PSE&#x27;s late corrections, and a CLI.</p>
-        <p class="highlight">103 offline tests on recorded responses plus live checks against PSE&#x27;s API description; documents pitfalls such as DST labels, the 100,000-row cap and pagination that drops rows.</p>
+        <p class="highlight">Offline tests on recorded responses plus live checks against PSE&#x27;s API description; documents pitfalls such as DST labels, the 100,000-row cap and pagination that drops rows.</p>
         <ul class="tags"><li>Python library</li><li>pandas</li><li>PSE API</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pse-opendata">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pse-opendata/">Docs &#8599;</a></div>
       </div>

@@ -244,7 +244,7 @@
       "title": "Container thermal balance, HVAC auxiliary load and net RTE of a grid battery",
       "group": "storage",
       "summary": "Coupled electro-thermal and auxiliary-power model of a 2.5 MW / 5 MWh LFP container in 2025 ERA5 Polish weather: Joule and entropic cell heat, liquid-cooling chiller vs forced-air DX, heater, pumps, PCS and MV transformer losses, with round-trip efficiency at every metering boundary for reserve, arbitrage and two-cycle duty.",
-      "highlight": "Net RTE at the PCC is 92.4 % at 1 cycle/day and 89.8 % at 0.35 cycles/day: fixed transformer and control loads, not winter, cost the low-cycling case 2.5 pp, and no heating is needed all year. Reported fleet averages are nearer 82 %, so the model is an optimistic bound.",
+      "highlight": "Net RTE at the PCC is 92.4 % at 1 cycle/day with 0.18 C peaks and 88.2 % at the rated 0.5 C; at 0.35 cycles/day it is 89.8 %, because fixed transformer and control loads, not winter, weigh on low cycling. Reported fleet averages are nearer 82 %, so the model is an optimistic bound.",
       "image": "docs/img/monthly_rte_waterfall.png",
       "demo": "https://kwwaleszczynski-del.github.io/bess-thermal-aux-load/",
       "tags": [
@@ -316,7 +316,7 @@
       "title": "PV outages: detection, cause and availability",
       "group": "pv",
       "summary": "Seven ways to find production losses at string, inverter and meter level (threshold, expected PR model, peer median, Hampel, CUSUM, isolation forest, gradient boosting) plus a hybrid, cause classification, lost energy and IEC 61724-1 style availability on a simulated plant with ground truth, real PVDAQ data and an open shading dataset.",
-      "highlight": "Requiring events of at least 1 h lifts the hybrid detector's precision from 0.73 to 0.97 and cuts alarms about 20-fold; thresholds tuned on simulation give 257 alarms per inverter-year on real roofs, a short site set-up brings it to 6 with all real outages still found.",
+      "highlight": "Requiring events of at least 1 h lifts the hybrid detector's event precision from 0.14 to 0.74 and cuts false alarms from 2.9 to 0.13 per device-year; thresholds tuned on simulation give 257 alarms per inverter-year on real roofs, a short site set-up brings it to 6 with all real outages still found.",
       "image": "docs/img/method_comparison.png",
       "demo": "https://kwwaleszczynski-del.github.io/pv-outage-classifier/",
       "tags": [
@@ -388,7 +388,7 @@
       "group": "wind",
       "method": true,
       "summary": "A home-made D3Q19 lattice Boltzmann large-eddy simulator in ~550 lines of NVIDIA Warp kernels (regularized collision, Smagorinsky subgrid, log-law wall, actuator disks and precursor turbulence), run across all 72 wind directions on Kelmarsh and compared record-by-record with 6 years of SCADA and PyWake.",
-      "highlight": "Without a tunable wake parameter the LES predicts 9.79 % farm wake loss against 9.24 % measured in 159,289 SCADA records (sector RMSE 2.2 pp vs 2.6 pp for PyWake Gaussian) in 81 s per wind direction on a 6 GB laptop GPU.",
+      "highlight": "With no parameter fitted to the measured losses the LES predicts 9.79 % farm wake loss against 9.24 % measured in 159,289 SCADA records (sector RMSE 2.2 pp vs 2.6 pp for PyWake Gaussian) in 81 s per wind direction on a 6 GB laptop GPU.",
       "image": "docs/img/hub_plane.png",
       "demo": "https://kwwaleszczynski-del.github.io/wind-les-gpu/",
       "tags": [
@@ -447,7 +447,7 @@
       "group": "wind",
       "method": true,
       "summary": "Expected power from the unwaked neighbours carried through a calibrated wake model, with CUSUM charts for power loss, derating, anemometer bias and yaw misalignment.",
-      "highlight": "Validated on 288 injected faults: a 4 deg yaw misalignment is found in 100 % of cases (median 6 days), standard references find 6-10 %.",
+      "highlight": "On 288 faults injected into 2019-2020 data it finds a 3 % anemometer bias in 83 % of cases and a derating to 95 % of rated power in 94 %, where the neighbour index finds 4 %; yaw faults are found every time, partly by construction.",
       "image": "docs/img/wake_validation.png",
       "tags": [
         "PyWake",
@@ -487,11 +487,11 @@
       "repo": "wind-power-curve-kelmarsh",
       "title": "Wind power curves (IEC 61400-12-1)",
       "group": "wind",
-      "summary": "Six years of open Kelmarsh SCADA: cleaning with event logs, IEC power curves, underperformance tracking, static yaw misalignment and lost energy.",
+      "summary": "Six years of open Kelmarsh SCADA: cleaning with event logs, power curves with IEC 61400-12-1 binning on nacelle anemometry, underperformance tracking, static yaw misalignment and lost energy.",
       "highlight": "Caught a silent change of the SCADA wind speed definition that made the turbines look up to 14 % better than they were.",
       "image": "docs/img/power_curves.png",
       "tags": [
-        "IEC 61400-12-1",
+        "IEC 61400-12-1 binning",
         "SCADA",
         "AEP"
       ]
@@ -500,8 +500,8 @@
       "repo": "wind-wake-shadow",
       "title": "Wakes and shadow flicker",
       "group": "wind",
-      "summary": "Three PyWake wake models on the real Kelmarsh layout checked against SCADA, plus worst-case and expected shadow flicker maps.",
-      "highlight": "Measured wake loss 9.2 %: Gaussian model 9.7 %, Jensen 11.4 %, TurbOPark 12.1 %.",
+      "summary": "Shadow flicker maps for the six-turbine Kelmarsh farm, as an astronomical worst case and as an expected case from sunshine, rotor operation and orientation, plus PyWake wake flow maps and annual wake losses.",
+      "highlight": "The worst case exceeds 30 h/year on 2.4 km² up to 860 m from the nearest turbine; sunshine, operation and rotor orientation bring the expected hours to 20 % of that.",
       "image": "docs/img/flow_animation.gif",
       "demo": "https://kwwaleszczynski-del.github.io/wind-wake-shadow/",
       "tags": [
@@ -713,7 +713,7 @@
       "title": "Grid connection studies and non-firm capacity on Polish MV/110 kV feeders",
       "group": "system",
       "summary": "Steady-state and N-1 study of a synthetic Polish 110/15 kV GPZ and four radial 15 kV feeders built from catalogue conductor data, solved with a polar Newton-Raphson Ybus power flow: hosting capacity under unity power factor, cos-phi(P) and Q(U), annual reactive energy, export caps with a battery, and cable pooling under N-1.",
-      "highlight": "On a 14.2 km overhead feeder cos-phi(P) and Q(U) lift hosting capacity from 2.30 MW to 3.21 and 3.11 MW, but cost capacity on a thermally limited cable feeder; a 70 % export cap curtails 1.78 % of PV energy, and pooling wind behind the same 21.54 MW connection carries 1.96 times the energy of firm PV.",
+      "highlight": "On a 14.2 km overhead feeder cos-phi(P) and Q(U) lift hosting capacity from 2.30 MW to 3.21 and 3.11 MW, but cost capacity on a thermally limited cable feeder; on a PVGIS profile a 70 % export cap curtails 6.53 % of PV energy, and pooling wind behind the same 21.54 MW connection carries 1.99 times the energy of firm PV.",
       "image": "docs/img/hosting_capacity.png",
       "demo": "https://kwwaleszczynski-del.github.io/pl-grid-connection-ncrfg/",
       "tags": [
@@ -742,7 +742,7 @@
       "title": "pse-opendata: Python client for PSE data",
       "group": "tools",
       "summary": "An open-source library for the public data of the Polish TSO: 16 reports plus the legacy CSV export since 2009 as tidy pandas frames with explicit interval times in UTC and local time, monthly Parquet cache aware of PSE's late corrections, and a CLI.",
-      "highlight": "103 offline tests on recorded responses plus live checks against PSE's API description; documents pitfalls such as DST labels, the 100,000-row cap and pagination that drops rows.",
+      "highlight": "Offline tests on recorded responses plus live checks against PSE's API description; documents pitfalls such as DST labels, the 100,000-row cap and pagination that drops rows.",
       "image": "site:assets/pse-opendata-card.png",
       "demo": "https://kwwaleszczynski-del.github.io/pse-opendata/",
       "demo_label": "Docs",
