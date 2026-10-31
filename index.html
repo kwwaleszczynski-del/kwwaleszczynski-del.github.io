@@ -706,8 +706,8 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-system">Power system &amp; resource</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/pl-res-reliability-markov">Capacity credit of wind and PV in Poland</a></h3>
-        <p class="summary">Multi-state Markov models of wind and PV from ERA5 at 29 points, sequential Monte Carlo LOLE/EENS on IEEE RTS-79 and real PSE demand, and an ELCC map of Poland: the method of the author&#x27;s MSc thesis rebuilt on open data, extended with battery ELCC and multi-day lulls from a regime-switching weather model.</p>
-        <p class="highlight">Reproduces the IEEE RTS-79 reference LOLE exactly; wind ELCC about 26.5 % and PV about 10 %, compared with capacity market derating factors.</p>
+        <p class="summary">Multi-state Markov models of wind and PV from ERA5 at 29 points, sequential Monte Carlo LOLE/EENS on IEEE RTS-79 and real PSE demand, and an ELCC map of Poland: the method of the author&#x27;s MSc thesis rebuilt on open data, extended with battery ELCC, multi-day lulls from a regime-switching weather model, and checks against operating data and failure logs of three open wind farms and a PV roof.</p>
+        <p class="highlight">Reproduces the IEEE RTS-79 reference LOLE exactly; wind ELCC about 26.5 % and PV about 10 %. On open farm data an uncalibrated ERA5 + catalogue-curve model misses ELCC by -1.4 to +5.3 points, while failures that cluster in strong wind change it by only 0.02 points.</p>
         <ul class="tags"><li>Markov chains</li><li>Monte Carlo</li><li>ELCC</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pl-res-reliability-markov">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pl-res-reliability-markov/">Live page &#8599;</a></div>
       </div>
