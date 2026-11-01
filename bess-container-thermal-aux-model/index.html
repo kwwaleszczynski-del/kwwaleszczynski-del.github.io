@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Container thermal balance, HVAC auxiliary load and net RTE of a grid battery in Poland</title>
+<meta name="description" content="Two-node thermal and auxiliary-power model of a 5 MWh LFP battery container on ERA5 weather for Central Poland: cell losses, chiller COP, heating, PCS and transformer losses, and the resulting net round-trip efficiency at each metering point.">
+<style>
+:root {
+  color-scheme: light;
+  --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink2: #52514e; --muted: #898781;
+  --grid: #e1e0d9; --axis: #c3c2b7; --ring: rgba(11,11,11,0.10); --accent: #2a78d6;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #e8a33d; --bad: #c8423b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink2: #c3c2b7; --muted: #898781;
+    --grid: #2c2c2a; --axis: #383835; --ring: rgba(255,255,255,0.10); --accent: #3987e5;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #e8a33d; --bad: #d4574f;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #0d0d0d; --surface: #1a1a19; --ink: #f0efec; --ink2: #c3c2b7; --muted: #898781;
+  --grid: #2c2c2a; --axis: #383835; --ring: rgba(255,255,255,0.10); --accent: #3987e5;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #e8a33d; --bad: #d4574f;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink);
+       font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 1180px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 1.7rem; margin: 0 0 6px; }
+h2 { font-size: 1.2rem; margin: 36px 0 6px; }
+p { color: var(--ink2); margin: 6px 0 12px; max-width: 84ch; }
+a { color: var(--accent); }
+.card { background: var(--surface); border: 1px solid var(--ring); border-radius: 10px; padding: 14px 16px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 12px; margin: 18px 0; }
+.tile .v { font-size: 1.45rem; font-weight: 650; }
+.tile .l { color: var(--ink2); font-size: 0.85rem; }
+.plot { width: 100%; height: 420px; }
+.plot.tall { height: 540px; }
+.controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; align-items: end;
+            margin: 14px 0; color: var(--ink2); font-size: 0.88rem; }
+select { font: inherit; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--ring); background: var(--surface);
+         color: var(--ink); width: 100%; }
+.controls label { display: flex; flex-direction: column; gap: 4px; font-weight: 500; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.84rem; }
+th, td { border-bottom: 1px solid var(--grid); padding: 6px 8px; text-align: left; white-space: nowrap; }
+th { color: var(--ink2); font-weight: 600; cursor: pointer; user-select: none; position: sticky; top: 0;
+     background: var(--surface); }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+.note { font-size: 0.84rem; color: var(--muted); }
+.warn { border-left: 3px solid var(--s2); padding-left: 10px; }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); gap: 14px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Container thermal balance, HVAC auxiliary load and net RTE of a grid battery in Poland</h1>
+<p>Two-node thermal and auxiliary-power model of a generic 20-foot 2.5 MW / 5 MWh LFP battery container, run hour by hour
+(15-minute sub-steps) on ERA5 weather for Central Poland. It follows the energy from the cells through the PCS and the
+0.8/15 kV transformer to the point of common coupling (PCC), with cell losses, chiller COP, heating, pumps or fans and the
+control base load. All inputs are stated assumptions for a generic container, not data of a specific product.
+Code, inputs and method: <a href="https://github.com/kwwaleszczynski-del/bess-thermal-aux-load">github.com/kwwaleszczynski-del/bess-thermal-aux-load</a>.
+Companion operational reporting: <a href="https://github.com/kwwaleszczynski-del/bess-ops-warranty">bess-ops-warranty</a>.</p>
+<p class="warn" id="headline"></p>
+
+<div class="card controls">
+  <label>Cooling system
+    <select id="sel-cooling">
+      <option value="liquid">Liquid (cold plates)</option>
+      <option value="air">Forced air (DX)</option>
+    </select>
+  </label>
+  <label>Cycling duty
+    <select id="sel-duty">
+      <option value="reserve_035">0.35 cycles/day (reserve)</option>
+      <option value="da_100" selected>1 cycle/day (day-ahead)</option>
+      <option value="heavy_200">2 cycles/day (two-cycle)</option>
+      <option value="rated_100">1 cycle/day at the rated 0.5 C</option>
+    </select>
+  </label>
+  <label>Net RTE metered at
+    <select id="sel-meter">
+      <option value="pcc" selected>PCC, MV side (incl. transformer)</option>
+      <option value="lv">LV side of the transformer</option>
+    </select>
+  </label>
+  <label>Week viewer
+    <select id="sel-season">
+      <option value="cold" selected>Coldest week of the year</option>
+      <option value="hot">Hottest week of the year</option>
+    </select>
+  </label>
+</div>
+
+<div class="tiles" id="tiles"></div>
+
+<h2>1. Monthly round-trip efficiency at each metering boundary</h2>
+<p>Monthly RTE at the DC terminals, the PCS AC terminals, the MV side without auxiliaries, and net of auxiliaries at the
+selected meter, for the selected configuration and the other cooling architecture.</p>
+<div class="card"><div id="plot-monthly-rte" class="plot"></div></div>
+
+<h2>2. Coldest and hottest week, 15-minute resolution</h2>
+<p>Ambient temperature, cell temperature, pack resistance and auxiliary power for the selected configuration (solid)
+and the other cooling architecture (dashed).</p>
+<div class="card"><div id="plot-week" class="plot tall"></div></div>
+
+<h2>3. Auxiliary power against ambient temperature, and annual losses by component</h2>
+<p>Left: steady auxiliary power at constant ambient temperature, no sun, idle or cycling continuously at 0.25 C and 0.5 C.
+Right: annual losses by component for the four duties with the selected cooling system.</p>
+<div class="two">
+  <div class="card"><div id="plot-aux-temp" class="plot"></div></div>
+  <div class="card"><div id="plot-loss-duty" class="plot"></div></div>
+</div>
+
+<h2>4. Annual summary, all duties and cooling systems</h2>
+<p class="note">Click a column header to sort.</p>
+<div class="card scroll"><table id="tbl-summary"></table></div>
+
+<h2>5. Monthly breakdown for the selected configuration</h2>
+<div class="card scroll"><table id="tbl-monthly"></table></div>
+
+<h2>6. Sensitivity of annual net PCC RTE (liquid cooling)</h2>
+<p>One input at a time set to its low and high value, all others at base.</p>
+<div class="card scroll"><table id="tbl-sens"></table></div>
+
+<h2>7. Checks</h2>
+<p>Each check can fail. The energy balance is bookkeeping: every electrical loss has to reappear as stored heat or as heat
+leaving the plant. No measured container data are used; the model is not validated against field measurements.</p>
+<div class="card scroll"><table id="tbl-verify"></table></div>
+
+<p class="note" style="margin-top:28px">Model and code: MIT licence, Konrad Waleszczyński. Weather:
+<span id="weather-note"></span>; ERA5 (Hersbach et al. 2020, Copernicus Climate Change Service) via the Open-Meteo
+archive API, CC BY 4.0. Contains modified Copernicus Climate Change Service information.</p>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"
+        integrity="sha384-cCVCZkAjYNxaYKbM8lsArLznDF/SvMFr1jcZrvOpSTCa0W40ZAdLzHCEulnUa5i7" crossorigin="anonymous"></script>
+<script src="data.js"></script>
+<script>
+const D = window.DATA;
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = (x, d = 1) => x == null || isNaN(x) ? "-" : Number(x).toFixed(d);
+const pct = (x, d = 1) => x == null || isNaN(x) ? "-" : (100 * x).toFixed(d) + " %";
+const narrow = () => window.innerWidth < 640;
+const other = c => c === "liquid" ? "air" : "liquid";
+const COOL = {liquid: "liquid", air: "air"};
+const DUTY = {reserve_035: "0.35 cyc/d", da_100: "1 cyc/d", heavy_200: "2 cyc/d", rated_100: "1 cyc/d at 0.5 C"};
+
+function layoutBase(extra) {
+  return Object.assign({
+    paper_bgcolor: css("--surface"),
+    plot_bgcolor: css("--surface"),
+    font: {family: "system-ui, -apple-system, Segoe UI, sans-serif", color: css("--ink2"), size: 12},
+    margin: {l: 58, r: 18, t: 28, b: 46},
+    hoverlabel: {bgcolor: css("--surface"), font: {color: css("--ink")}},
+    // anchored on the side away from the plot, so a legend that wraps to more rows grows away from the data
+    legend: narrow() ? {orientation: "h", y: -0.22, yanchor: "top", x: 0, font: {size: 10}}
+      : {orientation: "h", y: 1.02, yanchor: "bottom", x: 0}
+  }, extra);
+}
+const axis = extra => Object.assign({gridcolor: css("--grid"), linecolor: css("--axis"), zeroline: false}, extra);
+const cfg = {responsive: true, displaylogo: false};
+
+function state() {
+  return {
+    cooling: document.getElementById("sel-cooling").value,
+    duty: document.getElementById("sel-duty").value,
+    meter: document.getElementById("sel-meter").value,
+    season: document.getElementById("sel-season").value,
+  };
+}
+
+function renderHeadline() {
+  const da = D.runs["da_100__liquid"].summary, res = D.runs["reserve_035__liquid"].summary;
+  const rated = D.runs["rated_100__liquid"].summary;
+  const cmp = D.liquid_vs_air_da100;
+  document.getElementById("headline").textContent =
+    `With the stated inputs, net RTE at the 15 kV PCC is ${pct(da.rte_pcc_net)} at 1 cycle/day with a peak of ` +
+    `${da.max_c_rate} C (monthly ${pct(da.rte_pcc_month_min)} in ${da.rte_pcc_month_min_name} to ${pct(da.rte_pcc_month_max)} in ` +
+    `${da.rte_pcc_month_max_name}) and ${pct(res.rte_pcc_net)} at 0.35 cycles/day (peak ${res.max_c_rate} C), where the ` +
+    `transformer no-load loss and the control base load weigh more per MWh cycled. At the rated ${rated.max_c_rate} C, ` +
+    `1 cycle/day gives ${pct(rated.rte_pcc_net)}. Heater energy is ${fmt(da.e_heater_mwh, 2)} MWh/yr at 1 cycle/day` +
+    (da.e_heater_mwh < 0.05 * da.e_aux_mwh ? ": cell losses, pumps and controls keep the insulated container warm. " : ". ") +
+    `Forced air needs ${fmt(cmp.aux_saved_mwh, 1)} MWh/yr ` +
+    `(${fmt(cmp.aux_saved_pct, 1)} %) more auxiliary energy than liquid cooling at 1 cycle/day.`;
+  const s = D.site;
+  document.getElementById("weather-note").textContent =
+    `${s.weather}, ${s.location}, ${fmt(s.t_amb_min_c, 1)} to ${fmt(s.t_amb_max_c, 1)} degC, mean ${fmt(s.t_amb_mean_c, 1)} degC, ` +
+    `GHI ${fmt(s.ghi_annual_kwh_m2, 0)} kWh/m2`;
+}
+
+function renderTiles() {
+  const st = state();
+  const run = D.runs[`${st.duty}__${st.cooling}`].summary;
+  const alt = D.runs[`${st.duty}__${other(st.cooling)}`].summary;
+  const net = st.meter === "pcc" ? run.rte_pcc_net : run.rte_lv_net;
+  const tiles = [
+    [pct(net), st.meter === "pcc" ? "Net RTE at the PCC (incl. transformer and auxiliaries)" : "Net RTE at the transformer LV side (incl. auxiliaries)"],
+    [`${pct(run.rte_dc)} / ${pct(run.rte_pcs_ac)}`, "RTE at DC terminals / PCS AC terminals"],
+    [`${pct(run.rte_pcc_month_min)} / ${pct(run.rte_pcc_month_max)}`, `Lowest (${run.rte_pcc_month_min_name}) / highest (${run.rte_pcc_month_max_name}) monthly net PCC RTE`],
+    [`${fmt(run.e_aux_mwh, 1)} MWh/yr`, `Auxiliaries: ${fmt(run.e_bms_mwh, 1)} base + ${fmt(run.e_circ_mwh, 1)} pump/fans + ${fmt(run.e_chiller_mwh, 1)} chiller + ${fmt(run.e_heater_mwh, 2)} heater`],
+    [`${fmt(run.e_aux_mwh, 1)} vs ${fmt(alt.e_aux_mwh, 1)} MWh/yr`, `Auxiliaries, ${st.cooling} vs ${other(st.cooling)} at this duty`],
+  ];
+  document.getElementById("tiles").innerHTML = tiles.map(t =>
+    `<div class="card tile"><div class="v">${t[0]}</div><div class="l">${t[1]}</div></div>`
+  ).join("");
+}
+
+function renderMonthlyPlot() {
+  const st = state();
+  const M = D.runs[`${st.duty}__${st.cooling}`].monthly;
+  const M2 = D.runs[`${st.duty}__${other(st.cooling)}`].monthly;
+  const key = st.meter === "pcc" ? "rte_pcc_net" : "rte_lv_net";
+  const lab = st.meter === "pcc" ? "Net at PCC" : "Net at LV side";
+  const traces = [
+    {type: "scatter", mode: "lines+markers", x: M.month_name, y: M.rte_dc, name: "DC terminals", line: {color: css("--s3"), width: 2}},
+    {type: "scatter", mode: "lines+markers", x: M.month_name, y: M.rte_pcs_ac, name: "PCS AC terminals", line: {color: css("--ink2"), width: 2}},
+    {type: "scatter", mode: "lines+markers", x: M.month_name, y: M.rte_trafo_mv, name: "MV side, excl. aux", line: {color: css("--s4"), width: 2}},
+    {type: "scatter", mode: "lines+markers", x: M.month_name, y: M[key], name: `${lab} (${st.cooling})`, line: {color: css("--s1"), width: 3}},
+    {type: "scatter", mode: "lines+markers", x: M2.month_name, y: M2[key], name: `${lab} (${other(st.cooling)})`, line: {color: css("--s2"), width: 2, dash: "dash"}},
+  ];
+  Plotly.react("plot-monthly-rte", traces, layoutBase({
+    yaxis: axis({tickformat: ".1%", title: {text: "Monthly RTE", font: {size: 12}}}),
+    xaxis: axis({type: "category"})
+  }), cfg);
+}
+
+function renderWeekPlot() {
+  const st = state();
+  const key = st.season === "cold" ? "cold_week" : "hot_week";
+  const wSel = D.runs[`${st.duty}__${st.cooling}`][key].records;
+  const wAlt = D.runs[`${st.duty}__${other(st.cooling)}`][key].records;
+  const ts = wSel.map(r => r.timestamp);
+  const o = other(st.cooling);
+  const traces = [
+    {type: "scatter", mode: "lines", x: ts, y: wSel.map(r => r.t_amb_c), name: "T_amb [degC]", line: {color: css("--muted"), width: 1.3, shape: "hv"}, yaxis: "y"},
+    {type: "scatter", mode: "lines", x: ts, y: wSel.map(r => r.t_cell_c), name: `T_cell ${st.cooling} [degC]`, line: {color: css("--s1"), width: 2, shape: "hv"}, yaxis: "y"},
+    {type: "scatter", mode: "lines", x: ts, y: wAlt.map(r => r.t_cell_c), name: `T_cell ${o} [degC]`, line: {color: css("--s2"), width: 1.5, dash: "dash", shape: "hv"}, yaxis: "y"},
+    {type: "scatter", mode: "lines", x: ts, y: wSel.map(r => r.r_int_mohm), name: `R_int ${st.cooling} [mOhm]`, line: {color: css("--s3"), width: 1.8, shape: "hv"}, yaxis: "y2"},
+    {type: "scatter", mode: "lines", x: ts, y: wAlt.map(r => r.r_int_mohm), name: `R_int ${o} [mOhm]`, line: {color: css("--s4"), width: 1.4, dash: "dash", shape: "hv"}, yaxis: "y2"},
+    {type: "scatter", mode: "lines", x: ts, y: wSel.map(r => r.p_aux_kw), name: `P_aux ${st.cooling} [kW]`, line: {color: css("--s1"), width: 1.8, shape: "hv"}, yaxis: "y3"},
+    {type: "scatter", mode: "lines", x: ts, y: wAlt.map(r => r.p_aux_kw), name: `P_aux ${o} [kW]`, line: {color: css("--bad"), width: 1.4, dash: "dot", shape: "hv"}, yaxis: "y3"},
+  ];
+  Plotly.react("plot-week", traces, layoutBase({
+    yaxis: axis({domain: [0.69, 1.0], title: {text: "Temp [degC]", font: {size: 11}}}),
+    yaxis2: axis({domain: [0.35, 0.64], title: {text: "R_int [mOhm]", font: {size: 11}}}),
+    yaxis3: axis({domain: [0.0, 0.30], title: {text: "P_aux [kW]", font: {size: 11}}}),
+    xaxis: axis({type: "date"})
+  }), cfg);
+}
+
+function renderAuxAndLossPlots() {
+  const st = state();
+  const A = D.aux_vs_temp;
+  const tr = [];
+  [["liquid", "--s1", "Liquid"], ["air", "--s2", "Air"]].forEach(([c, col, name]) => {
+    [["0.00", "dot", 1.2], ["0.25", "dash", 1.6], ["0.50", "solid", 2.4]].forEach(([r, dash, w]) => {
+      tr.push({type: "scatter", mode: "lines", x: A.t_amb_c, y: A[c][`c_${r}`], name: `${name}: ${r} C`, line: {color: css(col), dash: dash, width: w}});
+    });
+  });
+  Plotly.react("plot-aux-temp", tr, layoutBase({
+    xaxis: axis({title: {text: "Ambient temperature [degC]", font: {size: 12}}}),
+    yaxis: axis({title: {text: "Auxiliary power [kW]", font: {size: 12}}, rangemode: "tozero"})
+  }), cfg);
+
+  const duties = ["reserve_035", "da_100", "heavy_200", "rated_100"];
+  const comps = [
+    ["e_cell_loss_mwh", "Cell losses", "--s1"],
+    ["e_pcs_mwh", "PCS", "--ink2"],
+    ["e_trafo_p0_mwh", "Transformer no-load", "--muted"],
+    ["e_trafo_pk_mwh", "Transformer load", "--s4"],
+    ["e_chiller_mwh", "Chiller / DX", "--s3"],
+    ["e_circ_mwh", "Pump / fans", "--axis"],
+    ["e_heater_mwh", "Heater", "--bad"],
+    ["e_bms_mwh", "Base load", "--s2"],
+  ];
+  const trL = comps.map(([k, label, col]) => ({
+    // on phones the longest duty name breaks onto two lines; angled, it ran past the right edge
+    type: "bar", x: duties.map(d => narrow() ? DUTY[d].replace(" at ", "<br>at ") : DUTY[d]),
+    y: duties.map(d => D.runs[`${d}__${st.cooling}`].summary[k]),
+    name: label, marker: {color: css(col)}
+  }));
+  Plotly.react("plot-loss-duty", trL, layoutBase({
+    barmode: "stack",
+    xaxis: axis(Object.assign({type: "category"}, narrow() ? {tickangle: 0} : {})),
+    yaxis: axis({title: {text: `Annual losses, ${st.cooling} [MWh/yr]`, font: {size: 12}}})
+  }), cfg);
+}
+
+let sortCol = "cycles_per_day", sortDir = 1;
+const SUM_COLS = [
+  ["duty_code", "Duty", r => DUTY[r.duty_code]],
+  ["cooling_code", "Cooling", r => COOL[r.cooling_code]],
+  ["rte_dc", "DC RTE", r => pct(r.rte_dc), 1],
+  ["rte_pcs_ac", "PCS AC RTE", r => pct(r.rte_pcs_ac), 1],
+  ["rte_trafo_mv", "MV RTE excl. aux", r => pct(r.rte_trafo_mv), 1],
+  ["rte_lv_net", "LV net RTE", r => pct(r.rte_lv_net), 1],
+  ["rte_pcc_net", "PCC net RTE", r => pct(r.rte_pcc_net), 1],
+  ["rte_pcc_month_min", "Lowest month", r => `${pct(r.rte_pcc_month_min)} ${r.rte_pcc_month_min_name}`, 1],
+  ["rte_pcc_month_max", "Highest month", r => `${pct(r.rte_pcc_month_max)} ${r.rte_pcc_month_max_name}`, 1],
+  ["e_in_pcc_mwh", "PCC import [MWh]", r => fmt(r.e_in_pcc_mwh, 0), 1],
+  ["e_cell_loss_mwh", "Cell [MWh]", r => fmt(r.e_cell_loss_mwh, 1), 1],
+  ["e_pcs_mwh", "PCS [MWh]", r => fmt(r.e_pcs_mwh, 1), 1],
+  ["e_trafo_p0_mwh", "Trafo no-load [MWh]", r => fmt(r.e_trafo_p0_mwh, 1), 1],
+  ["e_trafo_pk_mwh", "Trafo load [MWh]", r => fmt(r.e_trafo_pk_mwh, 1), 1],
+  ["e_aux_mwh", "Aux [MWh]", r => fmt(r.e_aux_mwh, 1), 1],
+  ["e_heater_mwh", "Heater [MWh]", r => fmt(r.e_heater_mwh, 2), 1],
+  ["e_chiller_mwh", "Chiller [MWh]", r => fmt(r.e_chiller_mwh, 1), 1],
+  ["cop_mean", "COP", r => fmt(r.cop_mean, 2), 1],
+  ["t_cell_min_c", "T_cell min", r => fmt(r.t_cell_min_c, 1), 1],
+  ["t_cell_max_c", "T_cell max", r => fmt(r.t_cell_max_c, 1), 1],
+];
+
+function renderTables() {
+  const st = state();
+  const rows = Object.values(D.runs).map(x => x.summary).sort((a, b) => {
+    const va = a[sortCol], vb = b[sortCol];
+    return (va > vb ? 1 : va < vb ? -1 : 0) * sortDir;
+  });
+  const tbl = document.getElementById("tbl-summary");
+  tbl.innerHTML = "<thead><tr>" + SUM_COLS.map(c => `<th data-k="${c[0]}" class="${c[3] ? "n" : ""}">${c[1]}</th>`).join("") +
+    "</tr></thead><tbody>" + rows.map(r => "<tr>" + SUM_COLS.map(c => `<td class="${c[3] ? "n" : ""}">${c[2](r)}</td>`).join("") + "</tr>").join("") + "</tbody>";
+  tbl.querySelectorAll("th").forEach(th => th.onclick = () => {
+    const k = th.dataset.k; sortDir = k === sortCol ? -sortDir : -1; sortCol = k; renderTables();
+  });
+
+  const M = D.runs[`${st.duty}__${st.cooling}`].monthly;
+  const mCols = [
+    ["Month", i => M.month_name[i], 0],
+    ["T_amb [degC]", i => fmt(M.t_amb_mean_c[i], 1), 1],
+    ["T_cell [degC]", i => fmt(M.t_cell_mean_c[i], 1), 1],
+    ["R_int [mOhm]", i => fmt(M.r_int_mean_mohm[i], 2), 1],
+    ["DC RTE", i => pct(M.rte_dc[i]), 1],
+    ["PCS AC RTE", i => pct(M.rte_pcs_ac[i]), 1],
+    ["MV RTE excl. aux", i => pct(M.rte_trafo_mv[i]), 1],
+    ["LV net RTE", i => pct(M.rte_lv_net[i]), 1],
+    ["PCC net RTE", i => pct(M.rte_pcc_net[i]), 1],
+    ["Cell [MWh]", i => fmt(M.e_cell_loss_mwh[i], 2), 1],
+    ["Heater [MWh]", i => fmt(M.e_heater_mwh[i], 2), 1],
+    ["Chiller [MWh]", i => fmt(M.e_chiller_mwh[i], 2), 1],
+    ["Pump/fans [MWh]", i => fmt(M.e_circ_mwh[i], 2), 1],
+    ["Aux [MWh]", i => fmt(M.e_aux_mwh[i], 2), 1],
+    ["COP", i => fmt(M.cop_mean[i], 2), 1],
+  ];
+  document.getElementById("tbl-monthly").innerHTML = "<thead><tr>" + mCols.map(c => `<th class="${c[2] ? "n" : ""}">${c[0]}</th>`).join("") +
+    "</tr></thead><tbody>" + M.month.map((_, i) => "<tr>" + mCols.map(c => `<td class="${c[2] ? "n" : ""}">${c[1](i)}</td>`).join("") + "</tr>").join("") + "</tbody>";
+
+  const S = D.sensitivity;
+  const params = [...new Set(S.map(r => r.parameter))];
+  const find = (p, d) => S.find(r => r.parameter === p && r.duty_code === d);
+  params.sort((a, b) => find(b, "da_100").swing_pp - find(a, "da_100").swing_pp);
+  document.getElementById("tbl-sens").innerHTML =
+    "<thead><tr><th>Input (low / base / high)</th><th class='n'>0.35 cyc/d low</th><th class='n'>0.35 cyc/d high</th><th class='n'>1 cyc/d low</th><th class='n'>1 cyc/d high</th></tr></thead><tbody>" +
+    params.map(p => {
+      const r = find(p, "reserve_035"), d = find(p, "da_100");
+      return `<tr><td>${p} (${d.low_value} / ${d.base_value} / ${d.high_value})</td><td class="n">${pct(r.rte_pcc_low)}</td><td class="n">${pct(r.rte_pcc_high)}</td><td class="n">${pct(d.rte_pcc_low)}</td><td class="n">${pct(d.rte_pcc_high)}</td></tr>`;
+    }).join("") + "</tbody>";
+
+  const V = D.verification;
+  const vRows = [[`Plant energy balance, ${V.plant_energy_balance.runs.length} runs (bookkeeping)`, "residual < 1e-6 MWh", `max ${V.plant_energy_balance.max_residual_mwh.toExponential(1)} MWh`]];
+  V.integrator_vs_exact.forEach(r => vRows.push([`Implicit Euler vs matrix exponential, ${r.days} days (${r.cooling_code})`, "cell node error < 0.1 K", `cell ${fmt(r.max_abs_err_cell_k, 3)} K, enclosure ${fmt(r.max_abs_err_enclosure_k, 3)} K`]));
+  V.timestep_convergence.forEach(r => vRows.push([`Sub-step ${r.substep_min[0]} vs ${r.substep_min[1]} min, 1 cyc/d (${r.cooling_code})`, "< 0.05 pp RTE, < 1 % aux", `${fmt(r.abs_diff_rte_pp, 3)} pp, ${fmt(r.abs_diff_aux_pct, 2)} %`]));
+  V.idle_heater_steady_state.forEach(r => vRows.push([`Idle heater at ${r.t_amb_c} degC vs closed form (${r.cooling_code})`, "relative error < 1e-3", `${fmt(r.heater_sim_kw, 3)} vs ${fmt(r.heater_closed_form_kw, 3)} kW`]));
+  Object.entries(V.surrogate_fit_to_model).forEach(([k, f]) => vRows.push([`4-parameter aux surrogate fitted to this model (${k.replace("da_100_", "1 cyc/d, ")})`, "descriptive, no criterion", `R2 hourly ${fmt(f.hourly.r2, 2)}, daily ${fmt(f.daily.r2, 2)}`]));
+  document.getElementById("tbl-verify").innerHTML = "<thead><tr><th>Check</th><th>Criterion</th><th>Result</th></tr></thead><tbody>" +
+    vRows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("") + "</tbody>";
+}
+
+function renderAll() {
+  renderHeadline();
+  renderTiles();
+  renderMonthlyPlot();
+  renderWeekPlot();
+  renderAuxAndLossPlots();
+  renderTables();
+}
+
+["sel-cooling", "sel-duty", "sel-meter", "sel-season"].forEach(id => {
+  document.getElementById(id).addEventListener("change", renderAll);
+});
+renderAll();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+let resizeTimer;
+window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(renderAll, 250); });
+</script>
+</body>
+</html>
