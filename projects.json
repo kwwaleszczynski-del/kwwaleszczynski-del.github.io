@@ -703,6 +703,36 @@
       ]
     },
     {
+      "repo": "scada-schema",
+      "title": "scada-schema: an open data standard for wind and PV SCADA",
+      "group": "tools",
+      "method": true,
+      "summary": "One table layout (names, units, sign and angle conventions, time zone and interval, device types) for wind turbines and PV plants, with loaders for five open datasets, 15 quality-control checks with an HTML report, IEC 61400-26 state mapping and converters to wind-up, OpenOA and pvlib with parity tests. Your own exports can be imported without code from a YAML mapping.",
+      "highlight": "11 tables from 5 open sources (3.45 million rows, 55 devices) load from the original files and all 11 pass the schema; the loader finds the hectowatt-to-watt switch in NREL PVDAQ system 34 (a factor-98 step on 2018-08-05) from the data alone.",
+      "image": "site:assets/scada-schema-card.png",
+      "demo": "https://kwwaleszczynski-del.github.io/scada-schema/",
+      "tags": [
+        "SCADA schema",
+        "IEC 61400-26",
+        "wind-up / OpenOA / pvlib"
+      ]
+    },
+    {
+      "repo": "bess-reporting-kit",
+      "title": "BESS reporting kit: technical and financial reports and sales-strategy comparison",
+      "group": "tools",
+      "method": true,
+      "summary": "One input schema and one command line for grid battery reporting: a technical report (availability, SoC-corrected round-trip efficiency, cycles, state of health, warranty and LTSA compliance), a financial report with a budget-to-actual bridge, and a common evaluation of four ways to sell the energy, all planned as-of on public PSE prices. Reports come out as HTML and Excel; the library calls the portfolio's battery projects instead of copying them.",
+      "highlight": "As-of day-ahead arbitrage keeps 82 % of its perfect-foresight ceiling and the revenue stack 91 %; on a 200 MW Australian battery the SoC-corrected round-trip efficiency is 82.9 % against an illustrative 85 % guarantee, met in 2 of 12 months.",
+      "image": "docs/report/img/strategies-example_strategies.png",
+      "demo": "https://kwwaleszczynski-del.github.io/bess-reporting-kit/",
+      "tags": [
+        "technical + financial reports",
+        "sales strategies",
+        "PSE / AEMO"
+      ]
+    },
+    {
       "repo": "fly-novelty-scada",
       "title": "A fly-brain novelty detector for turbine faults",
       "group": "experiments",
