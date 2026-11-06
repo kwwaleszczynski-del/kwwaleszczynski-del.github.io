@@ -759,6 +759,22 @@
         "reservoir computing",
         "negative result"
       ]
+    },
+    {
+      "repo": "scada-fault-bench",
+      "title": "scada-fault-bench: a benchmark for fault detection in wind and PV SCADA",
+      "group": "tools",
+      "method": true,
+      "summary": "Faults with known time, device and size (12 types, 5 sizes) are injected into clean stretches of open wind and PV data in the scada-schema format; any detector is scored by one evaluation with block-bootstrap intervals. A second part scores the same 12 methods on real labelled faults of CARE to Compare.",
+      "highlight": "On 2,205 injected faults in 7 open datasets no method wins: the best F1 is 0.40 on wind (EWMA) and 0.53 on PV (Isolation Forest), with several methods inside the same interval; on the 12 real CARE faults recall ranges from 0.08 to 0.75, too few to rank methods.",
+      "image": "site:assets/scada-fault-bench-card.png",
+      "demo": "https://kwwaleszczynski-del.github.io/scada-fault-bench/",
+      "tags": [
+        "fault detection",
+        "benchmark",
+        "CARE to Compare",
+        "scada-schema"
+      ]
     }
   ]
 }
