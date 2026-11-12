@@ -3,19 +3,19 @@
   "picks": [
     {
       "repo": "pv-budget-bridge",
-      "for_owner": "Splits every month's gap to the P50 budget into kWh by cause (weather, availability, curtailment, soiling, snow, data gaps) and checks the irradiance sensor first; outage and curtailment losses come back within 0.5 % of a known truth."
+      "for_owner": "Splits every month's gap to the P50 budget into kWh by cause (weather, availability, curtailment, soiling, snow, data gaps) and checks the irradiance sensor first; a 3-day outage and a binding curtailment injected into real and synthetic plants come back within 1 % and 3-7 % of what was removed."
     },
     {
       "repo": "wind-downtime-availability",
-      "for_owner": "Shows that the category a stop is booked under moves warranty availability more than detecting the stop does: grid and curtailment stops booked as turbine faults turn 97.9 % into 93.5 % for one open farm-year."
+      "for_owner": "Shows that one mis-booked farm-wide stop can outweigh all detection error: booking a 15-day park-controller stop as a turbine fault turns 97.9 % into 93.5 % for one open farm-year, while without such an event booking and detection each move warranty availability by about 0.3-1 pp."
     },
     {
       "repo": "bess-ops-warranty",
-      "for_owner": "Checks round-trip efficiency, availability, cycles and capacity tests against warranty and LTSA terms, and shows why the metering point matters: 55 Australian grid batteries convert at about 0.92 but deliver 0.82 at the meter."
+      "for_owner": "Checks round-trip efficiency, availability, cycles and capacity tests against warranty and LTSA terms, and shows why the metering point matters: 55 Australian grid batteries deliver 0.82 round trip at the meter, about 9 pp below the marginal efficiency (0.92) estimated for 34 of them."
     },
     {
       "repo": "wind-les-gpu",
-      "for_owner": "A second opinion on the wake loss in a yield assessment: a home-made LES on a laptop GPU, with no tuned wake parameter, gives 9.8 % against 9.2 % measured in six years of SCADA."
+      "for_owner": "A second opinion on the wake loss in a yield assessment: a home-made LES on a laptop GPU, with no wake constant fitted to the losses, gives 9.8 % against 9.2 % measured in six years of SCADA, and a split by wind speed and turbulence shows how much of that match is averaging."
     },
     {
       "repo": "res-asset-kpi",
@@ -23,7 +23,7 @@
     },
     {
       "repo": "pl-forecast-bench",
-      "for_owner": "Before paying for a forecast, compare it with the free PSE plan under the same as-of rule: intraday models beat the plan by 20-26 %, but day-ahead nothing that respects the 10:00 issue time beats it for volumes."
+      "for_owner": "Before paying for a forecast, compare it with the free PSE plan under the same as-of rule: intraday models beat PSE's day-ahead plan by 10-26 % (10-21 % once its curtailment bias is removed), but day-ahead nothing that respects the 10:00 issue time beats the plan, which is published after the gate."
     }
   ],
   "case_studies": [
@@ -67,14 +67,49 @@
       ],
       "table": {
         "caption": "Synthetic plant, 48 months: every loss against its truth",
-        "head": ["Loss", "Truth MWh", "Estimate MWh", "Total error"],
+        "head": [
+          "Loss",
+          "Truth MWh",
+          "Estimate MWh",
+          "Total error"
+        ],
         "rows": [
-          ["Availability", "46.7", "46.5", "-0.5 %"],
-          ["Curtailment (set-points)", "78.3", "77.9", "-0.5 %"],
-          ["Data gaps", "14.4", "13.4", "-7.2 %"],
-          ["Soiling (rain-washed)", "52.0", "47.9", "-7.9 %"],
-          ["Snow", "112.1", "101.1", "-9.9 %"],
-          ["Clipping", "5.4", "7.5", "+40 %"]
+          [
+            "Availability",
+            "46.7",
+            "46.5",
+            "-0.5 %"
+          ],
+          [
+            "Curtailment (set-points)",
+            "78.3",
+            "77.9",
+            "-0.5 %"
+          ],
+          [
+            "Data gaps",
+            "14.4",
+            "13.4",
+            "-7.2 %"
+          ],
+          [
+            "Soiling (rain-washed)",
+            "52.0",
+            "47.9",
+            "-7.9 %"
+          ],
+          [
+            "Snow",
+            "112.1",
+            "101.1",
+            "-9.9 %"
+          ],
+          [
+            "Clipping",
+            "5.4",
+            "7.5",
+            "+40 %"
+          ]
         ],
         "note": "Monthly production is 20-190 MWh, so the mean monthly errors are 0.01-0.24 % of the month's energy. The clipping error is the model's: the synthetic plant has an incidence-angle loss that the configured model does not."
       },
@@ -90,7 +125,11 @@
         "The examples are small rooftops on one campus sharing one sensor, and a synthetic Polish plant. The PVsyst-like budget reader has not been tested on a file produced by PVsyst.",
         "The IEC 61724-1 definitions follow public descriptions and are not certified; the contract clauses are illustrative."
       ],
-      "related": ["res-asset-kpi", "pv-outage-classifier", "pv-thermal-check"]
+      "related": [
+        "res-asset-kpi",
+        "pv-outage-classifier",
+        "pv-thermal-check"
+      ]
     },
     {
       "repo": "wind-downtime-availability",
@@ -132,13 +171,37 @@
       ],
       "table": {
         "caption": "Warranty time-based availability (typical manufacturer preset), change against the logs",
-        "head": ["Booking", "Kelmarsh", "Penmanshiel"],
+        "head": [
+          "Booking",
+          "Kelmarsh",
+          "Penmanshiel"
+        ],
         "rows": [
-          ["Every stop counted as a turbine fault", "-1.9 pp", "-5.1 pp"],
-          ["Grid trips and curtailment / park-controller stops counted as turbine faults", "-0.6 pp", "-4.4 pp"],
-          ["High-wind, icing and low-temperature stops counted as faults", "-0.7 pp", "-0.4 pp"],
-          ["Scheduled maintenance counted as forced outage (60 h allowance lost)", "-0.4 pp", "-0.2 pp"],
-          ["Missing data counted as downtime", "-0.3 pp", "-0.3 pp"]
+          [
+            "Every stop counted as a turbine fault",
+            "-1.9 pp",
+            "-5.1 pp"
+          ],
+          [
+            "Grid trips and curtailment / park-controller stops counted as turbine faults",
+            "-0.6 pp",
+            "-4.4 pp"
+          ],
+          [
+            "High-wind, icing and low-temperature stops counted as faults",
+            "-0.7 pp",
+            "-0.4 pp"
+          ],
+          [
+            "Scheduled maintenance counted as forced outage (60 h allowance lost)",
+            "-0.4 pp",
+            "-0.2 pp"
+          ],
+          [
+            "Missing data counted as downtime",
+            "-0.3 pp",
+            "-0.3 pp"
+          ]
         ],
         "note": "Test years: Kelmarsh 2020-2021 (12 turbine-years), Penmanshiel 2020 (14 turbine-years)."
       },
@@ -154,7 +217,11 @@
         "Three UK farms and two manufacturers; rule thresholds and trained models may not transfer to other turbines.",
         "The contract presets are illustrative. IEC 61400-26 leaves the allocation of categories to the contract."
       ],
-      "related": ["wind-om-reliability", "wind-wake-aware-verification", "res-asset-kpi"]
+      "related": [
+        "wind-om-reliability",
+        "wind-wake-aware-verification",
+        "res-asset-kpi"
+      ]
     },
     {
       "repo": "bess-ops-warranty",
@@ -196,11 +263,31 @@
       ],
       "table": {
         "caption": "NEM batteries, October 2025 to September 2026: round-trip efficiency by duration",
-        "head": ["Duration", "Batteries", "RTE at the SCADA point, median (range)", "Conversion RTE"],
+        "head": [
+          "Duration",
+          "Batteries",
+          "RTE at the SCADA point, median (range)",
+          "Conversion RTE"
+        ],
         "rows": [
-          ["About 1 h", "7", "0.75 (0.47-0.81)", "0.919"],
-          ["About 2 h", "41", "0.83 (0.74-0.86)", "0.924"],
-          ["3 h or more", "5", "0.88 (0.87-0.90)", "0.925"]
+          [
+            "About 1 h",
+            "7",
+            "0.75 (0.47-0.81)",
+            "0.919"
+          ],
+          [
+            "About 2 h",
+            "41",
+            "0.83 (0.74-0.86)",
+            "0.924"
+          ],
+          [
+            "3 h or more",
+            "5",
+            "0.88 (0.87-0.90)",
+            "0.925"
+          ]
         ],
         "note": "Conversion RTE from the hourly regression of reported stored energy in the companion project bess-soc-soh-degradation, which separates a standby drain."
       },
@@ -216,7 +303,11 @@
         "The synthetic verification shows that the estimators are consistent with the physics they assume; real batteries add part-load efficiency curves, self-discharge, cell imbalance and SoC drift.",
         "Capacity-test uncertainty covers the instruments and the temperature correction, not the test procedure itself, which can matter more."
       ],
-      "related": ["bess-capacity-augmentation", "bess-soc-soh-degradation", "res-asset-kpi"]
+      "related": [
+        "bess-capacity-augmentation",
+        "bess-soc-soh-degradation",
+        "res-asset-kpi"
+      ]
     }
   ]
 }

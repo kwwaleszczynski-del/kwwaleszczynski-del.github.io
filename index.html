@@ -147,7 +147,7 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-pv">Solar PV</span><span class="badge">Case study</span></div>
         <h3><a href="case-studies/pv-budget-bridge.html">PV budget bridge: monthly P50 to actual waterfall and sensor QC</a></h3>
-        <p class="owner">Splits every month&#x27;s gap to the P50 budget into kWh by cause (weather, availability, curtailment, soiling, snow, data gaps) and checks the irradiance sensor first; outage and curtailment losses come back within 0.5 % of a known truth.</p>
+        <p class="owner">Splits every month&#x27;s gap to the P50 budget into kWh by cause (weather, availability, curtailment, soiling, snow, data gaps) and checks the irradiance sensor first; a 3-day outage and a binding curtailment injected into real and synthetic plants come back within 1 % and 3-7 % of what was removed.</p>
         <div class="links"><a class="btn primary" href="case-studies/pv-budget-bridge.html">Case study</a><a class="btn" href="https://kwwaleszczynski-del.github.io/pv-budget-bridge/">Live page &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-budget-bridge">Code</a></div>
       </div>
     </article>
@@ -158,7 +158,7 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-wind">Wind</span><span class="badge">Case study</span></div>
         <h3><a href="case-studies/wind-downtime-availability.html">Wind turbine downtime, causes and availability</a></h3>
-        <p class="owner">Shows that the category a stop is booked under moves warranty availability more than detecting the stop does: grid and curtailment stops booked as turbine faults turn 97.9 % into 93.5 % for one open farm-year.</p>
+        <p class="owner">Shows that one mis-booked farm-wide stop can outweigh all detection error: booking a 15-day park-controller stop as a turbine fault turns 97.9 % into 93.5 % for one open farm-year, while without such an event booking and detection each move warranty availability by about 0.3-1 pp.</p>
         <div class="links"><a class="btn primary" href="case-studies/wind-downtime-availability.html">Case study</a><a class="btn" href="https://kwwaleszczynski-del.github.io/wind-downtime-availability/">Live page &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-downtime-availability">Code</a></div>
       </div>
     </article>
@@ -169,7 +169,7 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-storage">Storage &amp; markets</span><span class="badge">Case study</span></div>
         <h3><a href="case-studies/bess-ops-warranty.html">Grid battery operations against warranty and LTSA</a></h3>
-        <p class="owner">Checks round-trip efficiency, availability, cycles and capacity tests against warranty and LTSA terms, and shows why the metering point matters: 55 Australian grid batteries convert at about 0.92 but deliver 0.82 at the meter.</p>
+        <p class="owner">Checks round-trip efficiency, availability, cycles and capacity tests against warranty and LTSA terms, and shows why the metering point matters: 55 Australian grid batteries deliver 0.82 round trip at the meter, about 9 pp below the marginal efficiency (0.92) estimated for 34 of them.</p>
         <div class="links"><a class="btn primary" href="case-studies/bess-ops-warranty.html">Case study</a><a class="btn" href="https://kwwaleszczynski-del.github.io/bess-ops-warranty/">Live page &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-ops-warranty">Code</a></div>
       </div>
     </article>
@@ -180,7 +180,7 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-wind">Wind</span></div>
         <h3><a href="https://kwwaleszczynski-del.github.io/wind-les-gpu/">Kelmarsh wind farm in a laptop-GPU LES</a></h3>
-        <p class="owner">A second opinion on the wake loss in a yield assessment: a home-made LES on a laptop GPU, with no tuned wake parameter, gives 9.8 % against 9.2 % measured in six years of SCADA.</p>
+        <p class="owner">A second opinion on the wake loss in a yield assessment: a home-made LES on a laptop GPU, with no wake constant fitted to the losses, gives 9.8 % against 9.2 % measured in six years of SCADA, and a split by wind speed and turbulence shows how much of that match is averaging.</p>
         <div class="links"><a class="btn primary" href="https://kwwaleszczynski-del.github.io/wind-les-gpu/">Live page &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-les-gpu">Code</a></div>
       </div>
     </article>
@@ -202,7 +202,7 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-system">Power system &amp; resource</span></div>
         <h3><a href="https://kwwaleszczynski-del.github.io/pl-forecast-bench/">A citable forecast benchmark for the Polish grid</a></h3>
-        <p class="owner">Before paying for a forecast, compare it with the free PSE plan under the same as-of rule: intraday models beat the plan by 20-26 %, but day-ahead nothing that respects the 10:00 issue time beats it for volumes.</p>
+        <p class="owner">Before paying for a forecast, compare it with the free PSE plan under the same as-of rule: intraday models beat PSE&#x27;s day-ahead plan by 10-26 % (10-21 % once its curtailment bias is removed), but day-ahead nothing that respects the 10:00 issue time beats the plan, which is published after the gate.</p>
         <div class="links"><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pl-forecast-bench/">Live page &#8599;</a><a class="btn" href="https://github.com/kwwaleszczynski-del/pl-forecast-bench">Code</a></div>
       </div>
     </article>
@@ -330,7 +330,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-storage">Storage &amp; markets</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/bess-ops-warranty">Grid battery operations against warranty and LTSA</a></h3>
         <p class="summary">Monthly warranty and LTSA reporting for an operating grid battery: SoC-corrected round-trip efficiency with and without auxiliaries, time-, capacity- and energy-based availability, rainflow cycles, warranty violations, capacity tests with guard bands, and a benchmark of all 55 grid batteries in Australia&#x27;s NEM validated against ACEN&#x27;s New England BESS data.</p>
-        <p class="highlight">Across 55 NEM batteries conversion RTE is 0.92, but metered RTE is 0.82 median (0.75 for 1 h, 0.88 for 4 h) because of auxiliaries and standby drain; PASA technical availability is 95.8 % median while commercial offered availability is 78.1 %.</p>
+        <p class="highlight">Across 55 NEM batteries the metered round trip is 0.82 median, about 9 pp below the marginal conversion efficiency (0.92) estimated for 34 of them; declared physical availability is 95.8 % median (an upper bound, 24-hour notice), and for the median battery the gap to what is offered is mostly the state of charge.</p>
         <ul class="tags"><li>AEMO NEM</li><li>LTSA / warranty</li><li>RTE &amp; availability</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-ops-warranty">Code</a><a class="btn" href="case-studies/bess-ops-warranty.html">Case study</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/bess-ops-warranty/">Live page &#8599;</a></div>
       </div>
@@ -395,7 +395,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-pv">Solar PV</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/pv-budget-bridge">PV budget bridge: monthly P50 to actual waterfall and sensor QC</a></h3>
         <p class="summary">Monthly asset-management bridge from P50 budget to measured production (irradiance, temperature, degradation, soiling, snow, clipping, availability, curtailment, data gaps and unexplained residual), weather-corrected PR, contractual guarantee tests and pyranometer QC, checked on NREL PVDAQ and synthetic Polish plants.</p>
-        <p class="highlight">Recovers injected outages and curtailment within 0.5 % on synthetic truth and flags clock shifts, sensor tilt errors and pyranometer drift across three multi-year NREL PVDAQ rooftops.</p>
+        <p class="highlight">Injected faults on three NREL PVDAQ rooftops and a synthetic Polish plant come back within 1 % for a 3-day inverter outage and within 3-7 % for a binding curtailment, while 2 % soiling remains the hard case; clock shifts, sensor tilt errors and pyranometer drift are flagged first.</p>
         <ul class="tags"><li>IEC 61724-1</li><li>waterfall bridge</li><li>NREL PVDAQ</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-budget-bridge">Code</a><a class="btn" href="case-studies/pv-budget-bridge.html">Case study</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-budget-bridge/">Live page &#8599;</a></div>
       </div>
@@ -486,7 +486,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-wind">Wind</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/wind-les-gpu">Kelmarsh wind farm in a laptop-GPU LES</a></h3>
         <p class="summary">A home-made D3Q19 lattice Boltzmann large-eddy simulator in ~550 lines of NVIDIA Warp kernels (regularized collision, Smagorinsky subgrid, log-law wall, actuator disks and precursor turbulence), run across all 72 wind directions on Kelmarsh and compared record-by-record with 6 years of SCADA and PyWake.</p>
-        <p class="highlight">With no parameter fitted to the measured losses the LES predicts 9.79 % farm wake loss against 9.24 % measured in 159,289 SCADA records (sector RMSE 2.2 pp vs 2.6 pp for PyWake Gaussian) in 81 s per wind direction on a 6 GB laptop GPU.</p>
+        <p class="highlight">Pooled farm wake loss 9.8 % against 9.2 % measured in 159,289 SCADA records, as close as the Gaussian model, in 81 s per wind direction on a 6 GB laptop GPU; split by wind speed, turbulence and site-factor choice, the repo shows how much of that match is averaging.</p>
         <ul class="tags"><li>NVIDIA Warp</li><li>Lattice Boltzmann LES</li><li>Kelmarsh SCADA</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-les-gpu">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/wind-les-gpu/">Live page &#8599;</a></div>
       </div>
@@ -512,7 +512,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-wind">Wind</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/wind-downtime-availability">Wind turbine downtime, causes and availability</a></h3>
         <p class="summary">Stops, deratings and curtailment found in 10-minute SCADA without status codes (rules, power-curve residual, pitch / rotor-speed signature, HMM, gradient boosting), classified into IEC 61400-26 categories, priced in lost energy and turned into time- and energy-based availability on three open farms, with a CLI for any farm&#x27;s long-format SCADA.</p>
-        <p class="highlight">The pitch / rotor-speed signature finds stops with F1 0.80-0.91 without training, while the usual &quot;power ≤ 0&quot; rule raises 4,833 alarms for 1,412 logged stops; booking grid and curtailment stops as turbine faults cuts warranty availability from 97.9 % to 93.5 %.</p>
+        <p class="highlight">The pitch / rotor-speed signature finds stops with F1 0.80-0.91 without training (0.68-0.72 under a strict overlap rule), while the usual &quot;power ≤ 0&quot; rule raises 4,833 alarms for 1,412 logged stops; one mis-booked 15-day farm-wide stop moves a farm-year&#x27;s warranty availability by 4.1 pp, more than all detection error.</p>
         <ul class="tags"><li>IEC 61400-26</li><li>outage detection</li><li>gradient boosting</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-downtime-availability">Code</a><a class="btn" href="case-studies/wind-downtime-availability.html">Case study</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/wind-downtime-availability/">Live page &#8599;</a></div>
       </div>
@@ -680,8 +680,8 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-system">Power system &amp; resource</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/pl-forecast-bench">A citable forecast benchmark for the Polish grid</a></h3>
-        <p class="summary">Wind, solar, demand and day-ahead price forecasts for Poland at 15-minute resolution, day-ahead (issued at 10:00 on D-1) and intraday, with fixed data, splits and metrics and a strict as-of rule enforced by leakage tests; eleven reference models from persistence and the PSE plan to gradient boosting and zero-shot Chronos, TimesFM and Toto foundation models, with a public leaderboard, a monthly live track and a Zenodo DOI.</p>
-        <p class="highlight">Intraday models beat the PSE plan by 20-26 %; day-ahead nothing that respects the 10:00 issue time beats it for volumes, and the price is the one task a foundation model wins (Chronos-2 with weather covariates, 88.5 PLN/MWh MAE, 9 % better than gradient boosting).</p>
+        <p class="summary">Wind, solar, demand and day-ahead price forecasts for Poland at 15-minute resolution, day-ahead (issued at 10:00 on D-1) and intraday, with fixed data, splits and metrics and a strict as-of rule enforced by leakage tests; eleven reference models from persistence and the PSE plan to gradient boosting and zero-shot Chronos, TimesFM and Toto foundation models, with a public leaderboard, a monthly hindcast and a Zenodo DOI.</p>
+        <p class="highlight">Intraday models beat PSE&#x27;s day-ahead plan by 10-26 % (10-21 % against the plan rescaled for its curtailment bias); day-ahead the plan, published after the gate, stays ahead, and the price is the one task a foundation model wins (Chronos-2 with weather covariates, 88.5 PLN/MWh MAE, 9 % better than gradient boosting).</p>
         <ul class="tags"><li>forecasting benchmark</li><li>Chronos / TimesFM / Toto</li><li>PSE</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pl-forecast-bench">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pl-forecast-bench/">Live page &#8599;</a></div>
       </div>
@@ -772,7 +772,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-tools">Open-source tools</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/res-asset-kpi">res-asset-kpi: KPI library for PV, wind and BESS</a></h3>
         <p class="summary">An open-source Python library on PyPI, with a Zenodo DOI, for the indicators asset managers report every month: PR and weather-corrected PR, contract availability for PV, wind (IEC 61400-26 categories) and batteries, the budget-to-actual energy bridge, power curves and AEP, MTBF/MTTR and Crow-AMSAA, SoC-corrected round-trip efficiency, cycles, capacity tests with uncertainty and contract damages set in YAML.</p>
-        <p class="highlight">Extracted from six analysis projects and reproducing their results exactly (41 checks over about a million values, largest relative difference 1.3e-13); a hand-worked test for every formula, Hypothesis property tests, mypy strict, CI on Python 3.11-3.13.</p>
+        <p class="highlight">Extracted from six analysis projects and checked against their pre-migration code (41 regression checks over about a million values, largest relative difference 1.3e-13); a hand-worked test for every formula, Hypothesis property tests, mypy strict, CI on Python 3.11-3.13.</p>
         <ul class="tags"><li>PyPI package</li><li>IEC 61724-1 / 61400-26</li><li>asset management</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/res-asset-kpi">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/res-asset-kpi/">Docs &#8599;</a></div>
       </div>
