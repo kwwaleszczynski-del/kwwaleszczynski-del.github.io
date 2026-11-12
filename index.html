@@ -797,8 +797,8 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-tools">Open-source tools</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/scada-schema">scada-schema: an open data standard for wind and PV SCADA</a></h3>
-        <p class="summary">One table layout (names, units, sign and angle conventions, time zone and interval, device types) for wind turbines and PV plants, with loaders for five open datasets, 15 quality-control checks with an HTML report, IEC 61400-26 state mapping and converters to wind-up, OpenOA and pvlib with parity tests. Your own exports can be imported without code from a YAML mapping.</p>
-        <p class="highlight">11 tables from 5 open sources (3.45 million rows, 55 devices) load from the original files and all 11 pass the schema; the loader finds the hectowatt-to-watt switch in NREL PVDAQ system 34 (a factor-98 step on 2018-08-05) from the data alone.</p>
+        <p class="summary">One table layout (names, units, sign and angle conventions, time zone and interval, device types) for wind turbines and PV plants, with loaders for open datasets from six sources, 15 quality-control checks with an HTML report, IEC 61400-26 state mapping and converters to wind-up, OpenOA and pvlib with parity tests. Your own exports can be imported without code from a YAML mapping.</p>
+        <p class="highlight">11 tables from 6 open sources (3.66 million rows, 57 devices) load from the original files and all 11 pass the schema; the loader finds the hectowatt-to-watt switch in NREL PVDAQ system 34 (a factor-98 step on 2018-08-05) from the data alone.</p>
         <ul class="tags"><li>SCADA schema</li><li>IEC 61400-26</li><li>wind-up / OpenOA / pvlib</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/scada-schema">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/scada-schema/">Live page &#8599;</a></div>
       </div>
@@ -811,7 +811,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-tools">Open-source tools</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/bess-reporting-kit">BESS reporting kit: technical and financial reports and sales-strategy comparison</a></h3>
         <p class="summary">One input schema and one command line for grid battery reporting: a technical report (availability, SoC-corrected round-trip efficiency, cycles, state of health, warranty and LTSA compliance), a financial report with a budget-to-actual bridge, and a common evaluation of four ways to sell the energy, all planned as-of on public PSE prices. Reports come out as HTML and Excel; the library calls the portfolio&#x27;s battery projects instead of copying them.</p>
-        <p class="highlight">As-of day-ahead arbitrage keeps 82 % of its perfect-foresight ceiling and the revenue stack 91 %; on a 200 MW Australian battery the SoC-corrected round-trip efficiency is 82.9 % against an illustrative 85 % guarantee, met in 2 of 12 months.</p>
+        <p class="highlight">As-of day-ahead arbitrage keeps 82 % of its perfect-foresight ceiling; the revenue stack keeps 91 % only because it offers nearly all balancing capacity every hour, and at fleet scale (2,000 MW) its margin falls to 10-21 % of the lone battery&#x27;s. A 200 MW Australian battery earned 99 % of an as-of benchmark with its own limits; its SoC-corrected round-trip efficiency is 82.9 % against an illustrative 85 % guarantee, met in 2 of 12 months.</p>
         <ul class="tags"><li>technical + financial reports</li><li>sales strategies</li><li>PSE / AEMO</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/bess-reporting-kit">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/bess-reporting-kit/">Live page &#8599;</a></div>
       </div>
@@ -849,8 +849,8 @@ td + td { white-space: nowrap; }
       <div class="body">
         <div class="meta"><span class="group g-tools">Open-source tools</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/scada-fault-bench">scada-fault-bench: a benchmark for fault detection in wind and PV SCADA</a></h3>
-        <p class="summary">Faults with known time, device and size (12 types, 5 sizes) are injected into clean stretches of open wind and PV data in the scada-schema format; any detector is scored by one evaluation with block-bootstrap intervals. A second part scores the same 12 methods on real labelled faults of CARE to Compare.</p>
-        <p class="highlight">On 2,205 injected faults in 7 open datasets no method wins: the best F1 is 0.40 on wind (EWMA) and 0.53 on PV (Isolation Forest), with several methods inside the same interval; on the 12 real CARE faults recall ranges from 0.08 to 0.75, too few to rank methods.</p>
+        <p class="summary">Faults with known time, device and size (12 types, 5 sizes) are injected into open wind and PV data in the scada-schema format; any detector is scored by one evaluation that reports recall next to its chance level (a placebo on the untouched block) with block-bootstrap intervals. A second part scores the same methods on real labelled faults of CARE to Compare.</p>
+        <p class="highlight">On 2,213 injected faults in 7 open datasets every method detects more than chance, but much of the raw recall is coincidence: a z-score reaches 0.91 on wind with 0.68 by chance. The best excess recall across all fault types is 0.42 on wind (CUSUM) and 0.37 on PV (Isolation Forest); on the 12 real CARE faults no method is distinguishable from chance.</p>
         <ul class="tags"><li>fault detection</li><li>benchmark</li><li>CARE to Compare</li><li>scada-schema</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/scada-fault-bench">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/scada-fault-bench/">Live page &#8599;</a></div>
       </div>
@@ -863,7 +863,7 @@ td + td { white-space: nowrap; }
       <dt>Stack</dt><dd>Python · pandas · SciPy / HiGHS MILP · pvlib · PyWake · PyTorch · NumPyro / JAX · Plotly · Grafana · InfluxDB 2 / Flux · GitHub Actions · pytest</dd>
       <dt>Open data</dt><dd>PSE (Polish TSO) open API · AEMO NEM · NREL PVDAQ · Kelmarsh wind farm SCADA (Cubico, CC BY 4.0) · PVGIS · Open-Meteo / ERA5 · Met Office sunshine records · Zenodo LFP cell ageing data · IMGW-PIB synoptic stations · CERRA (Copernicus) · IEEE RTS-79 · CARE to Compare benchmark (CC BY-SA 4.0) · FlyWire connectome v783 (CC BY 4.0)</dd>
     </dl>
-    <p>All projects are personal work on public datasets, credited in each repository. Updated 06 Nov 2026.</p>
+    <p>All projects are personal work on public datasets, credited in each repository. Updated 12 Nov 2026.</p>
   </footer>
 </div>
 <script>
