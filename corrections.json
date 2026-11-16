@@ -2,6 +2,20 @@
   "intro": "Every project here is re-read from time to time by an independent reviewer who gets the code and the data, not the conclusions. When a headline number or a conclusion does not hold, it is corrected in the repository and listed below: what was claimed, what is claimed now and why. Results that only reproduced are not listed.",
   "entries": [
     {
+      "date": "2026-11-16",
+      "repo": "pv-outage-classifier",
+      "was": "The hybrid detector has the highest recall (0.86) and the expected model the best F1 (0.80); all real outages on the PVDAQ roofs are found; fleet availability 98.3-99.0 %.",
+      "now": "Much of the recall is coincidence: the hybrid's alarms shifted in time by whole days still find 40 % of the events. By excess recall Hampel, the isolation forest, the expected model and the hybrid are level (0.46-0.52), and the order changes under a stricter rule. Soiling is barely detected (8 % of episodes half covered). Availability in 2016 is 98.3 %, 95.8 % or 91.4 % depending on how gaps in the inverter data are counted.",
+      "why": "One alarm anywhere inside an event that lasts weeks counted as a detection, and the real outages are defined by the same zero-output rule the threshold detector uses. Outages that continued as data gaps were taken out of the availability denominator. The site set-up is now tuned on 2016 and reported on 2017-2018."
+    },
+    {
+      "date": "2026-11-16",
+      "repo": "pv-thermal-check",
+      "was": "The cells run 19 K above the back-of-module sensor, the signature of a loose sensor; injected sensor faults are found on all 40 start dates; corrected PR leaves a winter dip explained by shading and an autumn decline by soiling.",
+      "now": "The gap is 15-20 K depending on the calibration and rests on one 12-day open-circuit window; a loose sensor is one explanation among others. With no fault injected, 20 % of the start dates already count as detected, so detection is reported on the 32 clean start dates. The residual PR pattern depends on the irradiance scaling and is not attributed to a cause. Annual temperature loss 10.9 % (was 10.5-10.8 %), Poland 3.5-4.5 % (was 3.2-4.2 %).",
+      "why": "The clean record has an alarm of its own inside the detection horizon of 8 start dates; the seasonal residual changes sign between one irradiance scale factor and month-specific factors; and the cell model had used the STC efficiency instead of the measured operating efficiency."
+    },
+    {
       "date": "2026-11-15",
       "repo": "wind-om-reliability",
       "was": "Crow-AMSAA separates an improving fleet (Kelmarsh, beta 0.82) from a deteriorating one (Penmanshiel, beta 1.12); Hill of Towie improves to 4-5 failures per turbine-year.",

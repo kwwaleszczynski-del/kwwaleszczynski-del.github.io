@@ -434,7 +434,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-pv">Solar PV</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/pv-outage-classifier">PV outages: detection, cause and availability</a></h3>
         <p class="summary">Seven ways to find production losses at string, inverter and meter level (threshold, expected PR model, peer median, Hampel, CUSUM, isolation forest, gradient boosting) plus a hybrid, cause classification, lost energy and IEC 61724-1 style availability on a simulated plant with ground truth, real PVDAQ data and an open shading dataset.</p>
-        <p class="highlight">Requiring events of at least 1 h lifts the hybrid detector&#x27;s event precision from 0.14 to 0.74 and cuts false alarms from 2.9 to 0.13 per device-year; thresholds tuned on simulation give 257 alarms per inverter-year on real roofs, a short site set-up brings it to 6 with all real outages still found.</p>
+        <p class="highlight">The hybrid detector finds 86 % of the simulated events, but the same alarms shifted in time would find 40 %; by excess recall four methods are level (0.46-0.52) and none dominates. Requiring events of at least 1 h lifts event precision from 0.14 to 0.74. On real roofs a site set-up tuned on 2016 gives 6.7 other alarms per inverter-year in 2017-2018, and availability moves by up to 7 pp with how data gaps are counted.</p>
         <ul class="tags"><li>outage detection</li><li>IEC 61724-1</li><li>NREL PVDAQ</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-outage-classifier">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-outage-classifier/">Live page &#8599;</a></div>
       </div>
@@ -447,7 +447,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-pv">Solar PV</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/pv-thermal-check">PV thermal check: modules, inverter, transformer</a></h3>
         <p class="summary">Module temperature models (Faiman, SAPM, PVsyst, Ross) fitted on PVDAQ data with cell temperature recovered from open-circuit voltage, temperature-corrected PR, sensor-fault detection, inverter and transformer thermal checks, and losses moved to Poland.</p>
-        <p class="highlight">The back-of-module sensor saw only about half of the real heating: thermal losses are 10.5 % a year, not 6.7 %; temperature-corrected PR cuts the seasonal spread from 13.1 to 4.8 pp.</p>
+        <p class="highlight">Open-circuit-voltage thermometry puts the cells 15-20 K above the back-of-module sensor in full sun: the sensor reads about half of the heating, so thermal losses are 10.9 % a year, not 6.6 %. Temperature-corrected PR cuts the seasonal spread from 13-16 pp to 5-7 pp, depending on how the irradiance sensor is scaled.</p>
         <ul class="tags"><li>pvlib</li><li>IEC 61724-1</li><li>NREL PVDAQ</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pv-thermal-check">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pv-thermal-check/">Live page &#8599;</a></div>
       </div>
