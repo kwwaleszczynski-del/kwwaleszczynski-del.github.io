@@ -442,7 +442,7 @@ def build_corrections(cor: dict, cfg: dict) -> str:
     by_repo = {p["repo"]: p for p in cfg["projects"]}
     rows = []
     for c in sorted(cor["entries"], key=lambda c: c["date"], reverse=True):
-        p = by_repo[c["repo"]]
+        p = by_repo.get(c["repo"], {"repo": c["repo"]})  # a public repository without a card
         when = date.fromisoformat(c["date"])
         rows.append(
             f'<section class="corr"><h2><a href="https://github.com/{user}/{p["repo"]}">{e(p["repo"])}</a>'

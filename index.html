@@ -127,8 +127,8 @@ td + td { white-space: nowrap; }
     <h1><span>Renewable energy data analytics</span></h1>
     <p class="intro">Analytics for solar, wind and battery assets: performance verification, fault detection, power market analysis and dashboards. Every project below is written from scratch on open data or on a disclosed synthetic plant and can be rerun from its repository, with tests and CI.</p>
     <ul class="stats">
-      <li><b>49</b><span>projects on open data</span></li>
-      <li><b>14</b><span>own verification methods</span></li>
+      <li><b>51</b><span>projects on open data</span></li>
+      <li><b>15</b><span>own verification methods</span></li>
       <li><b>43</b><span>live interactive pages</span></li>
     </ul>
     <div class="actions">
@@ -538,7 +538,7 @@ td + td { white-space: nowrap; }
         <div class="meta"><span class="group g-wind">Wind</span><span class="badge">Own method</span></div>
         <h3><a href="https://github.com/kwwaleszczynski-del/wind-wake-aware-verification">WARP: wake-aware turbine verification</a></h3>
         <p class="summary">Expected power from the unwaked neighbours carried through a calibrated wake model, with CUSUM charts for power loss, derating, anemometer bias and yaw misalignment.</p>
-        <p class="highlight">On 288 faults injected into 2019-2020 data it finds a 3 % anemometer bias in 83 % of cases and a derating to 95 % of rated power in 94 %, where the neighbour index finds 4 %; yaw faults are found every time, partly by construction.</p>
+        <p class="highlight">With every chart at the same false-alarm rate, on faults injected into 2019-2020 data it finds a 3 % anemometer bias in 90 % of cases (chance 12 %), which the turbine&#x27;s own power curve sees only when the anemometer reads high. At full load the own power curve is the better detector (a derating within a week against a month); yaw faults are found every time, partly by construction.</p>
         <ul class="tags"><li>PyWake</li><li>CUSUM</li><li>SCADA</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/wind-wake-aware-verification">Code</a></div>
       </div>
@@ -788,6 +788,32 @@ td + td { white-space: nowrap; }
         <p class="highlight">Offline tests on recorded responses plus live checks against PSE&#x27;s API description; documents pitfalls such as DST labels, the 100,000-row cap and pagination that drops rows.</p>
         <ul class="tags"><li>Python library</li><li>pandas</li><li>PSE API</li></ul>
         <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pse-opendata">Code</a><a class="btn primary" href="https://kwwaleszczynski-del.github.io/pse-opendata/">Docs &#8599;</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="tools" data-method="0">
+      <a class="thumb" href="https://github.com/kwwaleszczynski-del/pse-opendata-mcp" tabindex="-1" aria-hidden="true">
+        <img src="img/pse-opendata-mcp.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-tools">Open-source tools</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/pse-opendata-mcp">pse-opendata-mcp: Polish power-system data for LLM assistants</a></h3>
+        <p class="summary">An MCP server on top of pse-opendata: prices, demand, wind and PV generation, net cross-border flows and curtailment from PSE&#x27;s public reports, answered as a few header lines and one compact table, aggregated by default, with missing values kept missing and the source report named in every answer.</p>
+        <p class="highlight">A month-by-month price question for ten months is answered in 354 tokens where the raw API JSON for the same period takes 3.8 million; against the same aggregated rows written as JSON the compact format still saves 40-50 %.</p>
+        <ul class="tags"><li>MCP server</li><li>PSE API</li><li>token-efficient</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/pse-opendata-mcp">Code</a></div>
+      </div>
+    </article>
+    <article class="card" data-group="tools" data-method="1">
+      <a class="thumb" href="https://github.com/kwwaleszczynski-del/claims-review" tabindex="-1" aria-hidden="true">
+        <img src="img/claims-review.webp" alt="" loading="lazy" width="960" height="600">
+      </a>
+      <div class="body">
+        <div class="meta"><span class="group g-tools">Open-source tools</span><span class="badge">Own method</span></div>
+        <h3><a href="https://github.com/kwwaleszczynski-del/claims-review">claims-review: do the numbers in the README hold?</a></h3>
+        <p class="summary">A Claude Code plugin that packages the review method used on this portfolio: a deterministic helper traces every README number to the results files, an independent reviewer agent gets code and data without the author&#x27;s explanations and reruns and perturbs the analysis against a checklist of 13 failure modes, and each serious finding is re-checked before it is reported.</p>
+        <p class="highlight">On four synthetic repositories it found 3 of 3 planted flaws and raised no false serious finding on the clean one; one run per fixture, easy fixtures and no baseline, as the README states. A full review costs about 85,000-160,000 tokens.</p>
+        <ul class="tags"><li>Claude Code plugin</li><li>reproducibility</li><li>review</li></ul>
+        <div class="links"><a class="btn" href="https://github.com/kwwaleszczynski-del/claims-review">Code</a></div>
       </div>
     </article>
     <article class="card" data-group="tools" data-method="1">
