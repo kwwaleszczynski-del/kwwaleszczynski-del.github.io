@@ -193,7 +193,7 @@
       "group": "storage",
       "method": true,
       "summary": "Monthly warranty and LTSA reporting for an operating grid battery: SoC-corrected round-trip efficiency with and without auxiliaries, time-, capacity- and energy-based availability, rainflow cycles, warranty violations, capacity tests with guard bands, and a benchmark of all 55 grid batteries in Australia's NEM validated against ACEN's New England BESS data.",
-      "highlight": "Across 55 NEM batteries the metered round trip is 0.82 median, about 9 pp below the marginal conversion efficiency (0.92) estimated for 34 of them; declared physical availability is 95.8 % median (an upper bound, 24-hour notice), and for the median battery the gap to what is offered is mostly the state of charge.",
+      "highlight": "Across 55 NEM batteries the metered round trip is 0.825 median (52 with an RTE, three with no data), about 9 pp below the marginal conversion efficiency (0.92) estimated for 34 of them; declared physical availability is 95.8 % median (an upper bound, 24-hour notice), and for the median battery the gap to what is offered is mostly the state of charge.",
       "image": "docs/img/fleet_rte.png",
       "demo": "https://kwwaleszczynski-del.github.io/bess-ops-warranty/",
       "tags": [
@@ -381,7 +381,7 @@
       "group": "wind",
       "method": true,
       "summary": "A probabilistic model of every Kelmarsh turbine updated day by day from SCADA: posteriors with credible intervals for efficiency, anemometer error, yaw offset, derating and bearing cooling, the probability of each fault type, lost energy by cause and inspections ranked by value of information.",
-      "highlight": "On 624 injected faults it names the right cause in 95 % of detections against 72 % for CUSUM and NBM charts, with 0.50 false alarms per turbine-year against 2.08.",
+      "highlight": "On 624 injected faults it raises 0.50 false alarms per turbine-year against 2.08 for CUSUM and NBM charts. Its first alarm names the right cause in 84 % of all faults against 70 %, but the advantage is confined to telling an efficiency loss from a derating: without those scenarios the two are level. All figures are upper bounds, since the injected faults match the model's own fault types.",
       "image": "docs/img/replay_gen.png",
       "demo": "https://kwwaleszczynski-del.github.io/wind-bayes-twin/",
       "tags": [
@@ -438,7 +438,7 @@
       "title": "Drivetrain temperatures: early fault detection",
       "group": "wind",
       "summary": "Normal behaviour models of nine drivetrain temperatures on Kelmarsh SCADA: a physical RC thermal model, gradient boosting and a fleet reference, validated on 8,100 injected faults, real logged events and the CARE to Compare benchmark.",
-      "highlight": "A +5 °C drift is caught in 97-99 % of cases within about 20 days by every method; on CARE the temperature-only models are precise but miss faults no thermometer can see.",
+      "highlight": "A +5 °C drift is caught in 97-99 % of cases by every method; on a +2 °C drift gradient boosting beats the physical RC model by 8-14 points. The RC parameters give a health trend only when the time constant is held fixed, and on the CARE benchmark the temperature-only models detect nothing beyond chance.",
       "image": "docs/img/fit_example.png",
       "demo": "https://kwwaleszczynski-del.github.io/wind-thermal-nbm/",
       "tags": [

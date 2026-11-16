@@ -3,6 +3,27 @@
   "entries": [
     {
       "date": "2026-11-16",
+      "repo": "wind-bayes-twin",
+      "was": "The twin's first alarm names the right cause in 95 % of detections against 72 % for the charts; nothing was tuned on the test years.",
+      "now": "Of all 624 faults the twin names 84 % and the charts 70 %. The advantage is confined to telling an efficiency loss from a derating: without the efficiency-loss scenarios the two are level (91 % against 86 %, and 92 % against 91 % at matched false-alarm rates). Detection and the false-alarm rate (0.50 against 2.08 per turbine-year) stand. All validation numbers are upper bounds.",
+      "why": "The charts' full-load chart was mapped to derating, so one mapping produced most of the gap. Several design choices were revised after looking at 2019-2020 results, and the injected faults are near-exact shifts of the statistics the twin models."
+    },
+    {
+      "date": "2026-11-16",
+      "repo": "wind-thermal-nbm",
+      "was": "The RC parameters give a health trend the black box does not: the rear generator bearing's rise at rated power grows from 16.5 to 25.4 K on one turbine. On the CARE benchmark the temperature models are precise but miss faults no thermometer can see.",
+      "now": "The trend was a fit artefact: with the time constant, intercept and cooling mixture held at the first year's fit, the yearly rise follows the measured rise at rated power (median gap 0.1-0.6 K). On CARE the models detect nothing beyond chance (as many fault datasets flagged as with circularly shifted alarms). Detection of a +2 °C drift now has intervals: 76 % [71-81] for the RC model to 91 % [87-94] for gradient boosting with the fleet median.",
+      "why": "Refitting every parameter each year let the temperature rise trade off against the time constant (0.9-1.9 h, then 3.2 h in 2021). The CARE detections had not been compared with a placebo, and the alarm design was settled with the test years in view."
+    },
+    {
+      "date": "2026-11-16",
+      "repo": "bess-ops-warranty",
+      "was": "Median round-trip efficiency 0.82 across 55 NEM batteries; a window whose one-way efficiency could not be determined used a constant and passed.",
+      "now": "0.825 for the 52 batteries with an RTE; three have no RTE for the year and are listed as no data. A window that cannot be assessed is reported with its reason and counted next to the damages, not as a window without damages. One validation series moved from 0.736 to 0.723.",
+      "why": "The yearly RTE had counted the energy of months whose change of stored energy was unknown and taken that change as zero, and an undetermined efficiency had been replaced by 0.95."
+    },
+    {
+      "date": "2026-11-16",
       "repo": "pv-outage-classifier",
       "was": "The hybrid detector has the highest recall (0.86) and the expected model the best F1 (0.80); all real outages on the PVDAQ roofs are found; fleet availability 98.3-99.0 %.",
       "now": "Much of the recall is coincidence: the hybrid's alarms shifted in time by whole days still find 40 % of the events. By excess recall Hampel, the isolation forest, the expected model and the hybrid are level (0.46-0.52), and the order changes under a stricter rule. Soiling is barely detected (8 % of episodes half covered). Availability in 2016 is 98.3 %, 95.8 % or 91.4 % depending on how gaps in the inverter data are counted.",
