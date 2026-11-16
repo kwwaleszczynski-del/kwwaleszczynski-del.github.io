@@ -318,7 +318,7 @@ def build_site(cfg: dict, start: dict) -> str:
       <dt>Stack</dt><dd>{e(' · '.join(cfg['stack']))}</dd>
       <dt>Open data</dt><dd>{e(' · '.join(cfg['data_sources']))}</dd>
     </dl>
-    <p>All projects are personal work on public datasets, credited in each repository. Updated {date.today():%d %b %Y}.</p>
+    <p>All projects are personal work on public datasets, credited in each repository. Results that did not hold up under review are listed in the <a href="corrections.html">corrections log</a>. Updated {date.today():%d %b %Y}.</p>
   </footer>
 </div>
 <script>
@@ -434,6 +434,60 @@ def build_case(c: dict, cfg: dict) -> str:
 """
 
 
+def build_corrections(cor: dict, cfg: dict) -> str:
+    """The corrections log, written to corrections.html from corrections.json (newest first)."""
+    owner = cfg["owner"]
+    user = owner["github"]
+    name = owner.get("name") or user
+    by_repo = {p["repo"]: p for p in cfg["projects"]}
+    rows = []
+    for c in sorted(cor["entries"], key=lambda c: c["date"], reverse=True):
+        p = by_repo[c["repo"]]
+        when = date.fromisoformat(c["date"])
+        rows.append(
+            f'<section class="corr"><h2><a href="https://github.com/{user}/{p["repo"]}">{e(p["repo"])}</a>'
+            f'<span class="when">{when:%d %b %Y}</span></h2>'
+            f'<dl><dt>Was</dt><dd>{rich(c["was"])}</dd><dt>Now</dt><dd>{rich(c["now"])}</dd>'
+            f'<dt>Why</dt><dd>{rich(c["why"])}</dd></dl></section>')
+    title = f"Corrections | {name}"
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{e(title)}</title>
+<meta name="description" content="Corrections to published results in this portfolio: what was claimed, what is claimed now and why.">
+<meta name="color-scheme" content="light dark">
+<style>
+{CSS}
+.corr {{ border-top: 1px solid var(--line); padding: 6px 0 2px; }}
+.corr h2 {{ font-size: 18px; margin: 14px 0 6px; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }}
+.corr h2 a {{ color: inherit; text-decoration: none; }}
+.corr h2 a:hover {{ color: var(--accent); }}
+.corr .when {{ font-size: 13px; font-weight: 400; color: var(--muted); }}
+.corr dl {{ display: grid; grid-template-columns: 52px 1fr; gap: 6px 12px; margin: 0 0 14px; }}
+.corr dt {{ color: var(--muted); font-size: 13px; padding-top: 3px; }}
+.corr dd {{ margin: 0; }}
+@media (max-width: 520px) {{ .corr dl {{ grid-template-columns: 1fr; gap: 0; }} .corr dd {{ margin: 0 0 8px; }} }}
+</style>
+</head>
+<body>
+<div class="wrap case">
+  <p class="crumb"><a href="./">&#8592; {e(name)}: all projects</a></p>
+  <header>
+    <h1>Corrections</h1>
+    <p class="dek">{rich(cor["intro"])}</p>
+  </header>
+  {"".join(rows)}
+  <footer>
+    <p>{len(cor["entries"])} corrections. Updated {date.today():%d %b %Y}.</p>
+  </footer>
+</div>
+</body>
+</html>
+"""
+
+
 def build_profile(cfg: dict, start: dict) -> str:
     owner, projects = cfg["owner"], cfg["projects"]
     user = owner["github"]
@@ -505,6 +559,11 @@ def main() -> None:
     for c in start["case_studies"]:
         (HERE / "case-studies" / f"{c['repo']}.html").write_text(build_case(c, cfg), encoding="utf-8")
         log.info("wrote case-studies/%s.html", c["repo"])
+    cor_path = HERE / "corrections.json"
+    if cor_path.exists():
+        cor = json.loads(cor_path.read_text(encoding="utf-8"))
+        (HERE / "corrections.html").write_text(build_corrections(cor, cfg), encoding="utf-8")
+        log.info("wrote corrections.html (%d entries)", len(cor["entries"]))
     args.profile_readme.parent.mkdir(parents=True, exist_ok=True)
     args.profile_readme.write_text(build_profile(cfg, start), encoding="utf-8")
     log.info("wrote %s", args.profile_readme)

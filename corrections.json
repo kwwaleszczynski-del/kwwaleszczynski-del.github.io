@@ -1,0 +1,103 @@
+{
+  "intro": "Every project here is re-read from time to time by an independent reviewer who gets the code and the data, not the conclusions. When a headline number or a conclusion does not hold, it is corrected in the repository and listed below: what was claimed, what is claimed now and why. Results that only reproduced are not listed.",
+  "entries": [
+    {
+      "date": "2026-11-15",
+      "repo": "wind-om-reliability",
+      "was": "Crow-AMSAA separates an improving fleet (Kelmarsh, beta 0.82) from a deteriorating one (Penmanshiel, beta 1.12); Hill of Towie improves to 4-5 failures per turbine-year.",
+      "now": "Kelmarsh still improves (beta 0.81, 0.76-0.91). Penmanshiel shows no clear trend (0.95, 0.89-1.01). The Hill of Towie trend is not assessed.",
+      "why": "The Penmanshiel figure came from repeating alarms on three turbines and an interval that assumed independent events; the trend is now fitted on repeat chains with a turbine bootstrap. The Hill of Towie code dictionary was built from one year, so other years were not comparable. Failure counts are now published with their sensitivity to the counting rule (Kelmarsh 3.6-8.2, Penmanshiel 10.8-19.3 per turbine-year)."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "pl-bess-paper-trading",
+      "was": "A battery that trades on paper every day; scheduled runs start 30-60 minutes late and one day has no plan.",
+      "now": "Of the first 20 live days 6 have a plan and 14 do not; the model earned 11.7 % of perfect foresight over all days and 52 % on the days it traded. The live record is too short for conclusions.",
+      "why": "GitHub started the scheduled runs 6-10 hours late, after the market gate, so most mornings made no plan; the plans that exist were started by an external trigger. The ledger itself was checked and is append-only: no plan was made after prices were known."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "pl-capture-price",
+      "was": "Every 10 pp of PV share costs PV about 0.20 of value factor; a PV build-out scenario of 0.58 (+20 %) and 0.49 (+50 %), backed by a hindcast.",
+      "now": "The within-month slope is -1.69 with a standard error of 1.12, not significant; the scenario gives 0.59 (0.52-0.66) and 0.51 (0.35-0.68). No simple model beats repeating last year's value (MAE 0.080 against 0.081). RCE is described as PSE's reference price, not the SDAC price.",
+      "why": "The pooled slope was mostly seasonal, and the hindcast had been fitted with months after the target. The 2025 capture rates (PV 0.64, wind 0.94) did not change."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "pl-res-curtailment",
+      "was": "Announced PV curtailment before the reports API: 520 GWh, covering 91 % of the regulator's figure for 2024.",
+      "now": "517.3 GWh, equal to 90 % of the regulator's figure; the announcement volumes are stated as announced orders, 63 % of them published before the hour began.",
+      "why": "24 September 2024 was counted in both sources, and ordered power is not a subset of the energy the regulator reports. Annual totals from the reports API did not change."
+    },
+    {
+      "date": "2026-11-15",
+      "repo": "pse-opendata",
+      "was": "Cross-border flow report documented as one signed row per border.",
+      "now": "Two directional rows per border (import and export components), with a helper that nets them; an optional check re-downloads a cached month that PSE republished later (version 0.2.1).",
+      "why": "Reading one row as the net flow gave +85 MW instead of -613 MW for the Czech border in one test week. A month cached before a late republication was served as final."
+    },
+    {
+      "date": "2026-11-12",
+      "repo": "res-asset-kpi",
+      "was": "KPI functions accepted records with gaps and returned a number.",
+      "now": "A window with missing meter data has no round-trip efficiency instead of a low one, missing expected power gives no energy availability instead of zero loss, partial sums are not reported as full intervals, and constants standing in for missing information raise a warning (versions 0.1.1 and 0.1.2).",
+      "why": "Missing data were silently counted as zeros: one missing discharge hour moved a daily RTE from 0.64 to 0.48 with the result still marked valid."
+    },
+    {
+      "date": "2026-11-12",
+      "repo": "wind-downtime-availability",
+      "was": "The category a stop is booked under moves warranty availability more than detecting the stop does: 97.9 % becomes 93.5 %.",
+      "now": "One mis-booked farm-wide stop can outweigh all detection error: 4.1 of those 4.4 pp are a single 15-day park-controller stop. Without it the scenario costs 0.3 pp, about the size of the detection error.",
+      "why": "The headline rested on one event of one farm-year. Cause classification is also reported by stop time now (rules right for 21 % and 68 %), and at one farm it makes availability worse than no classification."
+    },
+    {
+      "date": "2026-11-12",
+      "repo": "bess-ops-warranty",
+      "was": "Batteries are technically available (95.8 %) but commercially much less is offered (78.1 %).",
+      "now": "For the median battery only 3.2 % of the registered power is declared and not offered; five of 38 batteries hold back a third or more. The 95.8 % is an upper bound (capability within 24 hours' notice).",
+      "why": "The gap counted every interval in which an empty battery offered less; with more than 10 % of the energy stored, offered availability is 94.1 %."
+    },
+    {
+      "date": "2026-11-12",
+      "repo": "pl-forecast-bench",
+      "was": "Intraday models beat the PSE plan by 20-26 %.",
+      "now": "Intraday models beat PSE's day-ahead plan by 10-26 %, and by 10-21 % against the plan rescaled for its bias; day-ahead intervals are wider than published.",
+      "why": "Part of the plan's error is curtailment and a systematic over-forecast (wind +225 MW on average, +1,300 MW at prices at or below zero), and the bootstrap had treated days as independent."
+    },
+    {
+      "date": "2026-11-12",
+      "repo": "wind-les-gpu",
+      "was": "The LES reproduces the measured farm wake loss (9.8 % against 9.2 %) and the deep-wake sectors, with the lowest error of four models.",
+      "now": "The pooled loss matches as closely as the Gaussian model; split by wind speed and turbulence, part of the match is averaging (3 pp low in the most frequent sector at 5-8 m/s, high at 8-10 m/s). The ranking claim is dropped.",
+      "why": "One speed ratio was applied to all 5-10 m/s records, and the 0.6 pp gap sits inside the uncertainty of how the measured loss is defined."
+    },
+    {
+      "date": "2026-11-12",
+      "repo": "pv-budget-bridge",
+      "was": "Outage and curtailment losses come back within 0.5 % of a known truth; PR 0.63-0.67 on the real rooftops.",
+      "now": "A 3-day outage injected into real and synthetic plants comes back within 1 %, a curtailment that binds within 3-7 %; the 0.5 % on the synthetic plant is labelled a best case. PR 0.65-0.68 on intervals with complete data.",
+      "why": "The synthetic truth followed the estimator's own bookkeeping, an outage under a partial set-point was over-charged to availability, and the summary PR counted data gaps as zero production."
+    },
+    {
+      "date": "2026-11-12",
+      "repo": "scada-fault-bench",
+      "was": "Best F1 0.40 on wind and 0.53 on PV; recall 0.08-0.75 on 12 real faults.",
+      "now": "Every method detects more than chance on injected faults, but much of the raw recall is coincidence (a z-score reaches 0.91 on wind with 0.68 by chance). Best excess recall 0.42 on wind and 0.37 on PV; on the 12 real faults no method is distinguishable from chance.",
+      "why": "An alarm anywhere in a one-to-three-week window counted as a detection. Detection now requires an alarm on affected rows and is reported next to a placebo."
+    },
+    {
+      "date": "2026-11-12",
+      "repo": "bess-reporting-kit",
+      "was": "A 200 MW battery earned 122 % of its as-of benchmark; at fleet scale the revenue stack stays above day-ahead arbitrage.",
+      "now": "The battery earned 99 % of a benchmark that has its own limits; at 2,000 MW the stack keeps 10-21 % of the lone battery's margin and crosses day-ahead arbitrage on the lower bound.",
+      "why": "The benchmark battery was smaller than the real one, and the fleet model was not a fixed point, so it is now given as two bounds."
+    },
+    {
+      "date": "2026-11-12",
+      "repo": "scada-schema",
+      "was": "Loaders wrote the CARE benchmark's power in kW and found the PVDAQ unit switch only when it fell inside the loaded period.",
+      "now": "CARE power is stored as a scaled, dimensionless signal; the PVDAQ unit is detected from the power level; La Haute Borne's clock is reconstructed and 96 ambiguous rows are dropped (version 0.1.1).",
+      "why": "CARE power is normalised by the source, and a file that starts after the switch was read 100 times too high."
+    }
+  ]
+}
