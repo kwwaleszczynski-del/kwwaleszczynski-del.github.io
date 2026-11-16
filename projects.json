@@ -508,7 +508,7 @@
       "title": "Which method catches a sick digester first?",
       "group": "biogas",
       "summary": "An ADM1 (BSM2) twin of an agricultural co-digestion plant with realistic sensors and lab samples, 140 injected process upsets and instrument faults, and eight ways to catch them: FOS/TAC thresholds, EWMA and CUSUM on yield, PCA, expert rules, gradient boosting and an EKF twin, plus a check on real farm digesters.",
-      "highlight": "Twice-weekly FOS/TAC warns before the yield loss in 1 % of upsets; PCA on online signals does it in 75 % with 0.7 false alarms a year, and the EKF twin names all 20 CH4 analyser drifts as instrument faults without any failure examples.",
+      "highlight": "Scored against chance, the yield charts are mostly alarm habit: a CUSUM in alarm on 76 % of normal days detects 29 % of upsets against 14 % by chance. Gradient boosting detects 92 % within 14 days (chance 6 %) and the EKF twin 89 % (chance 15 %); early warning pays for one upset type, ammonia inhibition, which gradient boosting flags a median 7 days before the loss.",
       "image": "docs/img/tradeoff.png",
       "demo": "https://kwwaleszczynski-del.github.io/biogas-digester-twin/",
       "tags": [

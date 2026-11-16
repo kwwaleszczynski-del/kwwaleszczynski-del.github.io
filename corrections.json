@@ -3,6 +3,13 @@
   "entries": [
     {
       "date": "2026-11-16",
+      "repo": "biogas-digester-twin",
+      "was": "CUSUM on the methane yield detects 100 % of process upsets, EWMA and the expert rules nearly as many; PCA on online signals warns before the yield loss in 75 % of upsets.",
+      "now": "Within 14 days and against chance: CUSUM 29 % (chance 14 %), EWMA 89 % (29 %), expert rules 82 % (29 %), PCA 54 % (2 %), gradient boosting 92 % (6 %), EKF twin 89 % (15 %). Early warning before a material loss exists for ammonia inhibition only; the other upsets are mild in this plant or lose yield from the first day.",
+      "why": "Any alarm start within 60 days of the cause counted as a detection with no chance level, while EWMA and the rules are in alarm on about 40 % of normal days and the CUSUM on 76 %. Test runs had shared one feed history, and harmless recipe changes had not overlapped the upset sizes."
+    },
+    {
+      "date": "2026-11-16",
       "repo": "wind-wake-aware-verification",
       "was": "The method finds a derating to 95 % of rated power in 94 % of cases where the neighbour index finds 4 %, and a 3 % anemometer bias in 83 %; without the wake model detection drops.",
       "now": "With a full-load chart for every method and thresholds at one false-alarm rate, the turbine's own power curve is the better full-load detector (derating 100 % in 6 days against 96 % in 31 days). The method's distinct result is the anemometer bias in either direction (90 % against a chance of 12 %). The wake model's gain is confined to partial load.",
